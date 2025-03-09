@@ -34,7 +34,7 @@ public partial class LanguageLexer : Lexer {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		VAR=1, PRINT=2, LPAREN=3, RPAREN=4, SEMI=5, ASSIGN=6, PLUS=7, MINUS=8, 
+		VAR=1, PRINT=2, LPAREN=3, RPAREN=4, SEMICOLON=5, ASSIGN=6, PLUS=7, MINUS=8, 
 		MULTI=9, DIV=10, ID=11, INT=12, WS=13;
 	public static string[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
@@ -45,7 +45,7 @@ public partial class LanguageLexer : Lexer {
 	};
 
 	public static readonly string[] ruleNames = {
-		"VAR", "PRINT", "LPAREN", "RPAREN", "SEMI", "ASSIGN", "PLUS", "MINUS", 
+		"VAR", "PRINT", "LPAREN", "RPAREN", "SEMICOLON", "ASSIGN", "PLUS", "MINUS", 
 		"MULTI", "DIV", "ID", "INT", "WS"
 	};
 
@@ -64,8 +64,8 @@ public partial class LanguageLexer : Lexer {
 		"'/'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "VAR", "PRINT", "LPAREN", "RPAREN", "SEMI", "ASSIGN", "PLUS", "MINUS", 
-		"MULTI", "DIV", "ID", "INT", "WS"
+		null, "VAR", "PRINT", "LPAREN", "RPAREN", "SEMICOLON", "ASSIGN", "PLUS", 
+		"MINUS", "MULTI", "DIV", "ID", "INT", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 

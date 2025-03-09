@@ -12,3 +12,8 @@ antlr4 -Dlanguage=CSharp -o ../analyzer -package analyzer -visitor ./*.g4
 ```
 
 ---
+
+### Para levantar el servidor:
+```bash
+dotnet watch run
+```

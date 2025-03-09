@@ -16,7 +16,7 @@ public class LanguageParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		VAR=1, PRINT=2, LPAREN=3, RPAREN=4, SEMI=5, ASSIGN=6, PLUS=7, MINUS=8, 
+		VAR=1, PRINT=2, LPAREN=3, RPAREN=4, SEMICOLON=5, ASSIGN=6, PLUS=7, MINUS=8, 
 		MULTI=9, DIV=10, ID=11, INT=12, WS=13;
 	public static final int
 		RULE_program = 0, RULE_dcl = 1, RULE_varDcl = 2, RULE_statement = 3, RULE_expr = 4;
@@ -36,8 +36,8 @@ public class LanguageParser extends Parser {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "VAR", "PRINT", "LPAREN", "RPAREN", "SEMI", "ASSIGN", "PLUS", "MINUS", 
-			"MULTI", "DIV", "ID", "INT", "WS"
+			null, "VAR", "PRINT", "LPAREN", "RPAREN", "SEMICOLON", "ASSIGN", "PLUS", 
+			"MINUS", "MULTI", "DIV", "ID", "INT", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -201,7 +201,7 @@ public class LanguageParser extends Parser {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public TerminalNode SEMI() { return getToken(LanguageParser.SEMI, 0); }
+		public TerminalNode SEMICOLON() { return getToken(LanguageParser.SEMICOLON, 0); }
 		public VarDclContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -223,7 +223,7 @@ public class LanguageParser extends Parser {
 			setState(23);
 			expr(0);
 			setState(24);
-			match(SEMI);
+			match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -257,7 +257,7 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public TerminalNode RPAREN() { return getToken(LanguageParser.RPAREN, 0); }
-		public TerminalNode SEMI() { return getToken(LanguageParser.SEMI, 0); }
+		public TerminalNode SEMICOLON() { return getToken(LanguageParser.SEMICOLON, 0); }
 		public PrintStmtContext(StatementContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -265,7 +265,7 @@ public class LanguageParser extends Parser {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public TerminalNode SEMI() { return getToken(LanguageParser.SEMI, 0); }
+		public TerminalNode SEMICOLON() { return getToken(LanguageParser.SEMICOLON, 0); }
 		public ExprStmtContext(StatementContext ctx) { copyFrom(ctx); }
 	}
 
@@ -286,7 +286,7 @@ public class LanguageParser extends Parser {
 				setState(26);
 				expr(0);
 				setState(27);
-				match(SEMI);
+				match(SEMICOLON);
 				}
 				break;
 			case PRINT:
@@ -302,7 +302,7 @@ public class LanguageParser extends Parser {
 				setState(32);
 				match(RPAREN);
 				setState(33);
-				match(SEMI);
+				match(SEMICOLON);
 				}
 				break;
 			default:

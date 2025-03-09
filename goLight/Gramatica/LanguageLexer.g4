@@ -5,7 +5,7 @@ VAR: 'var';
 PRINT: 'print';
 LPAREN: '(';
 RPAREN: ')';
-SEMI: ';';
+SEMICOLON: ';';
 ASSIGN: '=';
 PLUS: '+';
 MINUS: '-';

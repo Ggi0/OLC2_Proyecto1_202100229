@@ -8,10 +8,11 @@ dcl: varDcl
    | statement 
 ;
 
-varDcl: VAR ID ASSIGN expr SEMI;
+varDcl: VAR ID ASSIGN expr SEMICOLON
+;
 
-statement: expr SEMI      # ExprStmt
-         | PRINT LPAREN expr RPAREN SEMI # PrintStmt
+statement: expr SEMICOLON      # ExprStmt
+         | PRINT LPAREN expr RPAREN SEMICOLON # PrintStmt
 ;
 
 expr:

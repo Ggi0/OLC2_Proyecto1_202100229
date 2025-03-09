@@ -16,7 +16,7 @@ public class LanguageLexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		VAR=1, PRINT=2, LPAREN=3, RPAREN=4, SEMI=5, ASSIGN=6, PLUS=7, MINUS=8, 
+		VAR=1, PRINT=2, LPAREN=3, RPAREN=4, SEMICOLON=5, ASSIGN=6, PLUS=7, MINUS=8, 
 		MULTI=9, DIV=10, ID=11, INT=12, WS=13;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
@@ -28,7 +28,7 @@ public class LanguageLexer extends Lexer {
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"VAR", "PRINT", "LPAREN", "RPAREN", "SEMI", "ASSIGN", "PLUS", "MINUS", 
+			"VAR", "PRINT", "LPAREN", "RPAREN", "SEMICOLON", "ASSIGN", "PLUS", "MINUS", 
 			"MULTI", "DIV", "ID", "INT", "WS"
 		};
 	}
@@ -43,8 +43,8 @@ public class LanguageLexer extends Lexer {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "VAR", "PRINT", "LPAREN", "RPAREN", "SEMI", "ASSIGN", "PLUS", "MINUS", 
-			"MULTI", "DIV", "ID", "INT", "WS"
+			null, "VAR", "PRINT", "LPAREN", "RPAREN", "SEMICOLON", "ASSIGN", "PLUS", 
+			"MINUS", "MULTI", "DIV", "ID", "INT", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();

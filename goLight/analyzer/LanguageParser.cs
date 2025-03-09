@@ -37,7 +37,7 @@ public partial class LanguageParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		VAR=1, PRINT=2, LPAREN=3, RPAREN=4, SEMI=5, ASSIGN=6, PLUS=7, MINUS=8, 
+		VAR=1, PRINT=2, LPAREN=3, RPAREN=4, SEMICOLON=5, ASSIGN=6, PLUS=7, MINUS=8, 
 		MULTI=9, DIV=10, ID=11, INT=12, WS=13;
 	public const int
 		RULE_program = 0, RULE_dcl = 1, RULE_varDcl = 2, RULE_statement = 3, RULE_expr = 4;
@@ -50,8 +50,8 @@ public partial class LanguageParser : Parser {
 		"'/'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "VAR", "PRINT", "LPAREN", "RPAREN", "SEMI", "ASSIGN", "PLUS", "MINUS", 
-		"MULTI", "DIV", "ID", "INT", "WS"
+		null, "VAR", "PRINT", "LPAREN", "RPAREN", "SEMICOLON", "ASSIGN", "PLUS", 
+		"MINUS", "MULTI", "DIV", "ID", "INT", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -228,7 +228,7 @@ public partial class LanguageParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr() {
 			return GetRuleContext<ExprContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMI() { return GetToken(LanguageParser.SEMI, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(LanguageParser.SEMICOLON, 0); }
 		public VarDclContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -268,7 +268,7 @@ public partial class LanguageParser : Parser {
 			State = 23;
 			expr(0);
 			State = 24;
-			Match(SEMI);
+			Match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -301,7 +301,7 @@ public partial class LanguageParser : Parser {
 			return GetRuleContext<ExprContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode RPAREN() { return GetToken(LanguageParser.RPAREN, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMI() { return GetToken(LanguageParser.SEMI, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(LanguageParser.SEMICOLON, 0); }
 		public PrintStmtContext(StatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
@@ -324,7 +324,7 @@ public partial class LanguageParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr() {
 			return GetRuleContext<ExprContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMI() { return GetToken(LanguageParser.SEMI, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(LanguageParser.SEMICOLON, 0); }
 		public ExprStmtContext(StatementContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
@@ -362,7 +362,7 @@ public partial class LanguageParser : Parser {
 				State = 26;
 				expr(0);
 				State = 27;
-				Match(SEMI);
+				Match(SEMICOLON);
 				}
 				break;
 			case PRINT:
@@ -378,7 +378,7 @@ public partial class LanguageParser : Parser {
 				State = 32;
 				Match(RPAREN);
 				State = 33;
-				Match(SEMI);
+				Match(SEMICOLON);
 				}
 				break;
 			default:
