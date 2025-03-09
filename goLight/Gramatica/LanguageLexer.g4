@@ -1,6 +1,6 @@
 lexer grammar LanguageLexer;
 
-// Definición de tokens
+// Definición de TOKENS
 VAR: 'var';
 PRINT: 'print';
 LPAREN: '(';
@@ -14,4 +14,9 @@ DIV: '/';
 
 ID: [a-zA-Z]+;
 INT: [0-9]+;
-WS: [ \t\r\n]+ -> skip;
+WS:  [ \r\t\f\n]+ -> skip; // Espacios en blanco
+
+// ---- COMENTARIOS ------
+COMENT: '//' ~[\r\n]* -> skip;
+MCOMENT: '/*' .*? '*/' -> skip;
+

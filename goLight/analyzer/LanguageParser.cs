@@ -38,7 +38,7 @@ public partial class LanguageParser : Parser {
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		VAR=1, PRINT=2, LPAREN=3, RPAREN=4, SEMICOLON=5, ASSIGN=6, PLUS=7, MINUS=8, 
-		MULTI=9, DIV=10, ID=11, INT=12, WS=13;
+		MULTI=9, DIV=10, ID=11, INT=12, WS=13, COMENT=14, MCOMENT=15;
 	public const int
 		RULE_program = 0, RULE_dcl = 1, RULE_varDcl = 2, RULE_statement = 3, RULE_expr = 4;
 	public static readonly string[] ruleNames = {
@@ -51,7 +51,7 @@ public partial class LanguageParser : Parser {
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "VAR", "PRINT", "LPAREN", "RPAREN", "SEMICOLON", "ASSIGN", "PLUS", 
-		"MINUS", "MULTI", "DIV", "ID", "INT", "WS"
+		"MINUS", "MULTI", "DIV", "ID", "INT", "WS", "COMENT", "MCOMENT"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -706,7 +706,7 @@ public partial class LanguageParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,13,60,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,1,0,5,0,12,8,0,10,0,
+		4,1,15,60,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,1,0,5,0,12,8,0,10,0,
 		12,0,15,9,0,1,1,1,1,3,1,19,8,1,1,2,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,
 		1,3,1,3,1,3,1,3,1,3,3,3,36,8,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,
 		47,8,4,1,4,1,4,1,4,1,4,1,4,1,4,5,4,55,8,4,10,4,12,4,58,9,4,1,4,0,1,8,5,

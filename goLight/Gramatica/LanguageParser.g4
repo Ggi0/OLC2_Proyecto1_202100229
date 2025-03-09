@@ -4,8 +4,8 @@ options { tokenVocab=LanguageLexer; }  // Importa los tokens del lexer
 
 program: dcl*;
 
-dcl: varDcl
-   | statement 
+dcl: varDcl // |funcDcl |classDcl | structDcl
+   | statement // stamtement No declarativo
 ;
 
 varDcl: VAR ID ASSIGN expr SEMICOLON
