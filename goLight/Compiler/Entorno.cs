@@ -1,9 +1,10 @@
 
 
 public class Entorno{
-    public Dictionary<string, int> variables= new Dictionary<string, int>();
+    public Dictionary<string, ValueWrapper> variables= new Dictionary<string, ValueWrapper>();
 
-    public int GetVariable(string id){
+    // obtener una variable
+    public ValueWrapper GetVariable(string id){
         if (variables.ContainsKey(id)){
             return variables[id];
         }else{
@@ -11,13 +12,23 @@ public class Entorno{
         }
     }
 
-    public void SetVariable(string id, int value){
-        if(variables.ContainsKey(id)){
-            // si la variable existe la sobreescribe
-            // si hay que declara un Error Semantico si ya esta declarado una variable (aqui se hace)
-            variables[id] = value;
+    public void DeclaracionVar(string id, ValueWrapper value)
+    {
+        if (variables.ContainsKey(id)){
+            throw new Exception("ERROR: La varible `" + id + " ya existe");
         }else{
-            variables.Add(id, value);
+            variables[id] = value;
         }
+    }
+
+    public ValueWrapper AsignarVar(string id, ValueWrapper value)
+    {
+        if (variables.ContainsKey(id))
+        {
+            variables[id] = value;
+            return value;
+        }
+        throw new Exception("Variable " + id + " not found");
+
     }
 }

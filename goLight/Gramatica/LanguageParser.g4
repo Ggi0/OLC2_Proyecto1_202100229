@@ -8,7 +8,7 @@ dcl: varDcl // |funcDcl |classDcl | structDcl
    | statement // stamtement No declarativo
 ;
 
-varDcl: VAR ID ASSIGN expr SEMICOLON
+varDcl: VAR ID IGUAL expr SEMICOLON
 ;
 
 statement: expr SEMICOLON      # ExprStmt
@@ -16,10 +16,15 @@ statement: expr SEMICOLON      # ExprStmt
 ;
 
 expr:
-    MINUS expr            # Negate
+    MENOS expr                    # NegateU
     | expr op=(MULTI | DIV) expr  # MulDiv
-    | expr op=(PLUS | MINUS) expr # AddSub
-    | INT                 # Number
-    | ID                  # Identifier
-    | LPAREN expr RPAREN  # Parens
+    | expr op=(MAS | MENOS) expr  # AddSub
+    | INT                         # Int
+    | FLOAT                       # Float
+    | STRING                      # String
+    | BOOL                        # Bool
+    | RUNE                        # Rune
+    | ID IGUAL expr               # Assign
+    | ID                          # Identifier
+    | LPAREN expr RPAREN          # Parens
 ;
