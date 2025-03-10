@@ -196,17 +196,17 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitParens([NotNull] LanguageParser.ParensContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>Assign</c>
+	/// Enter a parse tree produced by the <c>AssignVar</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAssign([NotNull] LanguageParser.AssignContext context);
+	void EnterAssignVar([NotNull] LanguageParser.AssignVarContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>Assign</c>
+	/// Exit a parse tree produced by the <c>AssignVar</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAssign([NotNull] LanguageParser.AssignContext context);
+	void ExitAssignVar([NotNull] LanguageParser.AssignVarContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>NegateU</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.

@@ -714,27 +714,27 @@ public partial class LanguageParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class AssignContext : ExprContext {
+	public partial class AssignVarContext : ExprContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(LanguageParser.ID, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IGUAL() { return GetToken(LanguageParser.IGUAL, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr() {
 			return GetRuleContext<ExprContext>(0);
 		}
-		public AssignContext(ExprContext context) { CopyFrom(context); }
+		public AssignVarContext(ExprContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
 			ILanguageParserListener typedListener = listener as ILanguageParserListener;
-			if (typedListener != null) typedListener.EnterAssign(this);
+			if (typedListener != null) typedListener.EnterAssignVar(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void ExitRule(IParseTreeListener listener) {
 			ILanguageParserListener typedListener = listener as ILanguageParserListener;
-			if (typedListener != null) typedListener.ExitAssign(this);
+			if (typedListener != null) typedListener.ExitAssignVar(this);
 		}
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ILanguageParserVisitor<TResult> typedVisitor = visitor as ILanguageParserVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitAssign(this);
+			if (typedVisitor != null) return typedVisitor.VisitAssignVar(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -901,7 +901,7 @@ public partial class LanguageParser : Parser {
 				break;
 			case 7:
 				{
-				_localctx = new AssignContext(_localctx);
+				_localctx = new AssignVarContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
 				State = 70;

@@ -66,8 +66,6 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     */ 
     public override ValueWrapper VisitVarDcl1(LanguageParser.VarDcl1Context context)
     {
-        
-
         string id = context.ID().GetText(); // Obtiene el nombre de la variable (ID)
         string tipoVar = context.tiposD().GetText(); // Tipo de la variable en string
         ValueWrapper value = Visit(context.expr()); // Visita la expresión y obtiene su valor
@@ -151,11 +149,15 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
 
     //       -----------> ASIGNACIONES <-----------
-    // Asignaciones variables ---> VisitVarAssign
-    public override ValueWrapper VisitAssign(LanguageParser.AssignContext context)
+    /*
+        asignaciones VARIABLES
+        Inmutabilidad del tipo: Una variable puede cambiar su valor, pero su tipo no puede ser modificado una vez declarado.
+        Si una variable ya existe, su valor puede ser actualizado, pero el nuevo valor debe ser del mismo tipo que el original.
+    */
+    public override ValueWrapper VisitAssignVar(LanguageParser.AssignVarContext context)
     {
         // retornara lo asignado
-        string id = context.ID().GetText();
+        string id = context.ID().GetText(); // obtener nombre de la variable
         ValueWrapper value = Visit(context.expr());
         return entornoActual.AsignarVar(id, value);
     }

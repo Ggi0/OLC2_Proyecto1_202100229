@@ -188,7 +188,7 @@ public partial class LanguageParserBaseVisitor<Result> : AbstractParseTreeVisito
 	/// <return>The visitor result.</return>
 	public virtual Result VisitParens([NotNull] LanguageParser.ParensContext context) { return VisitChildren(context); }
 	/// <summary>
-	/// Visit a parse tree produced by the <c>Assign</c>
+	/// Visit a parse tree produced by the <c>AssignVar</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>
 	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
@@ -197,7 +197,7 @@ public partial class LanguageParserBaseVisitor<Result> : AbstractParseTreeVisito
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	public virtual Result VisitAssign([NotNull] LanguageParser.AssignContext context) { return VisitChildren(context); }
+	public virtual Result VisitAssignVar([NotNull] LanguageParser.AssignVarContext context) { return VisitChildren(context); }
 	/// <summary>
 	/// Visit a parse tree produced by the <c>NegateU</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.

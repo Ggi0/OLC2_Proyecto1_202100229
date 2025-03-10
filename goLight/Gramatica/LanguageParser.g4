@@ -28,7 +28,7 @@ expr:
     | STRING                      # String
     | BOOL                        # Bool
     | RUNE                        # Rune
-    | ID IGUAL expr               # Assign
+    | ID IGUAL expr               # AssignVar
     | ID                          # Identifier
     | LPAREN expr RPAREN          # Parens
 ;

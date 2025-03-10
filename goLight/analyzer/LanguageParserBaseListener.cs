@@ -229,19 +229,19 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParens([NotNull] LanguageParser.ParensContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>Assign</c>
+	/// Enter a parse tree produced by the <c>AssignVar</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAssign([NotNull] LanguageParser.AssignContext context) { }
+	public virtual void EnterAssignVar([NotNull] LanguageParser.AssignVarContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>Assign</c>
+	/// Exit a parse tree produced by the <c>AssignVar</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAssign([NotNull] LanguageParser.AssignContext context) { }
+	public virtual void ExitAssignVar([NotNull] LanguageParser.AssignVarContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>NegateU</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.

@@ -505,13 +505,13 @@ public class LanguageParser extends Parser {
 		public ParensContext(ExprContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class AssignContext extends ExprContext {
+	public static class AssignVarContext extends ExprContext {
 		public TerminalNode ID() { return getToken(LanguageParser.ID, 0); }
 		public TerminalNode IGUAL() { return getToken(LanguageParser.IGUAL, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public AssignContext(ExprContext ctx) { copyFrom(ctx); }
+		public AssignVarContext(ExprContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NegateUContext extends ExprContext {
@@ -615,7 +615,7 @@ public class LanguageParser extends Parser {
 				break;
 			case 7:
 				{
-				_localctx = new AssignContext(_localctx);
+				_localctx = new AssignVarContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(70);

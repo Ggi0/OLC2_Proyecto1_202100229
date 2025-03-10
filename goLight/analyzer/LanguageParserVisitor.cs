@@ -129,12 +129,12 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitParens([NotNull] LanguageParser.ParensContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>Assign</c>
+	/// Visit a parse tree produced by the <c>AssignVar</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAssign([NotNull] LanguageParser.AssignContext context);
+	Result VisitAssignVar([NotNull] LanguageParser.AssignVarContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>NegateU</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
