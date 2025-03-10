@@ -111,7 +111,9 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             _ => throw new Exception("Invalid value")
         };
         output += "\n";
-        Console.WriteLine("Desde el print2: "+ value.GetType());
+        //Console.WriteLine("Desde el print2: "+ value.GetType());
+        //Console.WriteLine("output --> : "+ output);
+
         return defaultValue;
     }
 
@@ -190,6 +192,10 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         Console.WriteLine("Desde el valor: " + context.STRING().GetText());
         string text = context.STRING().GetText();
         text = text[1..^1]; // Remueve las comillas
+
+        // Procesar secuencias de escape
+        text = ProcessEscapeSequences(text);
+
         return new StringValue(text);
     }
 
@@ -198,7 +204,37 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         Console.WriteLine("Desde el valor: " + context.RUNE().GetText());
         string text = context.RUNE().GetText();
         text = text[1..^1]; // Remueve las comillas
-        return new RuneValue(char.Parse(text));
+
+        // Procesar secuencias de escape en un solo carácter
+        char runeValue = text.Length == 1 ? text[0] : ProcessEscapeChar(text);
+
+        return new RuneValue(runeValue);
+    }
+
+
+    // Función para procesar secuencias de escape en cadenas
+    private string ProcessEscapeSequences(string text)
+    {
+        return text.Replace("\\\"", "\"")
+                .Replace("\\\\", "\\")
+                .Replace("\\n", "\n")
+                .Replace("\\r", "\r")
+                .Replace("\\t", "\t");
+    }
+
+    // Función para procesar secuencias de escape en caracteres (runes)
+    private char ProcessEscapeChar(string text)
+    {
+        return text switch
+        {
+            "\\n" => '\n',
+            "\\t" => '\t',
+            "\\r" => '\r',
+            "\\'" => '\'',
+            "\\\"" => '\"',
+            "\\\\" => '\\',
+            _ => text[0] // Si no es un escape, devolver el primer carácter normal
+        };
     }
 
 }

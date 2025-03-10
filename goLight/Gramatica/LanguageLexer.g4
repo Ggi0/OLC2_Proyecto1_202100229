@@ -49,7 +49,7 @@ VAR   : 'var' ;
 // --------- VALORES de datos ------------
 INT: [0-9]+;              // entero
 FLOAT: [0-9]+ '.' [0-9]+; // float64
-STRING: '"' ~'"'* '"' ;   // cadena
+STRING: '"' ( '\\' '"' | ~'"' )* '"' ;   // cadena
 BOOL: 'true' | 'false';   // Booleano
 RUNE: '\'' ~'\''* '\'';   // Rune equivalente al Char
 
