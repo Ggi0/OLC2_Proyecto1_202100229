@@ -2,6 +2,11 @@
 import { Editor } from "@monaco-editor/react";
 import { useState } from "react";
 
+
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import OptionsBar from "@/components/OptionsBar";
+
 export default function Home() {
 
   const API_URL = 'http://localhost:5106'; // así se llama la API del back
@@ -27,32 +32,35 @@ export default function Home() {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen py-2'>
-       <Editor
-        height='70vh'
-        defaultLanguage='go'
-        theme='vs-dark'
-        value={code}
-        onChange={(value) => setCode(value || '')}
-        
-      />
-
-<button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-        onClick={handleExecute}
-      >
-        Ejecutar
-      </button>
-
-      {output && (
-        <div className='flex flex-col items-center justify-center'>
-          <h2>Output:</h2>
-          <pre>{output}</pre>
+    <div className='flex flex-col min-h-screen'>
+            <Header title="GoLight" />
+            <OptionsBar />
+            
+            <div className='flex flex-1 p-4'>
+                <div className='w-1/2'>
+                    <Editor 
+                        height='70vh' 
+                        defaultLanguage='go' 
+                        theme='vs-dark' 
+                        value={code} 
+                        onChange={(value) => setCode(value || '')} 
+                    />
+                </div>
+                <div className='w-1/2 bg-black text-white p-4'>
+                    <h2>Consola:</h2>
+                    <pre>{output}</pre>
+                </div>
+            </div>
+            
+            <div className='flex justify-center p-4'>
+                <button 
+                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' 
+                    onClick={handleExecute}>
+                    Ejecutar
+                </button>
+            </div>
+            
+            <Footer year={new Date().getFullYear()} author="Giovanni Concohá" />
         </div>
-      )}
-
-
-    </div>
-   
   );
 }
