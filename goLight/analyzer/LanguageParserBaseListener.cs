@@ -101,6 +101,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPrintStmt([NotNull] LanguageParser.PrintStmtContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>Bloque</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBloque([NotNull] LanguageParser.BloqueContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Bloque</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBloque([NotNull] LanguageParser.BloqueContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Float</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>

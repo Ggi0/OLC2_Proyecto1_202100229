@@ -86,6 +86,18 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitPrintStmt([NotNull] LanguageParser.PrintStmtContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>Bloque</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBloque([NotNull] LanguageParser.BloqueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Bloque</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBloque([NotNull] LanguageParser.BloqueContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Float</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>

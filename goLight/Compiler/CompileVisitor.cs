@@ -19,7 +19,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     public string output = "";
     private ValueWrapper defaultValue = new VoidValue();
     // declaraclando entorno
-    private Entorno entornoActual = new Entorno(); // entorno limpio cuando se inicializa el visitor
+    private Entorno entornoActual = new Entorno(null); // entorno limpio cuando se inicializa el visitor
 
 
     /*
@@ -33,6 +33,21 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         }
 
         return defaultValue; // retorna un void
+    }
+
+    //       -----------> ENTORNOS <-----------
+    public override ValueWrapper VisitBloque(LanguageParser.BloqueContext context)
+    {
+        Entorno entornoAnterior = entornoActual; // Guardar la referencia del entorno actual
+        entornoActual = new Entorno(entornoAnterior); // el patre del nuevo entorno es el anterior
+
+        // ejecutar todas las instrucciones dentro del entorno
+        foreach (var stmt in context.dcl()){
+            Visit(stmt);
+        }
+
+        entornoActual = entornoAnterior; // regresar al entorno previo
+        return defaultValue;
     }
 
     // Instrucciones ---> VisitExpreStmt
