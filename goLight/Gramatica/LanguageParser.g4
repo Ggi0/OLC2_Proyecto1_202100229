@@ -12,7 +12,7 @@ varDcl: VAR ID IGUAL expr SEMICOLON
 ;
 
 statement: expr SEMICOLON      # ExprStmt
-         | PRINT LPAREN expr RPAREN SEMICOLON # PrintStmt
+         | FMT DOT PRINT LPAREN expr RPAREN SEMICOLON # PrintStmt
 ;
 
 expr:

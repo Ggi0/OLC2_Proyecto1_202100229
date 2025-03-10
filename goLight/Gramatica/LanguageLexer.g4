@@ -40,8 +40,9 @@ AND  : '&&' ;
 NOT  : '!'  ;
 
 // ---> 
-VAR: 'var';
-PRINT: 'Println';
+PRINT : 'Println' ;
+FMT   : 'fmt' ;
+VAR   : 'var' ;
 
 
 
