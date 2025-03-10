@@ -52,15 +52,41 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitDcl([NotNull] LanguageParser.DclContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LanguageParser.varDcl"/>.
+	/// Enter a parse tree produced by the <c>varDcl1</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterVarDcl([NotNull] LanguageParser.VarDclContext context);
+	void EnterVarDcl1([NotNull] LanguageParser.VarDcl1Context context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LanguageParser.varDcl"/>.
+	/// Exit a parse tree produced by the <c>varDcl1</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitVarDcl([NotNull] LanguageParser.VarDclContext context);
+	void ExitVarDcl1([NotNull] LanguageParser.VarDcl1Context context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>varDcl2</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterVarDcl2([NotNull] LanguageParser.VarDcl2Context context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>varDcl2</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitVarDcl2([NotNull] LanguageParser.VarDcl2Context context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>varDcl3</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterVarDcl3([NotNull] LanguageParser.VarDcl3Context context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>varDcl3</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitVarDcl3([NotNull] LanguageParser.VarDcl3Context context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
@@ -229,5 +255,15 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitInt([NotNull] LanguageParser.IntContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.tiposD"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTiposD([NotNull] LanguageParser.TiposDContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.tiposD"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTiposD([NotNull] LanguageParser.TiposDContext context);
 }
 } // namespace analyzer

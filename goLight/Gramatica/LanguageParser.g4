@@ -8,7 +8,9 @@ dcl: varDcl // |funcDcl |classDcl | structDcl
    | statement // stamtement No declarativo
 ;
 
-varDcl: VAR ID IGUAL expr SEMICOLON
+varDcl: VAR ID tiposD IGUAL expr SEMICOLON # varDcl1
+        | VAR ID tiposD SEMICOLON          # varDcl2
+        | ID DCLIMPL expr SEMICOLON        # varDcl3
 ;
 
 statement: expr SEMICOLON      # ExprStmt
@@ -29,4 +31,11 @@ expr:
     | ID IGUAL expr               # Assign
     | ID                          # Identifier
     | LPAREN expr RPAREN          # Parens
+;
+
+tiposD: T_INT
+        |T_FLOAT
+        |T_STR
+        |T_BOOL
+        |T_RUNE
 ;

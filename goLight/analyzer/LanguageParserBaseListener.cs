@@ -61,17 +61,47 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDcl([NotNull] LanguageParser.DclContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LanguageParser.varDcl"/>.
+	/// Enter a parse tree produced by the <c>varDcl1</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterVarDcl([NotNull] LanguageParser.VarDclContext context) { }
+	public virtual void EnterVarDcl1([NotNull] LanguageParser.VarDcl1Context context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LanguageParser.varDcl"/>.
+	/// Exit a parse tree produced by the <c>varDcl1</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitVarDcl([NotNull] LanguageParser.VarDclContext context) { }
+	public virtual void ExitVarDcl1([NotNull] LanguageParser.VarDcl1Context context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>varDcl2</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVarDcl2([NotNull] LanguageParser.VarDcl2Context context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>varDcl2</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVarDcl2([NotNull] LanguageParser.VarDcl2Context context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>varDcl3</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVarDcl3([NotNull] LanguageParser.VarDcl3Context context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>varDcl3</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVarDcl3([NotNull] LanguageParser.VarDcl3Context context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
@@ -268,6 +298,18 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitInt([NotNull] LanguageParser.IntContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.tiposD"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTiposD([NotNull] LanguageParser.TiposDContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.tiposD"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTiposD([NotNull] LanguageParser.TiposDContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

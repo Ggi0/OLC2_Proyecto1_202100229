@@ -56,10 +56,87 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         return Visit(context.expr());
     }
 
-    
+
     //       -----------> DECLARACIONES <-----------
-    // VisitVarDcl ---> declaracion de variables
-    public override ValueWrapper VisitVarDcl( LanguageParser.VarDclContext context)
+    /*
+        caso 1: Declaración explícita con tipo y valor
+
+        var <identificador> <Tipo> = <Expresión>
+        VAR ID tiposD IGUAL expr SEMICOLON
+    */ 
+    public override ValueWrapper VisitVarDcl1(LanguageParser.VarDcl1Context context)
+    {
+        
+
+        string id = context.ID().GetText(); // Obtiene el nombre de la variable (ID)
+        string tipoVar = context.tiposD().GetText(); // Tipo de la variable en string
+        ValueWrapper value = Visit(context.expr()); // Visita la expresión y obtiene su valor
+
+        // Determinamos el tipo real del valor
+        string tipoValor = value switch
+        {
+            IntValue => "int",
+            FloatValue => "float64",
+            StringValue => "string",
+            BoolValue => "bool",
+            RuneValue => "rune",
+            _ => throw new Exception("ERROR: Tipo desconocido")
+        };
+
+        if (tipoVar == "float64" && tipoValor == "int"){
+            // convertir el int a float64
+            string excepcionFloat = context.expr().GetText();
+            ValueWrapper valorConvertido = new FloatValue( float.Parse(excepcionFloat));
+            entornoActual.DeclaracionVar(id, valorConvertido); 
+            return defaultValue;
+        }
+
+        // Validamos que los tipos coincidan
+        if (tipoVar != tipoValor)
+        {
+            throw new Exception($"ERROR: No se puede asignar un valor de tipo {tipoValor} a una variable de tipo {tipoVar}.");
+        }
+
+        // Si es válido, guardamos la variable en el entorno
+        entornoActual.DeclaracionVar(id, value);
+
+        return defaultValue; // una declaración no regresa ningun valor
+    }
+
+    /*
+        caso 2: Declaración explícita con tipo y sin valor
+
+        var <identificador> <Tipo>
+        VAR ID tiposD SEMICOLON          # varDcl2
+    */
+    public override ValueWrapper VisitVarDcl2(LanguageParser.VarDcl2Context context)
+    {
+        string id = context.ID().GetText(); // Obtiene el nombre de la variable (ID)
+        string tipo = context.tiposD().GetText(); // Tipo de la variable en string
+
+        // asignar un valor por defecto según su tipo
+        ValueWrapper value = tipo switch
+        {
+            "int" => new IntValue(0),
+            "float64" => new FloatValue(0.0f),
+            "string" => new StringValue(""),
+            "bool" => new BoolValue(false),
+            "rune" => new RuneValue('\0'),
+            _ => throw new Exception("ERROR: Tipo desconocido"),
+        };
+
+        entornoActual.DeclaracionVar(id, value);
+
+        return defaultValue; // una declaración no regresa ningun valor
+    }
+
+    /*
+        caso 3: Declaración implícita infiriendo el tipo
+        
+        <identificador> := <Expresión>  
+        ID DCLIMPL expr                  # varDcl3
+    */
+    public override ValueWrapper VisitVarDcl3( LanguageParser.VarDcl3Context context)
     {
         string id = context.ID().GetText(); // Obtiene el nombre de la variable
         ValueWrapper value = Visit(context.expr()); // Visita la expresión y obtiene su valor
@@ -69,6 +146,9 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         return defaultValue; // una declaración no regresa ningun valor
     }
+
+
+
 
     //       -----------> ASIGNACIONES <-----------
     // Asignaciones variables ---> VisitVarAssign
@@ -121,7 +201,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             FloatValue f => f.Value.ToString(),
             StringValue s => s.Value,
             BoolValue b => b.Value.ToString(),
-            RuneValue r => r.Value.ToString(),
+            RuneValue r => Convert.ToByte(r.Value).ToString(),
             VoidValue v => "void",
             _ => throw new Exception("Invalid value")
         };
@@ -222,6 +302,8 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         // Procesar secuencias de escape en un solo carácter
         char runeValue = text.Length == 1 ? text[0] : ProcessEscapeChar(text);
+
+        // VALIDAR ERROR  si la longitud es >1 y no es una secuencia de escape
 
         return new RuneValue(runeValue);
     }

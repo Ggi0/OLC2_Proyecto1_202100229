@@ -45,11 +45,26 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitDcl([NotNull] LanguageParser.DclContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LanguageParser.varDcl"/>.
+	/// Visit a parse tree produced by the <c>varDcl1</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitVarDcl([NotNull] LanguageParser.VarDclContext context);
+	Result VisitVarDcl1([NotNull] LanguageParser.VarDcl1Context context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>varDcl2</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVarDcl2([NotNull] LanguageParser.VarDcl2Context context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>varDcl3</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVarDcl3([NotNull] LanguageParser.VarDcl3Context context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
@@ -148,5 +163,11 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitInt([NotNull] LanguageParser.IntContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LanguageParser.tiposD"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTiposD([NotNull] LanguageParser.TiposDContext context);
 }
 } // namespace analyzer
