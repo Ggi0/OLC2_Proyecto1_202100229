@@ -20,9 +20,10 @@ statement: expr SEMICOLON      # ExprStmt
 
 
 expr:
-    MENOS expr                    # NegateU
+    MENOS expr                             # NegateU
     | expr op=(MULTI | DIV | MODULO) expr  # MulDiv
     | expr op=(MAS | MENOS) expr  # AddSub
+    | expr op=(EQUALS | DIFF) expr     # Comparation
     | INT                         # Int
     | FLOAT                       # Float
     | STRING                      # String

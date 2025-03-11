@@ -164,6 +164,13 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitInt([NotNull] LanguageParser.IntContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>Comparation</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComparation([NotNull] LanguageParser.ComparationContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="LanguageParser.tiposD"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

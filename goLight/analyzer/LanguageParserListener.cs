@@ -256,6 +256,18 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitInt([NotNull] LanguageParser.IntContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>Comparation</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComparation([NotNull] LanguageParser.ComparationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Comparation</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComparation([NotNull] LanguageParser.ComparationContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="LanguageParser.tiposD"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

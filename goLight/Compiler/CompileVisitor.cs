@@ -403,6 +403,97 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     }
 
 
+
+    //       -----------> OPERACIONES DE COMPARACIÓN <-----------
+    //  Igualdad y desigualdad
+    public override ValueWrapper VisitComparation( LanguageParser.ComparationContext context)
+    {
+        Console.WriteLine("---> igualdad - desigualdad");
+
+        ValueWrapper left = Visit(context.expr(0));
+        ValueWrapper right = Visit(context.expr(1));
+        
+        var op = context.op.Text;
+        Console.WriteLine("---> operador: "+ op);
+
+        switch (op)
+        {
+            case "==":
+                switch (left, right)
+                {
+                    case (IntValue l, IntValue r): // int == int = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} == valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value == r.Value);
+
+                    case (IntValue l, FloatValue r): // int == float = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} == valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value == r.Value);
+
+                    case (FloatValue l, FloatValue r): // float == float = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} == valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value == r.Value);
+
+                    case (FloatValue l, IntValue r): // float == int = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} == valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value == r.Value);
+
+                    case (BoolValue l, BoolValue r): // bool == bool = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} == valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value == r.Value);
+
+                    case (StringValue l, StringValue r): // string == string = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} == valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value == r.Value);
+
+                    case (RuneValue l, RuneValue r): // rune == rune = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} == valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value == r.Value);
+
+                    default:
+                        throw new Exception($"ERROR: Comparacion de IGUALDAD invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                }
+
+            case "!=":
+                switch (left, right)
+                {
+                    case (IntValue l, IntValue r): // int != int = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} != valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value != r.Value);
+
+                    case (IntValue l, FloatValue r): // int != float = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} != valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value != r.Value);
+
+                    case (FloatValue l, FloatValue r): // float != float = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} != valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value != r.Value);
+
+                    case (FloatValue l, IntValue r): // float != int = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} != valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value != r.Value);
+
+                    case (BoolValue l, BoolValue r): // bool != bool = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} != valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value != r.Value);
+
+                    case (StringValue l, StringValue r): // string != string = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} != valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value != r.Value);
+
+                    case (RuneValue l, RuneValue r): // rune != rune = bool
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} != valor der: {r.Value} - {r.GetType()}");
+                        return new BoolValue(l.Value != r.Value);
+
+                    default:
+                        throw new Exception($"ERROR: Comparacion de DESIGUALDAD invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                }
+            default:
+                throw new Exception($"ERROR: Operador {op} invalido en Comparacion.");
+        }
+
+    }
+
+
     //       -----------> TIPO DE DATOS <-----------
     public override ValueWrapper VisitInt(LanguageParser.IntContext context)
     {

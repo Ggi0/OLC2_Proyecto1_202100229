@@ -299,6 +299,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitInt([NotNull] LanguageParser.IntContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>Comparation</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterComparation([NotNull] LanguageParser.ComparationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Comparation</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitComparation([NotNull] LanguageParser.ComparationContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="LanguageParser.tiposD"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
