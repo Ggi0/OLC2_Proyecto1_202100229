@@ -390,15 +390,17 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     public override ValueWrapper VisitNegateU(LanguageParser.NegateUContext context)
     {
         ValueWrapper value = Visit(context.expr());
-        return value switch
+
+        switch (value)
         {
-            IntValue i => new IntValue(-i.Value),
-            _ => throw new Exception("Invalid operation")
-        };
+            case IntValue i:
+                return new IntValue(-i.Value);
+            case FloatValue i:
+                return new FloatValue(-i.Value);
+            default:
+                throw new Exception($"ERROR: Negacion unitaria invalida para el valor de tipo: {value.GetType}");
+        }
     }
-
-
-
 
 
     //       -----------> TIPO DE DATOS <-----------
