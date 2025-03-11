@@ -231,12 +231,12 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     public override ValueWrapper VisitMulDiv(LanguageParser.MulDivContext context)
     {
         Console.WriteLine("---> multiplicacion - division");
-        
+
         ValueWrapper left = Visit(context.expr(0));
         ValueWrapper right = Visit(context.expr(1));
         
         var op = context.op.Text;
-        Console.WriteLine("---> operador: "+op);
+        Console.WriteLine("---> operador: "+ op);
 
         switch (op)
         {
@@ -273,7 +273,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         }
                         return new IntValue(l.Value / r.Value);
 
-                    case (IntValue l, FloatValue r): // int * float = float
+                    case (IntValue l, FloatValue r): // int / float = float
                         Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} / valor der: {r.Value} - {r.GetType()}");
                         if (r.Value == 0.0f){
                             throw new Exception($"ERROR: Division indefinida el denominador {right} no puede ser 0.");
@@ -307,17 +307,69 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     // Suma y resta --> VisitAddSub
     public override ValueWrapper VisitAddSub(LanguageParser.AddSubContext context)
     {
-        Console.WriteLine("--> suma - resta");
+        Console.WriteLine("---> suma - resta");
+
         ValueWrapper left = Visit(context.expr(0));
         ValueWrapper right = Visit(context.expr(1));
+        
         var op = context.op.Text;
+        Console.WriteLine("---> operador: "+ op);
 
-        return (left, right, op) switch
+        switch (op)
         {
-            (IntValue l, IntValue r, "+") => new IntValue(l.Value + r.Value),
-            (IntValue l, IntValue r, "-") => new IntValue(l.Value - r.Value),
-            _ => throw new Exception("ERROR: Operacion Invalida")
-        };
+            case "+":
+                switch (left, right)
+                {
+                    case (IntValue l, IntValue r): // int + int = int
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} + valor der: {r.Value} - {r.GetType()}");
+                        return new IntValue(l.Value + r.Value);
+
+                    case (IntValue l, FloatValue r): // int + float = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} + valor der: {r.Value} - {r.GetType()}");
+                        return new FloatValue(l.Value + r.Value);
+
+                    case (FloatValue l, FloatValue r): // float + float = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} + valor der: {r.Value} - {r.GetType()}");
+                        return new FloatValue(l.Value + r.Value);
+
+                    case (FloatValue l, IntValue r): // float + int = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} + valor der: {r.Value} - {r.GetType()}");
+                        return new FloatValue(l.Value + r.Value);
+
+                    case (StringValue l, StringValue r): // string + string = string
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} + valor der: {r.Value} - {r.GetType()}");
+                        return new StringValue(l.Value + r.Value);
+
+                    default:
+                        throw new Exception($"ERROR: Suma invalida entre los tipos {left.GetType()} + {right.GetType()} ");
+                }
+
+            case "-":
+                switch (left, right)
+                {
+                    case (IntValue l, IntValue r): // int - int = int
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} - valor der: {r.Value} - {r.GetType()}");
+                        return new IntValue(l.Value - r.Value);
+
+                    case (IntValue l, FloatValue r): // int * float = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} - valor der: {r.Value} - {r.GetType()}");
+                        return new FloatValue(l.Value - r.Value);
+
+                    case (FloatValue l, FloatValue r): // float - float = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} - valor der: {r.Value} - {r.GetType()}");
+                        return new FloatValue(l.Value - r.Value);
+
+                    case (FloatValue l, IntValue r): // float - int = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} - valor der: {r.Value} - {r.GetType()}");
+                        return new FloatValue(l.Value - r.Value);
+
+                    default:
+                        throw new Exception($"ERROR: Resta invalida entre los tipos {left.GetType()} - {right.GetType()} ");
+                }
+
+            default:
+                throw new Exception($"ERROR: Operador {op} valido.");
+        }
     }
 
 
