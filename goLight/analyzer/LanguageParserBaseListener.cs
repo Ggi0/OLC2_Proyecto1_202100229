@@ -145,6 +145,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBloque([NotNull] LanguageParser.BloqueContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>Or</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOr([NotNull] LanguageParser.OrContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Or</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOr([NotNull] LanguageParser.OrContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>MulDiv</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -298,6 +312,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitRelacionales([NotNull] LanguageParser.RelacionalesContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>And</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAnd([NotNull] LanguageParser.AndContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>And</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAnd([NotNull] LanguageParser.AndContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>Rune</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.

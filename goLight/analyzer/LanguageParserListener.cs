@@ -124,6 +124,18 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitBloque([NotNull] LanguageParser.BloqueContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>Or</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOr([NotNull] LanguageParser.OrContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Or</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOr([NotNull] LanguageParser.OrContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>MulDiv</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>
@@ -255,6 +267,18 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitRelacionales([NotNull] LanguageParser.RelacionalesContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>And</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAnd([NotNull] LanguageParser.AndContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>And</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAnd([NotNull] LanguageParser.AndContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>Rune</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.

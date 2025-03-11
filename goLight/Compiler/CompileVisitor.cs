@@ -386,20 +386,41 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     }
 
 
+
     // Negación unitaria 
     public override ValueWrapper VisitNegateU(LanguageParser.NegateUContext context)
     {
         ValueWrapper value = Visit(context.expr());
+        var op = context.op.Text;
+        Console.WriteLine("---> operador: " + op);
 
-        switch (value)
+        switch (op)
         {
-            case IntValue i:
-                return new IntValue(-i.Value);
-            case FloatValue i:
-                return new FloatValue(-i.Value);
+            case "-":
+                switch (value)
+                {
+                    case IntValue i:
+                        return new IntValue(-i.Value);
+                    case FloatValue i:
+                        return new FloatValue(-i.Value);
+                    default:
+                        throw new Exception($"ERROR: Negacion unitaria invalida para el valor de tipo: {value.GetType}");
+                }
+
+            case "!":
+                switch (value)
+                {
+                    case BoolValue i:
+                        return new BoolValue(!i.Value);
+
+                    default:
+                        throw new Exception($"ERROR: Operador logico NOT invalido para el valor de tipo: {value.GetType}");
+                }
             default:
-                throw new Exception($"ERROR: Negacion unitaria invalida para el valor de tipo: {value.GetType}");
+                throw new Exception($"ERROR: Operador {op} invalido en NEGACION.");
         }
+
+
     }
 
 
@@ -533,7 +554,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value > r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Relacion MAYOR QUE invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                        throw new Exception($"ERROR: Relacion MAYOR QUE invalida entre los tipos {left.GetType()} > {right.GetType()} ");
                 }
             
             case ">=":
@@ -560,7 +581,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value >= r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Relacion MAYOR O IGUAL invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                        throw new Exception($"ERROR: Relacion MAYOR O IGUAL invalida entre los tipos {left.GetType()} >= {right.GetType()} ");
                 }
 
             case "<":
@@ -587,7 +608,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value < r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Relacion MENOR QUE invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                        throw new Exception($"ERROR: Relacion MENOR QUE invalida entre los tipos {left.GetType()} < {right.GetType()} ");
                 }
             
             case "<=":
@@ -614,11 +635,53 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value <= r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Relacion MENOR O IGUAL invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                        throw new Exception($"ERROR: Relacion MENOR O IGUAL invalida entre los tipos {left.GetType()} <= {right.GetType()} ");
                 }
             default:
                 throw new Exception($"ERROR: Operador {op} invalido en Comparacion.");
         }
+    }
+
+
+
+    //       -----------> OPERACIONES logicas <-----------
+    // ---> And
+    public override ValueWrapper VisitAnd(LanguageParser.AndContext context)
+    {
+        Console.WriteLine("---> AND ");
+
+        ValueWrapper left = Visit(context.expr(0));
+        ValueWrapper right = Visit(context.expr(1));
+
+        switch (left, right)
+        {
+            case (BoolValue l, BoolValue r): // int && int = bool
+                Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} && valor der: {r.Value} - {r.GetType()}");
+                return new BoolValue(l.Value && r.Value);
+
+            default:
+                throw new Exception($"ERROR: Operador logico AND invalido entre los tipos {left.GetType()} && {right.GetType()} ");
+        }
+    }
+
+    // ---> OR
+    public override ValueWrapper VisitOr(LanguageParser.OrContext context)
+    {
+        Console.WriteLine("---> OR ");
+
+        ValueWrapper left = Visit(context.expr(0));
+        ValueWrapper right = Visit(context.expr(1));
+
+        switch (left, right)
+        {
+            case (BoolValue l, BoolValue r): // int || int = bool
+                Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} || valor der: {r.Value} - {r.GetType()}");
+                return new BoolValue(l.Value || r.Value);
+
+            default:
+                throw new Exception($"ERROR: Operador logico OR invalido entre los tipos {left.GetType()} || {right.GetType()} ");
+        }
+
     }
 
     //       -----------> TIPO DE DATOS <-----------

@@ -20,19 +20,21 @@ statement: expr SEMICOLON      # ExprStmt
 
 
 expr:
-    MENOS expr                             # NegateU
-    | expr op=(MULTI | DIV | MODULO) expr  # MulDiv
-    | expr op=(MAS | MENOS) expr  # AddSub
-    | expr op=(MAYOR | MAYIGUAL | MENOR | MENIGUAL) expr     # Relacionales
-    | expr op=(EQUALS | DIFF) expr     # Comparation
-    | INT                         # Int
-    | FLOAT                       # Float
-    | STRING                      # String
-    | BOOL                        # Bool
-    | RUNE                        # Rune
-    | ID IGUAL expr               # AssignVar
-    | ID                          # Identifier
-    | LPAREN expr RPAREN          # Parens
+    op=(MENOS | NOT) expr                                # NegateU
+    | expr op=(MULTI | DIV | MODULO) expr                # MulDiv
+    | expr op=(MAS | MENOS) expr                         # AddSub
+    | expr op=(MAYOR | MAYIGUAL | MENOR | MENIGUAL) expr # Relacionales
+    | expr op=(EQUALS | DIFF) expr                       # Comparation
+    | expr AND expr                                      # And
+    | expr OR expr                                       # Or
+    | INT                                                # Int
+    | FLOAT                                              # Float
+    | STRING                                             # String
+    | BOOL                                               # Bool
+    | RUNE                                               # Rune
+    | ID IGUAL expr                                      # AssignVar
+    | ID                                                 # Identifier
+    | LPAREN expr RPAREN                                 # Parens
 ;
 
 tiposD: T_INT

@@ -87,6 +87,13 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitBloque([NotNull] LanguageParser.BloqueContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>Or</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOr([NotNull] LanguageParser.OrContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>MulDiv</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>
@@ -163,6 +170,13 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitRelacionales([NotNull] LanguageParser.RelacionalesContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>And</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAnd([NotNull] LanguageParser.AndContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>Rune</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
