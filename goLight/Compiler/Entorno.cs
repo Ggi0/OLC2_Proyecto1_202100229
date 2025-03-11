@@ -35,7 +35,7 @@ public class Entorno{
         }
     }
 
-    public ValueWrapper AsignarVar(string id, ValueWrapper valorNuevo)
+    public ValueWrapper AsignarVar(string id, ValueWrapper valorNuevo, string op)
     {
         // Buscar la variable en el entorno actual
         if (variables.ContainsKey(id))
@@ -45,14 +45,46 @@ public class Entorno{
             // Validar si el tipo coincide o si es una conversión int -> float64
             if (TiposCompatibles(valorActual, valorNuevo))
             {
+
                 // Si es una conversión implícita de int a float64, convertirlo antes de asignarlo
                 if (valorActual is FloatValue && valorNuevo is IntValue intValue)
                 {
                     valorNuevo = new FloatValue(intValue.Value); // Convertir int a float64
                 }
 
-                variables[id] = valorNuevo; // Asignar el nuevo valor
+
+                switch (op)
+                {
+                    case "+=":
+                        if (valorActual is IntValue intActual && valorNuevo is IntValue intNuevo)
+                            variables[id] = new IntValue(intActual.Value + intNuevo.Value);
+                        else if (valorActual is FloatValue floatActual && valorNuevo is FloatValue floatNuevo)
+                            variables[id] = new FloatValue(floatActual.Value + floatNuevo.Value);
+                        else if (valorActual is StringValue strActual && valorNuevo is StringValue strNuevo)
+                            variables[id] = new StringValue(strActual.Value + strNuevo.Value);
+                        else
+                            throw new Exception($"ERROR: Operación `+=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.");
+                        break;
+
+                    case "-=":
+                        if (valorActual is IntValue intActualSub && valorNuevo is IntValue intNuevoSub)
+                            variables[id] = new IntValue(intActualSub.Value - intNuevoSub.Value);
+                        else if (valorActual is FloatValue floatActualSub && valorNuevo is FloatValue floatNuevoSub)
+                            variables[id] = new FloatValue(floatActualSub.Value - floatNuevoSub.Value);
+                        else
+                            throw new Exception($"ERROR: Operación `-=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.");
+                        break;
+
+                    case "=":
+                        variables[id] = valorNuevo;
+                        break;
+
+                    default:
+                        throw new Exception($"ERROR: Símbolo de asignación no reconocido `{op}`.");
+                }
+
                 return valorNuevo;
+
             }
             else
             {
@@ -63,7 +95,7 @@ public class Entorno{
         // Si no está en el entorno actual, buscar en el entorno padre
         if (parent != null)
         {
-            return parent.AsignarVar(id, valorNuevo);
+            return parent.AsignarVar(id, valorNuevo, op);
         }
 
         throw new Exception($"ERROR: (asig) Variable {id} no existe.");

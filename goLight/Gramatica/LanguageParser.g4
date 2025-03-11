@@ -32,7 +32,7 @@ expr:
     | STRING                                             # String
     | BOOL                                               # Bool
     | RUNE                                               # Rune
-    | ID IGUAL expr                                      # AssignVar
+    | ID op=(IGUAL | ASIGSUM | ASIGMIN) expr             # AssignVar
     | ID                                                 # Identifier
     | LPAREN expr RPAREN                                 # Parens
 ;

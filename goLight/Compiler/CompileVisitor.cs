@@ -166,8 +166,12 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         // retornara lo asignado
         string id = context.ID().GetText(); // obtener nombre de la variable
         Console.WriteLine(context.expr());
-        ValueWrapper value = Visit(context.expr());
-        return entornoActual.AsignarVar(id, value);
+        ValueWrapper value = Visit(context.expr()); // obtener el valor de la variable
+       
+        var op = context.op.Text;
+        Console.WriteLine("---> operador: "+ op);
+
+        return entornoActual.AsignarVar(id, value, op);
     }
 
 
@@ -684,6 +688,10 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
     }
 
+    
+    
+    
+    
     //       -----------> TIPO DE DATOS <-----------
     public override ValueWrapper VisitInt(LanguageParser.IntContext context)
     {
@@ -728,6 +736,9 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     }
 
 
+    
+    
+    
     // Función para procesar SECUENCIAS DE ESCAPE en cadenas
     private string ProcessEscapeSequences(string text)
     {
