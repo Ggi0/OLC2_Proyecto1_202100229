@@ -29,6 +29,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     {
         //context.dcl(); --> todas las declaraciones almacenadas en ese arreglo `program: dcl*;` de la gramatica
         foreach (var linea in context.dcl()){
+            Console.WriteLine("\n\n ---------------------------------------------- \n\n");
             Visit(linea);
         }
 
@@ -63,12 +64,16 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         var <identificador> <Tipo> = <Expresión>
         VAR ID tiposD IGUAL expr SEMICOLON
-    */ 
+    */
     public override ValueWrapper VisitVarDcl1(LanguageParser.VarDcl1Context context)
     {
+        Console.WriteLine("\n--> Asignación c1");
         string id = context.ID().GetText(); // Obtiene el nombre de la variable (ID)
         string tipoVar = context.tiposD().GetText(); // Tipo de la variable en string
+        //Console.WriteLine("\n Antes de visitar el contexto del valor");
         ValueWrapper value = Visit(context.expr()); // Visita la expresión y obtiene su valor
+        //Console.WriteLine("\n Despues de visitar el contexto del valor");
+
 
         // Determinamos el tipo real del valor
         string tipoValor = value switch
@@ -81,21 +86,23 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             _ => throw new Exception("ERROR: Tipo desconocido")
         };
 
-        if (tipoVar == "float64" && tipoValor == "int"){
-            // convertir el int a float64
-            string excepcionFloat = context.expr().GetText();
-            ValueWrapper valorConvertido = new FloatValue( float.Parse(excepcionFloat));
-            entornoActual.DeclaracionVar(id, valorConvertido); 
-            return defaultValue;
+        //Console.WriteLine($" \t asignacion --> id: {id} tipo variable {tipoVar} --> valor: {value} valor tipo: {value.GetType()} tipoValor {tipoValor}<--");
+
+        // Si la variable es float64 y el valor es int, hacemos conversión implícita
+        if (tipoVar == "float64" && value is IntValue intValue)
+        {
+            value = new FloatValue(intValue.Value); // Convertir int a float64
+            //Console.WriteLine($" \t asignacion --> id: {id} --> valor convertido: {value} <--");
         }
 
         // Validamos que los tipos coincidan
-        if (tipoVar != tipoValor)
+        if (tipoVar != tipoValor && !(tipoVar == "float64" && tipoValor == "int"))
         {
             throw new Exception($"ERROR: No se puede asignar un valor de tipo {tipoValor} a una variable de tipo {tipoVar}.");
         }
 
         // Si es válido, guardamos la variable en el entorno
+        Console.WriteLine($" \t asignacion --> id: {id} --> valor: {value} --> tipo: {value.GetType()} <--");
         entornoActual.DeclaracionVar(id, value);
 
         return defaultValue; // una declaración no regresa ningun valor
@@ -158,6 +165,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     {
         // retornara lo asignado
         string id = context.ID().GetText(); // obtener nombre de la variable
+        Console.WriteLine(context.expr());
         ValueWrapper value = Visit(context.expr());
         return entornoActual.AsignarVar(id, value);
     }
@@ -190,11 +198,12 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     // VisitPrint ---> publica ya que se accedera desde el controlador
     public override ValueWrapper VisitPrintStmt( LanguageParser.PrintStmtContext context)
     {
-        Console.WriteLine("Desde el print1: " + context.expr().GetText());
-        Console.WriteLine("Desde el print1 (tipo) : " + context.expr().GetText().GetType());
+        Console.WriteLine("\n--> Println");
+        //Console.WriteLine("Desde el print1: " + context.expr().GetText());
+        //Console.WriteLine("Desde el print1 (tipo) : " + context.expr().GetText().GetType());
         ValueWrapper value = Visit(context.expr());
         Console.WriteLine("Desde el print2: "+ value);
-        Console.WriteLine("Desde el print2 (tipo): "+ value.GetType());
+        //Console.WriteLine("Desde el print2 (tipo): "+ value.GetType());
         // output += value + "\n";
         
         output += value switch
@@ -205,7 +214,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             BoolValue b => b.Value.ToString(),
             RuneValue r => Convert.ToByte(r.Value).ToString(),
             VoidValue v => "void",
-            _ => throw new Exception("Invalid value")
+            _ => throw new Exception("Error: tipo de valor no valido")
         };
         output += "\n";
         //Console.WriteLine("Desde el print2: "+ value.GetType());
@@ -218,20 +227,80 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
 
     //       -----------> OPERACIONES ARITMETICAS <-----------
-    // Mult y division --> VisitMulDiv
+    // Multiplicacion y division 
     public override ValueWrapper VisitMulDiv(LanguageParser.MulDivContext context)
     {
-        Console.WriteLine("--> multiplicacion - division");
+        Console.WriteLine("---> multiplicacion - division");
+        
         ValueWrapper left = Visit(context.expr(0));
         ValueWrapper right = Visit(context.expr(1));
+        
         var op = context.op.Text;
+        Console.WriteLine("---> operador: "+op);
 
-        return (left, right, op) switch
+        switch (op)
         {
-            (IntValue l, IntValue r, "*") => new IntValue(l.Value * r.Value),
-            (IntValue l, IntValue r, "/") => new IntValue(l.Value / r.Value),
-            _ => throw new Exception("ERROR: Operacion Invalida")
-        };
+            case "*":
+                switch (left, right)
+                {
+                    case (IntValue l, IntValue r): // int * int = int
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} * valor der: {r.Value} - {r.GetType()}");
+                        return new IntValue(l.Value * r.Value);
+
+                    case (IntValue l, FloatValue r): // int * float = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} * valor der: {r.Value} - {r.GetType()}");
+                        return new FloatValue(l.Value * r.Value);
+
+                    case (FloatValue l, FloatValue r): // float * float = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} * valor der: {r.Value} - {r.GetType()}");
+                        return new FloatValue(l.Value * r.Value);
+
+                    case (FloatValue l, IntValue r): // float * int = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} * valor der: {r.Value} - {r.GetType()}");
+                        return new FloatValue(l.Value * r.Value);
+
+                    default:
+                        throw new Exception($"ERROR: Multiplicación invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                }
+
+            case "/":
+                switch (left, right)
+                {
+                    case (IntValue l, IntValue r): // int / int = int
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} / valor der: {r.Value} - {r.GetType()}");
+                        if (r.Value == 0){
+                            throw new Exception($"ERROR: Division indefinida el denominador {right} no puede ser 0.");
+                        }
+                        return new IntValue(l.Value / r.Value);
+
+                    case (IntValue l, FloatValue r): // int * float = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} / valor der: {r.Value} - {r.GetType()}");
+                        if (r.Value == 0.0f){
+                            throw new Exception($"ERROR: Division indefinida el denominador {right} no puede ser 0.");
+                        }
+                        return new FloatValue(l.Value / r.Value);
+
+                    case (FloatValue l, FloatValue r): // float / float = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} / valor der: {r.Value} - {r.GetType()}");
+                        if (r.Value == 0.0f){
+                            throw new Exception($"ERROR: Division indefinida el denominador {right} no puede ser 0.");
+                        }
+                        return new FloatValue(l.Value / r.Value);
+
+                    case (FloatValue l, IntValue r): // float / int = float
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} / valor der: {r.Value} - {r.GetType()}");
+                        if (r.Value == 0){
+                            throw new Exception($"ERROR: Division indefinida el denominador {right} no puede ser 0.");
+                        }
+                        return new FloatValue(l.Value / r.Value);
+
+                    default:
+                        throw new Exception($"ERROR: Division invalida entre los tipos {left.GetType()} / {right.GetType()} ");
+                }
+
+            default:
+                throw new Exception($"ERROR: Operador {op} valido.");
+        }
     }
 
 
@@ -286,7 +355,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
     public override ValueWrapper VisitString(LanguageParser.StringContext context)
     {
-        Console.WriteLine("Desde el valor: " + context.STRING().GetText());
+        //Console.WriteLine("Desde el valor: " + context.STRING().GetText());
         string text = context.STRING().GetText();
         text = text[1..^1]; // Remueve las comillas
 
