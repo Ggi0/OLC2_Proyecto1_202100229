@@ -227,7 +227,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
 
     //       -----------> OPERACIONES ARITMETICAS <-----------
-    // Multiplicacion y division 
+    // Multiplicacion / division / modulo
     public override ValueWrapper VisitMulDiv(LanguageParser.MulDivContext context)
     {
         Console.WriteLine("---> multiplicacion - division");
@@ -297,6 +297,19 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                     default:
                         throw new Exception($"ERROR: Division invalida entre los tipos {left.GetType()} / {right.GetType()} ");
                 }
+            case "%":
+                switch (left, right)
+                {
+                    case (IntValue l, IntValue r): // int % int = int
+                        Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} % valor der: {r.Value} - {r.GetType()}");
+                        if (r.Value == 0){
+                            throw new Exception($"ERROR: Modulo indefinido el denominador {right} no puede ser 0");
+                        }
+                        return new IntValue(l.Value % r.Value);
+
+                    default:
+                        throw new Exception($"ERROR: Modulo invalido entre los tipos {left.GetType()} % {right.GetType()} ");
+                }
 
             default:
                 throw new Exception($"ERROR: Operador {op} valido.");
@@ -304,7 +317,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     }
 
 
-    // Suma y resta --> VisitAddSub
+    // Suma y resta
     public override ValueWrapper VisitAddSub(LanguageParser.AddSubContext context)
     {
         Console.WriteLine("---> suma - resta");
@@ -373,7 +386,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     }
 
 
-    // Negación unitaria --> VisitNegateU
+    // Negación unitaria 
     public override ValueWrapper VisitNegateU(LanguageParser.NegateUContext context)
     {
         ValueWrapper value = Visit(context.expr());
@@ -432,7 +445,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     }
 
 
-    // Función para procesar secuencias de escape en cadenas
+    // Función para procesar SECUENCIAS DE ESCAPE en cadenas
     private string ProcessEscapeSequences(string text)
     {
         return text.Replace("\\\"", "\"")
@@ -442,7 +455,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                 .Replace("\\t", "\t");
     }
 
-    // Función para procesar secuencias de escape en caracteres (runes)
+    // Función para procesar SECUENCIAS DE ESCAPE en caracteres (runes)
     private char ProcessEscapeChar(string text)
     {
         return text switch

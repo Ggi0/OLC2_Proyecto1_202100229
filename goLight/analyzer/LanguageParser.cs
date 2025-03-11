@@ -644,6 +644,7 @@ public partial class LanguageParser : Parser {
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MULTI() { return GetToken(LanguageParser.MULTI, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DIV() { return GetToken(LanguageParser.DIV, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MODULO() { return GetToken(LanguageParser.MODULO, 0); }
 		public MulDivContext(ExprContext context) { CopyFrom(context); }
 		[System.Diagnostics.DebuggerNonUserCode]
 		public override void EnterRule(IParseTreeListener listener) {
@@ -957,7 +958,7 @@ public partial class LanguageParser : Parser {
 						State = 81;
 						((MulDivContext)_localctx).op = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
-						if ( !(_la==MULTI || _la==DIV) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 106496L) != 0)) ) {
 							((MulDivContext)_localctx).op = ErrorHandler.RecoverInline(this);
 						}
 						else {
@@ -1088,7 +1089,7 @@ public partial class LanguageParser : Parser {
 		1,3,1,3,1,3,1,3,1,3,1,3,1,3,5,3,55,8,3,10,3,12,3,58,9,3,1,3,3,3,61,8,3,
 		1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,79,
 		8,4,1,4,1,4,1,4,1,4,1,4,1,4,5,4,87,8,4,10,4,12,4,90,9,4,1,5,1,5,1,5,0,
-		1,8,6,0,2,4,6,8,10,0,3,2,0,13,13,15,15,1,0,11,12,1,0,38,42,104,0,15,1,
+		1,8,6,0,2,4,6,8,10,0,3,2,0,13,13,15,16,1,0,11,12,1,0,38,42,104,0,15,1,
 		0,0,0,2,20,1,0,0,0,4,39,1,0,0,0,6,60,1,0,0,0,8,78,1,0,0,0,10,91,1,0,0,
 		0,12,14,3,2,1,0,13,12,1,0,0,0,14,17,1,0,0,0,15,13,1,0,0,0,15,16,1,0,0,
 		0,16,1,1,0,0,0,17,15,1,0,0,0,18,21,3,4,2,0,19,21,3,6,3,0,20,18,1,0,0,0,

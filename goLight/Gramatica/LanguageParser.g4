@@ -21,7 +21,7 @@ statement: expr SEMICOLON      # ExprStmt
 
 expr:
     MENOS expr                    # NegateU
-    | expr op=(MULTI | DIV) expr  # MulDiv
+    | expr op=(MULTI | DIV | MODULO) expr  # MulDiv
     | expr op=(MAS | MENOS) expr  # AddSub
     | INT                         # Int
     | FLOAT                       # Float

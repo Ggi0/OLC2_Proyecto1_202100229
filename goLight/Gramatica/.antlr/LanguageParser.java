@@ -480,6 +480,7 @@ public class LanguageParser extends Parser {
 		}
 		public TerminalNode MULTI() { return getToken(LanguageParser.MULTI, 0); }
 		public TerminalNode DIV() { return getToken(LanguageParser.DIV, 0); }
+		public TerminalNode MODULO() { return getToken(LanguageParser.MODULO, 0); }
 		public MulDivContext(ExprContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
@@ -670,7 +671,7 @@ public class LanguageParser extends Parser {
 						setState(81);
 						((MulDivContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
-						if ( !(_la==MULTI || _la==DIV) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 106496L) != 0)) ) {
 							((MulDivContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
@@ -800,7 +801,7 @@ public class LanguageParser extends Parser {
 		"\u0003\u0004O\b\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
 		"\u0001\u0004\u0001\u0004\u0005\u0004W\b\u0004\n\u0004\f\u0004Z\t\u0004"+
 		"\u0001\u0005\u0001\u0005\u0001\u0005\u0000\u0001\b\u0006\u0000\u0002\u0004"+
-		"\u0006\b\n\u0000\u0003\u0002\u0000\r\r\u000f\u000f\u0001\u0000\u000b\f"+
+		"\u0006\b\n\u0000\u0003\u0002\u0000\r\r\u000f\u0010\u0001\u0000\u000b\f"+
 		"\u0001\u0000&*h\u0000\u000f\u0001\u0000\u0000\u0000\u0002\u0014\u0001"+
 		"\u0000\u0000\u0000\u0004\'\u0001\u0000\u0000\u0000\u0006<\u0001\u0000"+
 		"\u0000\u0000\bN\u0001\u0000\u0000\u0000\n[\u0001\u0000\u0000\u0000\f\u000e"+
