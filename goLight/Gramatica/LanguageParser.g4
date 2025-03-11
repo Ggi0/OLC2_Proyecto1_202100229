@@ -23,6 +23,7 @@ expr:
     MENOS expr                             # NegateU
     | expr op=(MULTI | DIV | MODULO) expr  # MulDiv
     | expr op=(MAS | MENOS) expr  # AddSub
+    | expr op=(MAYOR | MAYIGUAL | MENOR | MENIGUAL) expr     # Relacionales
     | expr op=(EQUALS | DIFF) expr     # Comparation
     | INT                         # Int
     | FLOAT                       # Float
