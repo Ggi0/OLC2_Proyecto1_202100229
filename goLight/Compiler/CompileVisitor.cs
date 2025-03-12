@@ -116,6 +116,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     */
     public override ValueWrapper VisitVarDcl2(LanguageParser.VarDcl2Context context)
     {
+        Console.WriteLine("\n--> Asignación c2");
         string id = context.ID().GetText(); // Obtiene el nombre de la variable (ID)
         string tipo = context.tiposD().GetText(); // Tipo de la variable en string
 
@@ -130,6 +131,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             _ => throw new Exception("ERROR: Tipo desconocido"),
         };
 
+        Console.WriteLine($" \t asignacion --> id: {id} --> valor: {value} --> tipo: {value.GetType()} <--");
         entornoActual.DeclaracionVar(id, value);
 
         return defaultValue; // una declaración no regresa ningun valor
@@ -143,9 +145,11 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     */
     public override ValueWrapper VisitVarDcl3( LanguageParser.VarDcl3Context context)
     {
+        Console.WriteLine("\n--> Asignación c3");
         string id = context.ID().GetText(); // Obtiene el nombre de la variable
         ValueWrapper value = Visit(context.expr()); // Visita la expresión y obtiene su valor
 
+        Console.WriteLine($" \t asignacion --> id: {id} --> valor: {value} --> tipo: {value.GetType()} <--");
         // Almacena la variable en el entorno
         entornoActual.DeclaracionVar(id, value); 
 
@@ -198,7 +202,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
 
 
-
+    //       -----------> PRINTLN <-----------    
     // VisitPrint ---> publica ya que se accedera desde el controlador
     public override ValueWrapper VisitPrintStmt( LanguageParser.PrintStmtContext context)
     {
@@ -206,7 +210,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         //Console.WriteLine("Desde el print1: " + context.expr().GetText());
         //Console.WriteLine("Desde el print1 (tipo) : " + context.expr().GetText().GetType());
         ValueWrapper value = Visit(context.expr());
-        Console.WriteLine("Desde el print2: "+ value);
+        Console.WriteLine("Desde el println: "+ value + "\n");
         //Console.WriteLine("Desde el print2 (tipo): "+ value.GetType());
         // output += value + "\n";
         
@@ -230,11 +234,44 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
 
 
+    //       -----------> SENTENCIAS DE CONTROL DE FLUJO <-----------
+    /*
+        ---> IF
+        
+    */
+    public override ValueWrapper VisitIfStatement( LanguageParser.IfStatementContext context)
+    {
+        Console.WriteLine("\t---> IF <---\n");
+        ValueWrapper condition = Visit(context.expr());
+
+        // Validar que la condición siempre sea BOOLEANA
+        if (condition is not BoolValue)
+        {
+            throw new Exception($"ERROR: la {condition} debe ser de tipo BOOLEANA" );
+        }
+
+        if ((condition as BoolValue).Value)
+        {
+            Console.WriteLine("-------> if (");
+            Visit(context.statement(0));
+            Console.WriteLine("------->    )");
+        }
+        else if (context.statement().Length > 1)
+        {
+            Console.WriteLine("-------> else - if (");
+            Visit(context.statement(1));
+            Console.WriteLine("------->           )");
+        }
+
+        return defaultValue;
+    }
+
+
     //       -----------> OPERACIONES ARITMETICAS <-----------
     // Multiplicacion / division / modulo
     public override ValueWrapper VisitMulDiv(LanguageParser.MulDivContext context)
     {
-        Console.WriteLine("---> multiplicacion - division");
+        Console.WriteLine("---> multiplicacion - division - modulo");
 
         ValueWrapper left = Visit(context.expr(0));
         ValueWrapper right = Visit(context.expr(1));
@@ -648,7 +685,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
 
 
-    //       -----------> OPERACIONES logicas <-----------
+    //       -----------> OPERACIONES LOGICAS <-----------
     // ---> And
     public override ValueWrapper VisitAnd(LanguageParser.AndContext context)
     {
@@ -736,9 +773,8 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     }
 
 
-    
-    
-    
+
+
     // Función para procesar SECUENCIAS DE ESCAPE en cadenas
     private string ProcessEscapeSequences(string text)
     {

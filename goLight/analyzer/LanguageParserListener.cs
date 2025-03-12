@@ -124,6 +124,18 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitBloque([NotNull] LanguageParser.BloqueContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>IfStatement</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIfStatement([NotNull] LanguageParser.IfStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IfStatement</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIfStatement([NotNull] LanguageParser.IfStatementContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Or</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>

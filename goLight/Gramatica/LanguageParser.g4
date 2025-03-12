@@ -13,9 +13,10 @@ varDcl: VAR ID tiposD IGUAL expr SEMICOLON # varDcl1
         | ID DCLIMPL expr SEMICOLON        # varDcl3
 ;
 
-statement: expr SEMICOLON      # ExprStmt
-         | FMT DOT PRINT LPAREN expr RPAREN SEMICOLON      # PrintStmt
-         | LBRACE dcl* RBRACE  # Bloque
+statement: expr (SEMICOLON)?                                        # ExprStmt
+         | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?            # PrintStmt
+         | LBRACE dcl* RBRACE                                       # Bloque
+         | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?  # IfStatement
 ;
 
 

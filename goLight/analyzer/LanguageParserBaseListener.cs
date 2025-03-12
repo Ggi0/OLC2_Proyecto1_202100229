@@ -145,6 +145,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBloque([NotNull] LanguageParser.BloqueContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>IfStatement</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfStatement([NotNull] LanguageParser.IfStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>IfStatement</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfStatement([NotNull] LanguageParser.IfStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Or</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>

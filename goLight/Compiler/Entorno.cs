@@ -53,37 +53,31 @@ public class Entorno{
                 }
 
 
-                switch (op)
+                // Determinar el nuevo valor basado en el operador
+                ValueWrapper nuevoValor = op switch
                 {
-                    case "+=":
-                        if (valorActual is IntValue intActual && valorNuevo is IntValue intNuevo)
-                            variables[id] = new IntValue(intActual.Value + intNuevo.Value);
-                        else if (valorActual is FloatValue floatActual && valorNuevo is FloatValue floatNuevo)
-                            variables[id] = new FloatValue(floatActual.Value + floatNuevo.Value);
-                        else if (valorActual is StringValue strActual && valorNuevo is StringValue strNuevo)
-                            variables[id] = new StringValue(strActual.Value + strNuevo.Value);
-                        else
-                            throw new Exception($"ERROR: Operación `+=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.");
-                        break;
+                    "+=" => (valorActual, valorNuevo) switch
+                    {   
+                        (IntValue intActual, IntValue intNuevo) => new IntValue(intActual.Value + intNuevo.Value),               // var (int) = var + nuevoValor(int)
+                        (FloatValue floatActual, FloatValue floatNuevo) => new FloatValue(floatActual.Value + floatNuevo.Value), // var (float) = var + nuevoValor(float)
+                        (StringValue strActual, StringValue strNuevo) => new StringValue(strActual.Value + strNuevo.Value),      // var (str) = var + nuevoValor(str)
+                        _ => throw new Exception($"ERROR: Operación `+=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.")
+                    },
 
-                    case "-=":
-                        if (valorActual is IntValue intActualSub && valorNuevo is IntValue intNuevoSub)
-                            variables[id] = new IntValue(intActualSub.Value - intNuevoSub.Value);
-                        else if (valorActual is FloatValue floatActualSub && valorNuevo is FloatValue floatNuevoSub)
-                            variables[id] = new FloatValue(floatActualSub.Value - floatNuevoSub.Value);
-                        else
-                            throw new Exception($"ERROR: Operación `-=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.");
-                        break;
+                    "-=" => (valorActual, valorNuevo) switch
+                    {   // var (float) = var - nuevoValor(float)
+                        (IntValue intActual, IntValue intNuevo) => new IntValue(intActual.Value - intNuevo.Value),               // var (int) = var - nuevoValor(int)
+                        (FloatValue floatActual, FloatValue floatNuevo) => new FloatValue(floatActual.Value - floatNuevo.Value), // var (float) = var - nuevoValor(float)
+                        _ => throw new Exception($"ERROR: Operación `-=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.")
+                    },
 
-                    case "=":
-                        variables[id] = valorNuevo;
-                        break;
+                    "=" => valorNuevo,
 
-                    default:
-                        throw new Exception($"ERROR: Símbolo de asignación no reconocido `{op}`.");
-                }
+                    _ => throw new Exception($"ERROR: Símbolo de asignación no reconocido `{op}`.")
+                };
 
-                return valorNuevo;
+                variables[id] = nuevoValor;
+                return nuevoValor;
 
             }
             else

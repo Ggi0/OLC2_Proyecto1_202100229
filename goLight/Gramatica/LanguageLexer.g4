@@ -45,6 +45,10 @@ FMT    : 'fmt' ;
 VAR    : 'var' ;
 DCLIMPL: ':=' ;
 
+// ---> sentencias de contro de flujo
+IF   : 'if'   ;
+ELSE : 'else' ;
+
 
 
 // --------- VALORES de datos ------------
