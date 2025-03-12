@@ -46,7 +46,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         Entorno entornoAnterior = entornoActual; // Guardar la referencia del entorno actual
         entornoActual = new Entorno(entornoAnterior); // el patre del nuevo entorno es el anterior
 
-        Console.WriteLine("---> nuevo entorno ");
+        Console.WriteLine("\n ---> nuevo Entorno <---");
 
         // ejecutar todas las instrucciones dentro del entorno
         foreach (var stmt in context.dcl()){
@@ -330,7 +330,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                 entornoActual = new Entorno(entornoAnterior); // el patre del nuevo entorno es el anterior
                 Console.WriteLine("--> entorno case");
 
-                Visit(context.dcl(i-1)); // no es dcl(0) ya que eso ejecutaria los valores del primer case sin embargo tiene que se el valor del actual Case
+                Visit(context.statement(i-1)); // no es dcl(0) ya que eso ejecutaria los valores del primer case sin embargo tiene que se el valor del actual Case
 
                 // ejecutar todas las instrucciones dentro del entorno
                 /*foreach (var stmt in context.dcl(i-1))
@@ -356,11 +356,44 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             Console.WriteLine("--> entorno default");
 
             // Ejecutar el default
-            Visit(context.dcl(context.expr().Length - 1)); // ¿por que no es solo .dcl(1)? -> si viene más de 1 case el valor del dcl del DEFAUL debe ser la longitud de la cantidad de case -1     
+            Visit(context.statement(context.expr().Length - 1)); // ¿por que no es solo .dcl(1)? -> si viene más de 1 case el valor del dcl del DEFAUL debe ser la longitud de la cantidad de case -1     
             // Restaurar el entorno anterior
         entornoActual = entornoAnterior;
         }
 
+
+        return defaultValue;
+    }
+
+
+
+
+
+    //       -----------> CICLOS <-----------
+    /*
+        --> for (while)
+        
+        for <condición> {
+            // Bloque de sentencias
+        }
+
+        condicion -> debe de ser booleana
+
+    */
+    public override ValueWrapper VisitWhileStmt(LanguageParser.WhileStmtContext context)
+    {
+        ValueWrapper condition = Visit(context.expr());
+
+        if (condition is not BoolValue)
+        {
+            throw new Exception("Invalid condition");
+        }
+
+        while ((condition as BoolValue).Value)
+        {
+            Visit(context.statement());
+            condition = Visit(context.expr());
+        }
 
         return defaultValue;
     }

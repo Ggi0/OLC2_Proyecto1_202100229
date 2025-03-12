@@ -52,6 +52,9 @@ SWITCH : 'switch'  ;
 CASE   : 'case'    ;
 DEFAUL : 'default' ;
 
+// ---> ciclos
+FOR : 'for';
+
 
 
 // --------- VALORES de datos ------------
