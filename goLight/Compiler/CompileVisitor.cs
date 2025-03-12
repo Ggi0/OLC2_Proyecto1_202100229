@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Linq.Expressions;
 using analyzer;
 using Antlr4.Runtime.Misc;
 
@@ -9,6 +10,9 @@ using Antlr4.Runtime.Misc;
     con:   Visit(context.expr())
     significa que se esta visitando el nodo hijo expr, 
     es decir, el nodo que representa la expresión dentro de otro nodo.
+
+     context.expr()        -> devuelve el nodo del árbol de sintaxis que representa la expresión condicional
+     Visit(context.expr()) -> ejecuta el método Visit en ese nodo, lo que significa que evaluará la expresión y devolverá su resultado.
 
 */
 public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> que valor devolver el hecho de recorrer el arbol 
@@ -29,7 +33,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     {
         //context.dcl(); --> todas las declaraciones almacenadas en ese arreglo `program: dcl*;` de la gramatica
         foreach (var linea in context.dcl()){
-            Console.WriteLine("\n\n ---------------------------------------------- \n\n");
+            Console.WriteLine("\n\n -------------------------------------------------------------- \n\n");
             Visit(linea);
         }
 
@@ -41,6 +45,8 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     {
         Entorno entornoAnterior = entornoActual; // Guardar la referencia del entorno actual
         entornoActual = new Entorno(entornoAnterior); // el patre del nuevo entorno es el anterior
+
+        Console.WriteLine("---> nuevo entorno ");
 
         // ejecutar todas las instrucciones dentro del entorno
         foreach (var stmt in context.dcl()){
@@ -173,7 +179,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         ValueWrapper value = Visit(context.expr()); // obtener el valor de la variable
        
         var op = context.op.Text;
-        Console.WriteLine("---> operador: "+ op);
+        Console.WriteLine("---> operador asig: "+ op);
 
         return entornoActual.AsignarVar(id, value, op);
     }
@@ -237,12 +243,24 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     //       -----------> SENTENCIAS DE CONTROL DE FLUJO <-----------
     /*
         ---> IF
+            La sentencia if-else permite ejecutar bloques de código dependiendo del resultado de unacondición. 
+
+            var condicion = true
+
+            if condicion {
+                Bloque de sentencias para el if
+            } else if condicion {
+                Bloque de sentencias para el else if
+            } else { 
+                Bloque de sentencias para el else
+            }
         
     */
     public override ValueWrapper VisitIfStatement( LanguageParser.IfStatementContext context)
     {
         Console.WriteLine("\t---> IF <---\n");
-        ValueWrapper condition = Visit(context.expr());
+
+        ValueWrapper condition = Visit(context.expr()); // estamos obteniendo la condición del if
 
         // Validar que la condición siempre sea BOOLEANA
         if (condition is not BoolValue)
@@ -265,6 +283,91 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         return defaultValue;
     }
+
+
+
+    /*
+        ---> SWITCH
+            La sentencia switch evalúa una expresión y ejecuta el bloque de declaraciones
+            correspondiente al primer case que coincida en VALOR y TIPO. 
+
+            SWITCH expr LBRACE (CASE expr COLON dcl*)+ (DEFAUL COLON dcl*)? RBRACE
+
+            switch <expresión> {                                          --> exprInput = Visit(context.expr(0))
+                case valor1:                                              --> caseValor = Visit(context.expr(1))
+                    // Declaraciones ejecutadas si <expresión> == valor1  --> Visit(context.dcl(0))
+
+                case valor2:                                              --> caseValor = Visit(context.expr(2))
+                    // Declaraciones ejecutadas si <expresión> == valor2  --> Visit(context.dcl(1))
+
+                case valor_n:                                              --> caseValor = Visit(context.expr(n))
+                    // Declaraciones ejecutadas si <expresión> == valor_n  --> Visit(context.dcl(n))
+
+                default:
+                    // Declaraciones ejecutadas si ningún caso coincide    --> Visit(context.dcl(n-1))
+            } 
+    */
+    public override ValueWrapper VisitSwitchStmt(LanguageParser.SwitchStmtContext context)
+    {
+        Console.WriteLine("\t---> SWITCH <---\n");
+        ValueWrapper exprInput = Visit(context.expr(0)); // obtener la expresion que se valuara en el switch
+        string exprTipo = exprInput.GetType().Name; // obtener el tipo de la expresion que se valua
+        
+        Console.WriteLine($"\t-> Expresion entrada  {exprInput} y tipo {exprTipo}");
+
+        bool matchValores = false; // Bandera para saber si los valores de entrada y el caso coinciden
+
+        // Recorrer los casos
+        for (int i = 1; i < context.expr().Length; i++){ // inicia en 1 ya que 0 es la expresion de entrada
+            
+            ValueWrapper caseValor = Visit(context.expr(i)); // obtener la expresion que se compara
+            string caseTipo = exprInput.GetType().Name; // obtener el tipo de la expresion que se compara
+
+            if (exprTipo == caseTipo && exprInput.Equals(caseValor)){
+                Console.WriteLine($"\t->Valor de entrada {exprInput} coincide con el caso {caseValor}");
+                
+                Entorno entornoAnterior = entornoActual; // Guardar la referencia del entorno actual
+                entornoActual = new Entorno(entornoAnterior); // el patre del nuevo entorno es el anterior
+                Console.WriteLine("--> entorno case");
+
+                Visit(context.dcl(i-1)); // no es dcl(0) ya que eso ejecutaria los valores del primer case sin embargo tiene que se el valor del actual Case
+
+                // ejecutar todas las instrucciones dentro del entorno
+                /*foreach (var stmt in context.dcl(i-1))
+                {
+                    Visit(stmt);
+                }*/
+
+                entornoActual = entornoAnterior; // regresar al entorno previo
+
+                return defaultValue; // salimos del ciclo
+            }
+
+        }
+
+        // Ejecutar Defaul
+        if (!matchValores && context.DEFAUL() != null){
+            Console.WriteLine("\t-> Ejecutando bloque default...");
+
+            // Crear un nuevo entorno para el default
+            Entorno entornoAnterior = entornoActual;
+            entornoActual = new Entorno(entornoAnterior);
+            
+            Console.WriteLine("--> entorno default");
+
+            // Ejecutar el default
+            Visit(context.dcl(context.expr().Length - 1)); // ¿por que no es solo .dcl(1)? -> si viene más de 1 case el valor del dcl del DEFAUL debe ser la longitud de la cantidad de case -1     
+            // Restaurar el entorno anterior
+        entornoActual = entornoAnterior;
+        }
+
+
+        return defaultValue;
+    }
+
+
+
+
 
 
     //       -----------> OPERACIONES ARITMETICAS <-----------

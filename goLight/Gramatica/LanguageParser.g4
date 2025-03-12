@@ -16,7 +16,8 @@ varDcl: VAR ID tiposD IGUAL expr SEMICOLON # varDcl1
 statement: expr (SEMICOLON)?                                        # ExprStmt
          | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?            # PrintStmt
          | LBRACE dcl* RBRACE                                       # Bloque
-         | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?  # IfStatement
+         | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?                # IfStatement
+         | SWITCH expr LBRACE (CASE expr COLON dcl*)+ (DEFAUL COLON dcl*)? RBRACE # SwitchStmt
 ;
 
 

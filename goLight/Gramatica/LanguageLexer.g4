@@ -46,8 +46,11 @@ VAR    : 'var' ;
 DCLIMPL: ':=' ;
 
 // ---> sentencias de contro de flujo
-IF   : 'if'   ;
-ELSE : 'else' ;
+IF     : 'if'      ;
+ELSE   : 'else'    ;
+SWITCH : 'switch'  ;
+CASE   : 'case'    ;
+DEFAUL : 'default' ;
 
 
 
