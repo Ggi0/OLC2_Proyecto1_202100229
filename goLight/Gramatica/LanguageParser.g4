@@ -17,8 +17,13 @@ statement: expr (SEMICOLON)?                                        # ExprStmt
          | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?            # PrintStmt
          | LBRACE dcl* RBRACE                                       # Bloque
          | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?                # IfStatement
-         | SWITCH expr LBRACE (CASE expr COLON statement)+ (DEFAUL COLON statement)? RBRACE # SwitchStmt
+         | SWITCH expr LBRACE (caseStmt)+ RBRACE # SwitchStmt
          | FOR LPAREN expr RPAREN statement # WhileStmt
+;
+
+// para el switch
+caseStmt: CASE expr COLON dcl*    # caseNormal
+          | DEFAUL COLON dcl*     # caseDefault
 ;
 
 

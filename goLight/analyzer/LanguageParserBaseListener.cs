@@ -187,6 +187,34 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitWhileStmt([NotNull] LanguageParser.WhileStmtContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>caseNormal</c>
+	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCaseNormal([NotNull] LanguageParser.CaseNormalContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>caseNormal</c>
+	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCaseNormal([NotNull] LanguageParser.CaseNormalContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>caseDefault</c>
+	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCaseDefault([NotNull] LanguageParser.CaseDefaultContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>caseDefault</c>
+	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCaseDefault([NotNull] LanguageParser.CaseDefaultContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Or</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>

@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using analyzer;
 using Antlr4.Runtime.Misc;
 
@@ -310,63 +311,114 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     public override ValueWrapper VisitSwitchStmt(LanguageParser.SwitchStmtContext context)
     {
         Console.WriteLine("\t---> SWITCH <---\n");
-        ValueWrapper exprInput = Visit(context.expr(0)); // obtener la expresion que se valuara en el switch
+
+        // Información de depuración
+        Console.WriteLine("---- Estructura del SwitchStmtContext ----");
+        //Console.WriteLine($"Número de expresiones: {context.expr().Length}");
+        //Console.WriteLine($"Número total de dcl: {context.dcl().Length}");
+            Console.WriteLine($"Número de casos: {context.caseStmt().Length}");
+
+        Console.WriteLine("---- ------------------------------- ----");
+
+        ValueWrapper exprInput = Visit(context.expr()); // obtener la expresion que se valuara en el switch
         string exprTipo = exprInput.GetType().Name; // obtener el tipo de la expresion que se valua
-        
+
         Console.WriteLine($"\t-> Expresion entrada  {exprInput} y tipo {exprTipo}");
 
-        bool matchValores = false; // Bandera para saber si los valores de entrada y el caso coinciden
+        bool matchEncontrado = false; // Bandera para saber si se encontró un caso coincidente
 
-        // Recorrer los casos
-        for (int i = 1; i < context.expr().Length; i++){ // inicia en 1 ya que 0 es la expresion de entrada
-            
-            ValueWrapper caseValor = Visit(context.expr(i)); // obtener la expresion que se compara
-            string caseTipo = exprInput.GetType().Name; // obtener el tipo de la expresion que se compara
+        // Recorrer todos los casos
+        foreach (var caseContext in context.caseStmt())
+        {
+            // Verificar si es un caso normal (tiene expresión para comparar)
+            if (caseContext is LanguageParser.CaseNormalContext caseNormal)
+            {
+                // Obtener el valor del caso a comparar
+                ValueWrapper caseValor = Visit(caseNormal.expr());
+                string caseTipo = caseValor.GetType().Name;
 
-            if (exprTipo == caseTipo && exprInput.Equals(caseValor)){
-                Console.WriteLine($"\t->Valor de entrada {exprInput} coincide con el caso {caseValor}");
-                
-                Entorno entornoAnterior = entornoActual; // Guardar la referencia del entorno actual
-                entornoActual = new Entorno(entornoAnterior); // el patre del nuevo entorno es el anterior
-                Console.WriteLine("--> entorno case");
-
-                Visit(context.statement(i-1)); // no es dcl(0) ya que eso ejecutaria los valores del primer case sin embargo tiene que se el valor del actual Case
-
-                // ejecutar todas las instrucciones dentro del entorno
-                /*foreach (var stmt in context.dcl(i-1))
+                // Comparar el valor y tipo de la expresión de entrada con el caso
+                if (exprTipo == caseTipo && exprInput.Equals(caseValor))
                 {
-                    Visit(stmt);
-                }*/
+                    Console.WriteLine($"\t->Valor de entrada {exprInput} coincide con el caso {caseValor}");
+                    matchEncontrado = true;
 
-                entornoActual = entornoAnterior; // regresar al entorno previo
+                    
 
-                return defaultValue; // salimos del ciclo
+                    // Ejecutar todas las declaraciones dentro del caso
+                    // Usamos VisitCaseNormal que procesará todas las declaraciones
+                    Visit(caseNormal);
+
+                    
+
+                    // Salir del switch (no hay "break" explícito en tu lenguaje)
+                    return defaultValue;
+                }
             }
-
         }
 
-        // Ejecutar Defaul
-        if (!matchValores && context.DEFAUL() != null){
-            Console.WriteLine("\t-> Ejecutando bloque default...");
+        // Si no se encontró coincidencia, buscar el caso default
+        if (!matchEncontrado)
+        {
+            foreach (var caseContext in context.caseStmt())
+            {
+                if (caseContext is LanguageParser.CaseDefaultContext caseDefault)
+                {
+                    Console.WriteLine("\t-> Ejecutando bloque default...");
 
-            // Crear un nuevo entorno para el default
-            Entorno entornoAnterior = entornoActual;
-            entornoActual = new Entorno(entornoAnterior);
-            
-            Console.WriteLine("--> entorno default");
+                    
 
-            // Ejecutar el default
-            Visit(context.statement(context.expr().Length - 1)); // ¿por que no es solo .dcl(1)? -> si viene más de 1 case el valor del dcl del DEFAUL debe ser la longitud de la cantidad de case -1     
-            // Restaurar el entorno anterior
-        entornoActual = entornoAnterior;
+                    // Ejecutar todas las declaraciones del default
+                    Visit(caseDefault);
+
+                   
+                    break;
+                }
+            }
         }
-
 
         return defaultValue;
     }
 
+    public override ValueWrapper VisitCaseNormal(LanguageParser.CaseNormalContext context)
+    {
+        Console.WriteLine("\t-> Ejecutando caso normal");
+        // Crear un nuevo entorno para este caso
+        Entorno entornoAnterior = entornoActual;
+        entornoActual = new Entorno(entornoAnterior);
+
+        // Ejecutar todas las declaraciones dentro del caso
+        foreach (var declaracion in context.dcl())
+        {
+            Visit(declaracion);
+        }
+
+        // Restaurar el entorno anterior
+        entornoActual = entornoAnterior;
+
+        return defaultValue;
+    }
+
+    public override ValueWrapper VisitCaseDefault(LanguageParser.CaseDefaultContext context)
+    {
+        Console.WriteLine("\t-> Ejecutando caso default");
+
+        // Crear un nuevo entorno para el default
+        Entorno entornoAnterior = entornoActual;
+        entornoActual = new Entorno(entornoAnterior);
 
 
+        // Ejecutar todas las declaraciones dentro del caso default
+        foreach (var declaracion in context.dcl())
+        {
+            Visit(declaracion);
+        }
+
+        // Restaurar el entorno anterior
+        entornoActual = entornoAnterior;
+
+        return defaultValue;
+    }
 
 
     //       -----------> CICLOS <-----------

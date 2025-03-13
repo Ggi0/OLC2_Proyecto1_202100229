@@ -160,6 +160,30 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitWhileStmt([NotNull] LanguageParser.WhileStmtContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>caseNormal</c>
+	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCaseNormal([NotNull] LanguageParser.CaseNormalContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>caseNormal</c>
+	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCaseNormal([NotNull] LanguageParser.CaseNormalContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>caseDefault</c>
+	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCaseDefault([NotNull] LanguageParser.CaseDefaultContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>caseDefault</c>
+	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCaseDefault([NotNull] LanguageParser.CaseDefaultContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Or</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>
