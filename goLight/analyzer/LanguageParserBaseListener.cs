@@ -411,6 +411,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitRune([NotNull] LanguageParser.RuneContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>UpdateVar</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterUpdateVar([NotNull] LanguageParser.UpdateVarContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>UpdateVar</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitUpdateVar([NotNull] LanguageParser.UpdateVarContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Comparation</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>

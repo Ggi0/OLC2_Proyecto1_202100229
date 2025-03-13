@@ -14,25 +14,30 @@ COLON     : ':' ;
 COMMA     : ',' ;
 
 // ---> Operadores aritmeticos
-MAS       : '+' ;
-MENOS     : '-' ;
-MULTI     : '*' ;
-POTENCIA  : '^' ;
-DIV       : '/' ;
-MODULO    : '%' ;
-ASIGSUM   : '+=';
-ASIGMIN   : '-=';
+MAS        : '+'  ;
+MENOS      : '-'  ;
+MULTI      : '*'  ;
+POTENCIA   : '^'  ;
+DIV        : '/'  ;
+MODULO     : '%'  ;
+
+ASIGSUM    : '+=' ;
+ASIGMIN    : '-=' ;
+INCREMENTO : '++' ;
+DECREMENTO : '--' ;
 
 // ---> Operadores comparacion
-IGUAL     : '=' ;
-EQUALS    : '==';
-DIFF      : '!=';
+IGUAL    : '='  ;
+EQUALS   : '==' ;
+DIFF     : '!=' ;
 
 // ---> Operadores relacionales
-MENOR     : '<' ;
-MENIGUAL  : '<=';
-MAYOR     : '>' ;
-MAYIGUAL  : '>=';
+MENOR    : '<'  ;
+MENIGUAL : '<=' ;
+MAYOR    : '>'  ;
+MAYIGUAL : '>=' ;
+
+
 
 // ---> Operadores logicos
 OR   : '||' ;

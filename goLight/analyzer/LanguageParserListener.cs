@@ -352,6 +352,18 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitRune([NotNull] LanguageParser.RuneContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>UpdateVar</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUpdateVar([NotNull] LanguageParser.UpdateVarContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>UpdateVar</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUpdateVar([NotNull] LanguageParser.UpdateVarContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Comparation</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>

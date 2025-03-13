@@ -13,12 +13,12 @@ varDcl: VAR ID tiposD IGUAL expr SEMICOLON # varDcl1
         | ID DCLIMPL expr SEMICOLON        # varDcl3
 ;
 
-statement: expr (SEMICOLON)?                                        # ExprStmt
-         | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?            # PrintStmt
-         | LBRACE dcl* RBRACE                                       # Bloque
-         | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?                # IfStatement
-         | SWITCH expr LBRACE (caseStmt)+ RBRACE # SwitchStmt
-         | FOR LPAREN expr RPAREN statement # WhileStmt
+statement: expr (SEMICOLON)?                                         # ExprStmt
+         | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?             # PrintStmt
+         | LBRACE dcl* RBRACE                                        # Bloque
+         | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?   # IfStatement
+         | SWITCH expr LBRACE (caseStmt)+ RBRACE                     # SwitchStmt
+         | FOR (LPAREN)? expr (RPAREN)? statement                    # WhileStmt
 ;
 
 // para el switch
@@ -31,7 +31,7 @@ expr:
     op=(MENOS | NOT) expr                                # NegateU
     | expr op=(MULTI | DIV | MODULO) expr                # MulDiv
     | expr op=(MAS | MENOS) expr                         # AddSub
-    | expr op=(MAYOR | MAYIGUAL | MENOR | MENIGUAL) expr # Relacionales
+    | expr op=(MAYOR | MAYIGUAL | MENOR | MENIGUAL) expr    # Relacionales
     | expr op=(EQUALS | DIFF) expr                       # Comparation
     | expr AND expr                                      # And
     | expr OR expr                                       # Or
@@ -40,7 +40,8 @@ expr:
     | STRING                                             # String
     | BOOL                                               # Bool
     | RUNE                                               # Rune
-    | ID op=(IGUAL | ASIGSUM | ASIGMIN) expr             # AssignVar
+    | ID op=(IGUAL | ASIGSUM | ASIGMIN) expr             # AssignVar 
+    | ID op=(INCREMENTO |DECREMENTO)                     # UpdateVar
     | ID                                                 # Identifier
     | LPAREN expr RPAREN                                 # Parens
 ;

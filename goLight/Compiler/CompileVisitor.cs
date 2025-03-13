@@ -181,6 +181,24 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
        
         var op = context.op.Text;
         Console.WriteLine("---> operador asig: "+ op);
+        
+        /*if (value.Equals(null) && (!op.Equals("++") || !op.Equals("--")))
+        {
+            Console.WriteLine("el valor es nulo");
+            throw new Exception($"ERROR: Para la asignacion {op} sea valida se le debe asignar un valor");
+        }*/
+
+        return entornoActual.AsignarVar(id, value, op);
+    }
+
+    public override ValueWrapper VisitUpdateVar(LanguageParser.UpdateVarContext context)
+    {
+        // retornara lo asignado
+        string id = context.ID().GetText(); // obtener nombre de la variable
+        ValueWrapper value = new IntValue(1); // obtener el valor de la variable
+       
+        var op = context.op.Text;
+        Console.WriteLine("---> op actualizador: "+ op);
 
         return entornoActual.AsignarVar(id, value, op);
     }
@@ -292,7 +310,13 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             La sentencia switch evalúa una expresión y ejecuta el bloque de declaraciones
             correspondiente al primer case que coincida en VALOR y TIPO. 
 
-            SWITCH expr LBRACE (CASE expr COLON dcl*)+ (DEFAUL COLON dcl*)? RBRACE
+            statement: ...
+                    | SWITCH expr LBRACE (caseStmt)+ RBRACE # SwitchStmt
+            ;
+
+            caseStmt: CASE expr COLON dcl*    # caseNormal
+                    | DEFAUL COLON dcl*     # caseDefault
+            ;
 
             switch <expresión> {                                          --> exprInput = Visit(context.expr(0))
                 case valor1:                                              --> caseValor = Visit(context.expr(1))
@@ -312,16 +336,15 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     {
         Console.WriteLine("\t---> SWITCH <---\n");
 
-        // Información de depuración
         Console.WriteLine("---- Estructura del SwitchStmtContext ----");
         //Console.WriteLine($"Número de expresiones: {context.expr().Length}");
         //Console.WriteLine($"Número total de dcl: {context.dcl().Length}");
-            Console.WriteLine($"Número de casos: {context.caseStmt().Length}");
+        Console.WriteLine($"Número de casos: {context.caseStmt().Length}");
 
         Console.WriteLine("---- ------------------------------- ----");
 
         ValueWrapper exprInput = Visit(context.expr()); // obtener la expresion que se valuara en el switch
-        string exprTipo = exprInput.GetType().Name; // obtener el tipo de la expresion que se valua
+        string exprTipo = exprInput.GetType().Name;     // obtener el tipo de la expresion que se valua
 
         Console.WriteLine($"\t-> Expresion entrada  {exprInput} y tipo {exprTipo}");
 
@@ -340,16 +363,12 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                 // Comparar el valor y tipo de la expresión de entrada con el caso
                 if (exprTipo == caseTipo && exprInput.Equals(caseValor))
                 {
-                    Console.WriteLine($"\t->Valor de entrada {exprInput} coincide con el caso {caseValor}");
+                    Console.WriteLine($"\t -->Valor de entrada {exprInput} coincide con el caso {caseValor}");
                     matchEncontrado = true;
-
-                    
 
                     // Ejecutar todas las declaraciones dentro del caso
                     // Usamos VisitCaseNormal que procesará todas las declaraciones
                     Visit(caseNormal);
-
-                    
 
                     // Salir del switch (no hay "break" explícito en tu lenguaje)
                     return defaultValue;
@@ -366,12 +385,9 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                 {
                     Console.WriteLine("\t-> Ejecutando bloque default...");
 
-                    
-
                     // Ejecutar todas las declaraciones del default
                     Visit(caseDefault);
 
-                   
                     break;
                 }
             }
@@ -382,7 +398,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
     public override ValueWrapper VisitCaseNormal(LanguageParser.CaseNormalContext context)
     {
-        Console.WriteLine("\t-> Ejecutando caso normal");
+        Console.WriteLine("\t-> Ejecutando CASE normal --> nuevo entorno");
         // Crear un nuevo entorno para este caso
         Entorno entornoAnterior = entornoActual;
         entornoActual = new Entorno(entornoAnterior);
@@ -401,7 +417,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
     public override ValueWrapper VisitCaseDefault(LanguageParser.CaseDefaultContext context)
     {
-        Console.WriteLine("\t-> Ejecutando caso default");
+        Console.WriteLine("\t-> Ejecutando caso DEFAULT --> nuevo entorno");
 
         // Crear un nuevo entorno para el default
         Entorno entornoAnterior = entornoActual;
@@ -434,17 +450,18 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     */
     public override ValueWrapper VisitWhileStmt(LanguageParser.WhileStmtContext context)
     {
+        Console.WriteLine("\t---> FOR (while) <---\n");
         ValueWrapper condition = Visit(context.expr());
 
         if (condition is not BoolValue)
         {
-            throw new Exception("Invalid condition");
+            throw new Exception("ERROR: la condicion del For debe de ser booleana");
         }
 
         while ((condition as BoolValue).Value)
         {
             Visit(context.statement());
-            condition = Visit(context.expr());
+            condition = Visit(context.expr());// valuar la condicion por cada iteracion
         }
 
         return defaultValue;

@@ -220,6 +220,13 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitRune([NotNull] LanguageParser.RuneContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>UpdateVar</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUpdateVar([NotNull] LanguageParser.UpdateVarContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>Comparation</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>

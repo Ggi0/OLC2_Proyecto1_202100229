@@ -71,6 +71,17 @@ public class Entorno{
                         _ => throw new Exception($"ERROR: Operación `-=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.")
                     },
 
+                    "++" => valorActual switch
+                    {   
+                        IntValue intActual => new IntValue(intActual.Value + 1),               // var (int) = var + 1
+                        _ => throw new Exception($"ERROR: Operación `++` no soportada valores tipo {valorActual.GetType().Name}")
+                    },
+                    "--" => valorActual switch
+                    { 
+                    IntValue intActual => new IntValue(intActual.Value - 1),               // var (int) = var + 1
+                        _ => throw new Exception($"ERROR: Operación `--` no soportada valores tipo {valorActual.GetType().Name}")
+                    },
+
                     "=" => valorNuevo,
 
                     _ => throw new Exception($"ERROR: Símbolo de asignación no reconocido `{op}`.")
