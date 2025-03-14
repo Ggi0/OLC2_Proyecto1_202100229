@@ -69,12 +69,19 @@ namespace api.Controllers
             */
             // podemos recorrer el arbol con lisener o con visitor
 
-            // Visitor
+            try {
+                // Visitor
             var visitor = new CompilerVisitor();
             visitor.Visit(tree);
             Console.WriteLine("Compile");
 
             return Ok(new{result = visitor.output});
+
+            }catch(SemanticError ex){
+                return BadRequest(new {error = ex.Message});
+            }
+
+            
 
             
         }

@@ -90,7 +90,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             StringValue => "string",
             BoolValue => "bool",
             RuneValue => "rune",
-            _ => throw new Exception("ERROR: Tipo desconocido")
+            _ => throw new SemanticError($"ERROR: Tipo del valor {value} es desconocido", context.Start)
         };
 
         //Console.WriteLine($" \t asignacion --> id: {id} tipo variable {tipoVar} --> valor: {value} valor tipo: {value.GetType()} tipoValor {tipoValor}<--");
@@ -105,12 +105,12 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         // Validamos que los tipos coincidan
         if (tipoVar != tipoValor && !(tipoVar == "float64" && tipoValor == "int"))
         {
-            throw new Exception($"ERROR: No se puede asignar un valor de tipo {tipoValor} a una variable de tipo {tipoVar}.");
+            throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {tipoValor} a una variable de tipo {tipoVar}.", context.Start);
         }
 
         // Si es válido, guardamos la variable en el entorno
         Console.WriteLine($" \t asignacion --> id: {id} --> valor: {value} --> tipo: {value.GetType()} <--");
-        entornoActual.DeclaracionVar(id, value);
+        entornoActual.DeclaracionVar(id, value, context.Start);
 
         return defaultValue; // una declaración no regresa ningun valor
     }
@@ -135,11 +135,11 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             "string" => new StringValue(""),
             "bool" => new BoolValue(false),
             "rune" => new RuneValue('\0'),
-            _ => throw new Exception("ERROR: Tipo desconocido"),
+            _ => throw new SemanticError($"ERROR: el tipo: {tipo} es desconocido", context.Start),
         };
 
         Console.WriteLine($" \t asignacion --> id: {id} --> valor: {value} --> tipo: {value.GetType()} <--");
-        entornoActual.DeclaracionVar(id, value);
+        entornoActual.DeclaracionVar(id, value, context.Start);
 
         return defaultValue; // una declaración no regresa ningun valor
     }
@@ -158,7 +158,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         Console.WriteLine($" \t asignacion --> id: {id} --> valor: {value} --> tipo: {value.GetType()} <--");
         // Almacena la variable en el entorno
-        entornoActual.DeclaracionVar(id, value); 
+        entornoActual.DeclaracionVar(id, value, context.Start); 
 
         return defaultValue; // una declaración no regresa ningun valor
     }
@@ -188,7 +188,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             throw new Exception($"ERROR: Para la asignacion {op} sea valida se le debe asignar un valor");
         }*/
 
-        return entornoActual.AsignarVar(id, value, op);
+        return entornoActual.AsignarVar(id, value, op, context.Start);
     }
 
     public override ValueWrapper VisitUpdateVar(LanguageParser.UpdateVarContext context)
@@ -200,7 +200,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         var op = context.op.Text;
         Console.WriteLine("---> op actualizador: "+ op);
 
-        return entornoActual.AsignarVar(id, value, op);
+        return entornoActual.AsignarVar(id, value, op, context.Start);
     }
 
 
@@ -214,7 +214,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         string id = context.ID().GetText();
         
         // ENTORNOS
-        return entornoActual.GetVariable(id);
+        return entornoActual.GetVariable(id, context.Start);
     }
 
     // PARENTESIS --> VisitParens
@@ -247,7 +247,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             BoolValue b => b.Value.ToString(),
             RuneValue r => Convert.ToByte(r.Value).ToString(),
             VoidValue v => "void",
-            _ => throw new Exception("Error: tipo de valor no valido")
+            _ => throw new SemanticError("ERROR: tipo de valor no valido", context.Start)
         };
         output += "\n";
         //Console.WriteLine("Desde el print2: "+ value.GetType());
@@ -284,7 +284,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         // Validar que la condición siempre sea BOOLEANA
         if (condition is not BoolValue)
         {
-            throw new Exception($"ERROR: la {condition} debe ser de tipo BOOLEANA" );
+            throw new SemanticError($"ERROR: la {condition} debe ser de tipo BOOLEANA", context.Start);
         }
 
         if ((condition as BoolValue).Value)
@@ -455,7 +455,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         if (condition is not BoolValue)
         {
-            throw new Exception("ERROR: la condicion del For debe de ser booleana");
+            throw new SemanticError($"ERROR: la condicion {condition} del For debe de ser booleana", context.Start);
         }
 
         while ((condition as BoolValue).Value)
@@ -506,7 +506,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new FloatValue(l.Value * r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Multiplicación invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Multiplicación invalida entre los tipos {left.GetType()} * {right.GetType()} ", context.Start);
                 }
 
             case "/":
@@ -515,33 +515,33 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                     case (IntValue l, IntValue r): // int / int = int
                         Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} / valor der: {r.Value} - {r.GetType()}");
                         if (r.Value == 0){
-                            throw new Exception($"ERROR: Division indefinida el denominador {right} no puede ser 0.");
+                            throw new SemanticError($"ERROR: Division indefinida el denominador {right} no puede ser 0.", context.Start);
                         }
                         return new IntValue(l.Value / r.Value);
 
                     case (IntValue l, FloatValue r): // int / float = float
                         Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} / valor der: {r.Value} - {r.GetType()}");
                         if (r.Value == 0.0f){
-                            throw new Exception($"ERROR: Division indefinida el denominador {right} no puede ser 0.");
+                            throw new SemanticError($"ERROR: Division indefinida el denominador {right} no puede ser 0.", context.Start);
                         }
                         return new FloatValue(l.Value / r.Value);
 
                     case (FloatValue l, FloatValue r): // float / float = float
                         Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} / valor der: {r.Value} - {r.GetType()}");
                         if (r.Value == 0.0f){
-                            throw new Exception($"ERROR: Division indefinida el denominador {right} no puede ser 0.");
+                            throw new SemanticError($"ERROR: Division indefinida el denominador {right} no puede ser 0.", context.Start);
                         }
                         return new FloatValue(l.Value / r.Value);
 
                     case (FloatValue l, IntValue r): // float / int = float
                         Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} / valor der: {r.Value} - {r.GetType()}");
                         if (r.Value == 0){
-                            throw new Exception($"ERROR: Division indefinida el denominador {right} no puede ser 0.");
+                            throw new SemanticError($"ERROR: Division indefinida el denominador {right} no puede ser 0.", context.Start);
                         }
                         return new FloatValue(l.Value / r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Division invalida entre los tipos {left.GetType()} / {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Division invalida entre los tipos {left.GetType()} / {right.GetType()} ", context.Start);
                 }
             case "%":
                 switch (left, right)
@@ -549,16 +549,16 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                     case (IntValue l, IntValue r): // int % int = int
                         Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} % valor der: {r.Value} - {r.GetType()}");
                         if (r.Value == 0){
-                            throw new Exception($"ERROR: Modulo indefinido el denominador {right} no puede ser 0");
+                            throw new SemanticError($"ERROR: Modulo indefinido el denominador {right} no puede ser 0", context.Start);
                         }
                         return new IntValue(l.Value % r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Modulo invalido entre los tipos {left.GetType()} % {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Modulo invalido entre los tipos {left.GetType()} % {right.GetType()} ", context.Start);
                 }
 
             default:
-                throw new Exception($"ERROR: Operador {op} valido.");
+                throw new SemanticError($"ERROR: Operador {op} valido.", context.Start);
         }
     }
 
@@ -600,7 +600,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new StringValue(l.Value + r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Suma invalida entre los tipos {left.GetType()} + {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Suma invalida entre los tipos {left.GetType()} + {right.GetType()} ", context.Start);
                 }
 
             case "-":
@@ -623,11 +623,11 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new FloatValue(l.Value - r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Resta invalida entre los tipos {left.GetType()} - {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Resta invalida entre los tipos {left.GetType()} - {right.GetType()} ", context.Start);
                 }
 
             default:
-                throw new Exception($"ERROR: Operador {op} valido.");
+                throw new SemanticError($"ERROR: Operador {op} valido.", context.Start);
         }
     }
 
@@ -650,7 +650,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                     case FloatValue i:
                         return new FloatValue(-i.Value);
                     default:
-                        throw new Exception($"ERROR: Negacion unitaria invalida para el valor de tipo: {value.GetType}");
+                        throw new SemanticError($"ERROR: Negacion unitaria invalida para el valor de tipo: {value.GetType}", context.Start);
                 }
 
             case "!":
@@ -660,10 +660,10 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(!i.Value);
 
                     default:
-                        throw new Exception($"ERROR: Operador logico NOT invalido para el valor de tipo: {value.GetType}");
+                        throw new SemanticError($"ERROR: Operador logico NOT invalido para el valor de tipo: {value.GetType}", context.Start);
                 }
             default:
-                throw new Exception($"ERROR: Operador {op} invalido en NEGACION.");
+                throw new SemanticError($"ERROR: Operador {op} invalido en NEGACION.", context.Start);
         }
 
 
@@ -717,7 +717,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value == r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Comparacion de IGUALDAD invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Comparacion de IGUALDAD invalida entre los tipos {left.GetType()} * {right.GetType()} ", context.Start);
                 }
 
             case "!=":
@@ -752,10 +752,10 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value != r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Comparacion de DESIGUALDAD invalida entre los tipos {left.GetType()} * {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Comparacion de DESIGUALDAD invalida entre los tipos {left.GetType()} * {right.GetType()} ", context.Start);
                 }
             default:
-                throw new Exception($"ERROR: Operador {op} invalido en Comparacion.");
+                throw new SemanticError($"ERROR: Operador {op} invalido en Comparacion.", context.Start);
         }
 
     }
@@ -800,7 +800,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value > r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Relacion MAYOR QUE invalida entre los tipos {left.GetType()} > {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Relacion MAYOR QUE invalida entre los tipos {left.GetType()} > {right.GetType()} ", context.Start);
                 }
             
             case ">=":
@@ -827,7 +827,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value >= r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Relacion MAYOR O IGUAL invalida entre los tipos {left.GetType()} >= {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Relacion MAYOR O IGUAL invalida entre los tipos {left.GetType()} >= {right.GetType()} ", context.Start);
                 }
 
             case "<":
@@ -854,7 +854,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value < r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Relacion MENOR QUE invalida entre los tipos {left.GetType()} < {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Relacion MENOR QUE invalida entre los tipos {left.GetType()} < {right.GetType()} ", context.Start);
                 }
             
             case "<=":
@@ -881,10 +881,10 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                         return new BoolValue(l.Value <= r.Value);
 
                     default:
-                        throw new Exception($"ERROR: Relacion MENOR O IGUAL invalida entre los tipos {left.GetType()} <= {right.GetType()} ");
+                        throw new SemanticError($"ERROR: Relacion MENOR O IGUAL invalida entre los tipos {left.GetType()} <= {right.GetType()} ", context.Start);
                 }
             default:
-                throw new Exception($"ERROR: Operador {op} invalido en Comparacion.");
+                throw new SemanticError($"ERROR: Operador {op} invalido en Comparacion.", context.Start);
         }
     }
 
@@ -906,7 +906,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                 return new BoolValue(l.Value && r.Value);
 
             default:
-                throw new Exception($"ERROR: Operador logico AND invalido entre los tipos {left.GetType()} && {right.GetType()} ");
+                throw new SemanticError($"ERROR: Operador logico AND invalido entre los tipos {left.GetType()} && {right.GetType()} ", context.Start);
         }
     }
 
@@ -925,7 +925,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                 return new BoolValue(l.Value || r.Value);
 
             default:
-                throw new Exception($"ERROR: Operador logico OR invalido entre los tipos {left.GetType()} || {right.GetType()} ");
+                throw new SemanticError($"ERROR: Operador logico OR invalido entre los tipos {left.GetType()} || {right.GetType()} ", context.Start);
         }
 
     }

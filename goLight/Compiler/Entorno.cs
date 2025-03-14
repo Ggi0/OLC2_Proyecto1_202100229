@@ -11,7 +11,7 @@ public class Entorno{
     }
 
     // obtener una variable
-    public ValueWrapper GetVariable(string id)
+    public ValueWrapper GetVariable(string id, Antlr4.Runtime.IToken token)
     {
         if (variables.ContainsKey(id))
         {
@@ -20,22 +20,23 @@ public class Entorno{
 
         if (parent != null)
         {
-            return parent.GetVariable(id);
+            return parent.GetVariable(id, token);
         }
 
-        throw new Exception("Variable " + id + "no existe");
+        throw new SemanticError($"ERROR: La variable {id} no existe", token);
     }
 
-    public void DeclaracionVar(string id, ValueWrapper value)
+    // DECLARACION
+    public void DeclaracionVar(string id, ValueWrapper value, Antlr4.Runtime.IToken? token)
     {
         if (variables.ContainsKey(id)){
-            throw new Exception("ERROR: (Declaracion) La varible `" + id + " ya existe");
+            if (token != null) throw new SemanticError($"ERROR: Declaracion, la varible  {id} ya existe", token);
         }else{
             variables[id] = value;
         }
     }
 
-    public ValueWrapper AsignarVar(string id, ValueWrapper valorNuevo, string op)
+    public ValueWrapper AsignarVar(string id, ValueWrapper valorNuevo, string op, Antlr4.Runtime.IToken token)
     {
         // Buscar la variable en el entorno actual
         if (variables.ContainsKey(id))
@@ -84,7 +85,7 @@ public class Entorno{
 
                     "=" => valorNuevo,
 
-                    _ => throw new Exception($"ERROR: Símbolo de asignación no reconocido `{op}`.")
+                    _ => throw new SemanticError($"ERROR: Símbolo de asignación no reconocido `{op}`.", token)
                 };
 
                 variables[id] = nuevoValor;
@@ -93,17 +94,17 @@ public class Entorno{
             }
             else
             {
-                throw new Exception($"ERROR: No se puede asignar un valor de tipo {valorNuevo.GetType().Name} a la variable {id} de tipo {valorActual.GetType().Name}.");
+                throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorNuevo.GetType().Name} a la variable {id} de tipo {valorActual.GetType().Name}.", token);
             }
         }
 
         // Si no está en el entorno actual, buscar en el entorno padre
         if (parent != null)
         {
-            return parent.AsignarVar(id, valorNuevo, op);
+            return parent.AsignarVar(id, valorNuevo, op, token);
         }
 
-        throw new Exception($"ERROR: (asig) Variable {id} no existe.");
+        throw new SemanticError($"ERROR: No se puede ASIGNAR el valor a la variable {id} ya que no existe.", token);
     }
 
 

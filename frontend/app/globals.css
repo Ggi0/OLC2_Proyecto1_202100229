@@ -150,6 +150,40 @@ a:hover {
   text-shadow: 0 0 8px rgba(58, 206, 216, 0.6);
 }
 
+.error-container {
+  @apply flex flex-col items-center justify-center p-4 mt-6;
+  background: rgba(220, 53, 70, 0.328); /* Rojo más suave y semitransparente */
+  border: 1px solid rgba(248, 113, 113, 0.5); /* Borde rojo claro */
+  border-radius: 0.5rem;
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.3); /* Sombra roja sutil */
+  transition: all 0.3s ease;
+}
+
+.error-container:hover {
+  box-shadow: 0 0 20px rgba(248, 113, 113, 0.5);
+}
+
+.error-container h2 {
+  color: #fff; /* Texto blanco para contraste */
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.error-container pre {
+  background: rgba(0, 0, 0, 0.2); /* Fondo oscuro semitransparente */
+  color: #f8f8f8; /* Texto casi blanco */
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  overflow-x: auto; /* Permite desplazamiento horizontal si el error es largo */
+  white-space: pre-wrap; /* Permite saltos de línea */
+}
+
+
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   body {
