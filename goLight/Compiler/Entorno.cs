@@ -30,7 +30,7 @@ public class Entorno{
     public void DeclaracionVar(string id, ValueWrapper value, Antlr4.Runtime.IToken? token)
     {
         if (variables.ContainsKey(id)){
-            if (token != null) throw new SemanticError($"ERROR: Declaracion, la varible  {id} ya existe", token);
+            if (token != null) throw new SemanticError($"ERROR: Declaracion, la variable  {id} ya existe", token);
         }else{
             variables[id] = value;
         }
@@ -62,25 +62,25 @@ public class Entorno{
                         (IntValue intActual, IntValue intNuevo) => new IntValue(intActual.Value + intNuevo.Value),               // var (int) = var + nuevoValor(int)
                         (FloatValue floatActual, FloatValue floatNuevo) => new FloatValue(floatActual.Value + floatNuevo.Value), // var (float) = var + nuevoValor(float)
                         (StringValue strActual, StringValue strNuevo) => new StringValue(strActual.Value + strNuevo.Value),      // var (str) = var + nuevoValor(str)
-                        _ => throw new Exception($"ERROR: Operación `+=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.")
+                        _ => throw new SemanticError($"ERROR: Operación `+=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.", token)
                     },
 
                     "-=" => (valorActual, valorNuevo) switch
                     {   // var (float) = var - nuevoValor(float)
                         (IntValue intActual, IntValue intNuevo) => new IntValue(intActual.Value - intNuevo.Value),               // var (int) = var - nuevoValor(int)
                         (FloatValue floatActual, FloatValue floatNuevo) => new FloatValue(floatActual.Value - floatNuevo.Value), // var (float) = var - nuevoValor(float)
-                        _ => throw new Exception($"ERROR: Operación `-=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.")
+                        _ => throw new SemanticError($"ERROR: Operación `-=` no soportada entre {valorActual.GetType().Name} y {valorNuevo.GetType().Name}.", token)
                     },
 
                     "++" => valorActual switch
                     {   
                         IntValue intActual => new IntValue(intActual.Value + 1),               // var (int) = var + 1
-                        _ => throw new Exception($"ERROR: Operación `++` no soportada valores tipo {valorActual.GetType().Name}")
+                        _ => throw new SemanticError($"ERROR: Operación `++` no soportada valores tipo {valorActual.GetType().Name}", token)
                     },
                     "--" => valorActual switch
                     { 
                     IntValue intActual => new IntValue(intActual.Value - 1),               // var (int) = var + 1
-                        _ => throw new Exception($"ERROR: Operación `--` no soportada valores tipo {valorActual.GetType().Name}")
+                        _ => throw new SemanticError($"ERROR: Operación `--` no soportada valores tipo {valorActual.GetType().Name}", token)
                     },
 
                     "=" => valorNuevo,
@@ -94,7 +94,7 @@ public class Entorno{
             }
             else
             {
-                throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorNuevo.GetType().Name} a la variable {id} de tipo {valorActual.GetType().Name}.", token);
+                throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorNuevo.GetType().Name} a la variable \"{id}\" de tipo {valorActual.GetType().Name}.", token);
             }
         }
 
@@ -104,7 +104,7 @@ public class Entorno{
             return parent.AsignarVar(id, valorNuevo, op, token);
         }
 
-        throw new SemanticError($"ERROR: No se puede ASIGNAR el valor a la variable {id} ya que no existe.", token);
+        throw new SemanticError($"ERROR: No se puede ASIGNAR el valor a la variable \"{id}\" porque no existe.", token);
     }
 
 

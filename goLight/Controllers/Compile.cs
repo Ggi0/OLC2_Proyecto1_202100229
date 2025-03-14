@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using analyzer;
 using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,17 +25,6 @@ namespace api.Controllers
             _logger = logger;
         }
         
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return Ok("Compile API is running!");
-        }
-
-        [HttpGet("error")] // <-- Se define explícitamente para Swagger
-        public IActionResult Error()
-        {
-            return Problem("An error occurred.");
-        }
 
         public class CompileRequest
         {
@@ -52,10 +42,19 @@ namespace api.Controllers
 
             var inputStream = new AntlrInputStream(request.Code);
             var lexer = new LanguageLexer(inputStream); // metodo viene de la gramatica
+
+            // Para errores Sintacticos:
+            lexer.RemoveErrorListeners();
+            lexer.AddErrorListener(new LexicoErrorListener());
+
             var tokens = new CommonTokenStream(lexer);// tokens que se generaron a partir del lexer
             var parser = new LanguageParser(tokens);// parser regresa un contexto
+
+            parser.RemoveErrorListeners();
+            parser.AddErrorListener(new SintacticoErrorListener());
+
             
-            var tree = parser.program();
+            
 
 
             /*
@@ -71,13 +70,18 @@ namespace api.Controllers
 
             try {
                 // Visitor
+                var tree = parser.program();
             var visitor = new CompilerVisitor();
             visitor.Visit(tree);
-            Console.WriteLine("Compile");
+            Console.WriteLine(" -> Compile <-");
 
             return Ok(new{result = visitor.output});
 
-            }catch(SemanticError ex){
+            }catch(ParseCanceledException ex){
+                return BadRequest(new {error = ex.Message});
+            }
+            
+            catch(SemanticError ex){
                 return BadRequest(new {error = ex.Message});
             }
 
