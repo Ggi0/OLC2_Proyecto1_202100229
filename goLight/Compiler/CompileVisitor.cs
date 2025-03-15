@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using analyzer;
 using Antlr4.Runtime.Misc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 /*
     El código a partir de tu gramática, se crean clases llamadas Context, 
@@ -439,7 +440,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
     //       -----------> CICLOS <-----------
     /*
-        --> for (while)
+        --> FOR (while)
         
         for <condición> {
             // Bloque de sentencias
@@ -467,6 +468,83 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         return defaultValue;
     }
 
+
+    /*
+        --> FOR
+
+        for inicialización; condición; incremento {
+            // Bloque de sentencias
+        }
+
+    */
+    public override ValueWrapper VisitForStmt( LanguageParser.ForStmtContext context)
+    {
+        // El nuevo entorno es para la inicializacion (forInit)
+        Entorno entornoAnterior = entornoActual; // Guardar la referencia del entorno actual
+        entornoActual = new Entorno(entornoAnterior); // el patre del nuevo entorno es el anterior
+
+        Visit(context.forInit()); // puede ser una declaración o una expresion (asignacion)
+
+        // Ejecutar el cuerpo del FOR
+        VisitForBody(context);
+
+        entornoActual = entornoAnterior; // regresar al entorno previo (el que estaba antes de ejecutar el ciclo)
+        return defaultValue;
+    }
+
+    public void VisitForBody(LanguageParser.ForStmtContext context){
+        // 1) recorrer la condicion
+        ValueWrapper condicion = Visit(context.expr(0)); // for inicialización; --> condición <---; incremento
+
+        var UltimoEntorno = entornoActual; // Guardar la referencia del ultimo entorno donde se ejecuto
+
+        if (condicion is not BoolValue){ // -> verificar que la sentencia sea booleana
+            throw new SemanticError($"ERROR: la condicion {condicion} debe ser de tipo booleana", context.Start);
+        }
+
+        try{ // ejecutar siempre que la condicion sea verdadera
+            while (condicion is BoolValue boolCondicion && boolCondicion.Value){
+                Visit(context.statement());
+                Visit(context.expr(1));
+                condicion = Visit(context.expr(0));
+            }
+        }catch(BreakException){
+            entornoActual = UltimoEntorno ; 
+            
+        }catch(ContinueException){
+            entornoActual = UltimoEntorno; // regresar al entorno actual
+            Visit(context.expr(1));
+            VisitForBody(context);
+        }
+
+
+    }
+
+
+    //       -----------> SENTENCIAS DE TRANSFERENCIA <-----------
+    // --> BREAK
+    public override ValueWrapper VisitST_break( LanguageParser.ST_breakContext context)
+    {
+        throw new BreakException();
+    }
+
+    // --> CONTINUE
+    public override ValueWrapper VisitST_continue(LanguageParser.ST_continueContext context)
+    {
+        throw new ContinueException();
+    }
+
+    // --> RETURN
+    public override ValueWrapper VisitST_return( LanguageParser.ST_returnContext context)
+    {
+        ValueWrapper value = defaultValue;
+
+        if(context.expr() != null){
+            value = Visit(context.expr());
+        }
+
+        throw new ReturnException(value);
+    }
 
 
 

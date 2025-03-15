@@ -32,7 +32,7 @@ namespace api.Controllers
             public required string Code { get; set; }
         }
 
-        [HttpPost] 
+        [HttpPost]
         public IActionResult Post([FromBody] CompileRequest request)
         {
             if (!ModelState.IsValid)
@@ -53,8 +53,8 @@ namespace api.Controllers
             parser.RemoveErrorListeners();
             parser.AddErrorListener(new SintacticoErrorListener());
 
-            
-            
+
+
 
 
             /*
@@ -68,26 +68,30 @@ namespace api.Controllers
             */
             // podemos recorrer el arbol con lisener o con visitor
 
-            try {
+            try
+            {
                 // Visitor
                 var tree = parser.program();
-            var visitor = new CompilerVisitor();
-            visitor.Visit(tree);
-            Console.WriteLine(" -> Compile <-");
+                var visitor = new CompilerVisitor();
+                visitor.Visit(tree);
+                Console.WriteLine(" -> Compile <-");
 
-            return Ok(new{result = visitor.output});
+                return Ok(new { result = visitor.output });
 
-            }catch(ParseCanceledException ex){
-                return BadRequest(new {error = ex.Message});
             }
-            
-            catch(SemanticError ex){
-                return BadRequest(new {error = ex.Message});
+            catch (ParseCanceledException ex)
+            {
+                return BadRequest(new { error = ex.Message });
             }
 
-            
+            catch (SemanticError ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
 
-            
+
+
+
         }
     }
 }

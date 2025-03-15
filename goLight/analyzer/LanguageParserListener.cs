@@ -160,6 +160,64 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitWhileStmt([NotNull] LanguageParser.WhileStmtContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ForStmt</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterForStmt([NotNull] LanguageParser.ForStmtContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ForStmt</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitForStmt([NotNull] LanguageParser.ForStmtContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ST_break</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterST_break([NotNull] LanguageParser.ST_breakContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ST_break</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitST_break([NotNull] LanguageParser.ST_breakContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ST_continue</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterST_continue([NotNull] LanguageParser.ST_continueContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ST_continue</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitST_continue([NotNull] LanguageParser.ST_continueContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ST_return</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterST_return([NotNull] LanguageParser.ST_returnContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ST_return</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitST_return([NotNull] LanguageParser.ST_returnContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.forInit"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterForInit([NotNull] LanguageParser.ForInitContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.forInit"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitForInit([NotNull] LanguageParser.ForInitContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>caseNormal</c>
 	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
 	/// </summary>

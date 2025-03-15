@@ -108,6 +108,40 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitWhileStmt([NotNull] LanguageParser.WhileStmtContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>ForStmt</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForStmt([NotNull] LanguageParser.ForStmtContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ST_break</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitST_break([NotNull] LanguageParser.ST_breakContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ST_continue</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitST_continue([NotNull] LanguageParser.ST_continueContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ST_return</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitST_return([NotNull] LanguageParser.ST_returnContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LanguageParser.forInit"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitForInit([NotNull] LanguageParser.ForInitContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>caseNormal</c>
 	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.
 	/// </summary>

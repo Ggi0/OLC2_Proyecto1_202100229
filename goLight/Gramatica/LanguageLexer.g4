@@ -60,6 +60,11 @@ DEFAUL : 'default' ;
 // ---> ciclos
 FOR : 'for';
 
+// --> Sentecncias de transferencia
+STBREAK    : 'break'    ;
+STCONTINUE : 'continue' ;
+STRETURN   : 'return'   ;
+
 
 
 // --------- VALORES de datos ------------
