@@ -87,6 +87,9 @@ namespace api.Controllers
             catch (SemanticError ex)
             {
                 return BadRequest(new { error = ex.Message });
+            }catch (ContinueException)
+            {
+                return BadRequest(new { error = "ERROR: sentencia Continue fuera de un ciclo" });
             }
 
 

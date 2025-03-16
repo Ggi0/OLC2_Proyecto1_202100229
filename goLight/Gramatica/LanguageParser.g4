@@ -19,9 +19,9 @@ statement: expr (SEMICOLON)?                                         # ExprStmt
          | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?   # IfStatement
          | SWITCH expr LBRACE (caseStmt)+ RBRACE                     # SwitchStmt
          | FOR (LPAREN)? expr (RPAREN)? statement                    # WhileStmt
-         | FOR LPAREN forInit expr SEMICOLON expr RPAREN statement   # ForStmt
-         | STBREAK (SEMICOLON)?     # ST_break
-         | STCONTINUE (SEMICOLON)?  # ST_continue
+         | FOR (LPAREN)? forInit expr SEMICOLON expr (RPAREN)? statement   # ForStmt
+         | STBREAK (SEMICOLON)?           # ST_break
+         | STCONTINUE (SEMICOLON)?        # ST_continue
          | STRETURN expr? (SEMICOLON)?    # ST_return
 ;
 

@@ -476,11 +476,15 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             // Bloque de sentencias
         }
 
+        inicializacion:  i := 1
+        condicion  : i <= 5
+        incremento : i++ o i--
+
     */
     public override ValueWrapper VisitForStmt( LanguageParser.ForStmtContext context)
     {
-        // El nuevo entorno es para la inicializacion (forInit)
-        Entorno entornoAnterior = entornoActual; // Guardar la referencia del entorno actual
+        // un nuevo entorno (contexto de variables) para la inicialización del for.
+        Entorno entornoAnterior = entornoActual;      // Guardar la referencia del entorno actual
         entornoActual = new Entorno(entornoAnterior); // el patre del nuevo entorno es el anterior
 
         Visit(context.forInit()); // puede ser una declaración o una expresion (asignacion)
@@ -498,23 +502,27 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         var UltimoEntorno = entornoActual; // Guardar la referencia del ultimo entorno donde se ejecuto
 
-        if (condicion is not BoolValue){ // -> verificar que la sentencia sea booleana
+        // 2) Verifica que la condición sea de tipo BoolValue, ya que un for requiere una condición booleana.
+        if (condicion is not BoolValue){ 
             throw new SemanticError($"ERROR: la condicion {condicion} debe ser de tipo booleana", context.Start);
         }
 
-        try{ // ejecutar siempre que la condicion sea verdadera
+        // 3) ejecutar las instrucciones dentro del for mientras la condición sea true.
+        try{ 
             while (condicion is BoolValue boolCondicion && boolCondicion.Value){
-                Visit(context.statement());
-                Visit(context.expr(1));
-                condicion = Visit(context.expr(0));
+                Visit(context.statement());   // Ejecutar el cuerpo del for
+                Visit(context.expr(1));       // Ejecutar la expresión de incremento
+                condicion = Visit(context.expr(0)); // Reevaluar la condición --> ya que debe seguir siendo true
             }
         }catch(BreakException){
+            // Si se encuentra un break, salir del ciclo y restaurar el entorno
             entornoActual = UltimoEntorno ; 
             
         }catch(ContinueException){
+            // Si se encuentra un continue, restaurar el entorno y continuar con la siguiente iteración
             entornoActual = UltimoEntorno; // regresar al entorno actual
-            Visit(context.expr(1));
-            VisitForBody(context);
+            Visit(context.expr(1)); // Ejecutar el incremento antes de continuar
+            VisitForBody(context);  // Volver a ejecutar el cuerpo del for desde el inicio
         }
 
 
@@ -539,6 +547,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     {
         ValueWrapper value = defaultValue;
 
+        // Lanza una ReturnException con el valor que se debe devolver.
         if(context.expr() != null){
             value = Visit(context.expr());
         }

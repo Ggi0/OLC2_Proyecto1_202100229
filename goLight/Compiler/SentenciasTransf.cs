@@ -18,6 +18,7 @@ public class ContinueException : Exception{
 // ReturnException ---> puede guardar un valor de forma interna por si se debe regresar algo
 public class ReturnException : Exception
 {
+    // Evalúa la expresión del return si existe
     public ValueWrapper Value { get; }
 
     public ReturnException(ValueWrapper value) : base("Return statement"){
