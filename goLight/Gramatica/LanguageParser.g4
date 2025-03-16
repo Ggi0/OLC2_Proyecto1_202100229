@@ -37,6 +37,7 @@ caseStmt: CASE expr COLON dcl*    # caseNormal
 
 expr:
     op=(MENOS | NOT) expr                                # NegateU
+    | expr call+ # Llamada
     | expr op=(MULTI | DIV | MODULO) expr                # MulDiv
     | expr op=(MAS | MENOS) expr                         # AddSub
     | expr op=(MAYOR | MAYIGUAL | MENOR | MENIGUAL) expr    # Relacionales
@@ -52,6 +53,12 @@ expr:
     | ID op=(INCREMENTO |DECREMENTO)                     # UpdateVar
     | ID                                                 # Identifier
     | LPAREN expr RPAREN                                 # Parens
+;
+
+call: LPAREN parametros? RPAREN
+;
+
+parametros: expr (COMMA expr)*
 ;
 
 tiposD: T_INT

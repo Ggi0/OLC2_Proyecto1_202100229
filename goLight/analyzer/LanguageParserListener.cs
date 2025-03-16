@@ -398,6 +398,18 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAnd([NotNull] LanguageParser.AndContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>Llamada</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLlamada([NotNull] LanguageParser.LlamadaContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>Llamada</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLlamada([NotNull] LanguageParser.LlamadaContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Rune</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>
@@ -433,6 +445,26 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitComparation([NotNull] LanguageParser.ComparationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.call"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCall([NotNull] LanguageParser.CallContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.call"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCall([NotNull] LanguageParser.CallContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.parametros"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParametros([NotNull] LanguageParser.ParametrosContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.parametros"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParametros([NotNull] LanguageParser.ParametrosContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="LanguageParser.tiposD"/>.
 	/// </summary>

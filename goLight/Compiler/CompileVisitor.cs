@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using analyzer;
 using Antlr4.Runtime.Misc;
@@ -25,7 +26,13 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     public string output = "";
     private ValueWrapper defaultValue = new VoidValue();
     // declaraclando entorno
-    private Entorno entornoActual = new Entorno(null); // entorno limpio cuando se inicializa el visitor
+    private Entorno entornoActual; // entorno limpio cuando se inicializa el visitor
+
+    // para funciones embebidas
+    public CompilerVisitor(){
+        entornoActual = new Entorno(null); // entorno Global
+        Embebidas.Generate(entornoActual); // al entorno Gloabal se generan las embebidas.
+    }
 
 
     /*
@@ -248,6 +255,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             BoolValue b => b.Value.ToString(),
             RuneValue r => Convert.ToByte(r.Value).ToString(),
             VoidValue v => "void",
+            FuncionValue fn => "-> fn "+ fn.name + " <-",
             _ => throw new SemanticError("ERROR: tipo de valor no valido", context.Start)
         };
         output += "\n";
@@ -553,6 +561,71 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         }
 
         throw new ReturnException(value);
+    }
+
+
+
+
+
+    //       -----------> FUNCIONES <-----------
+
+    /*
+     ---> Funciones EMBEBIDAS:
+          predefinidas en los lenguajes de programación que permiten realizar tareas comunes de manera eficiente.
+
+        expr:
+            | expr call+                   # Llamada
+            ...                            ...
+            | LPAREN expr RPAREN           # Parens
+        ;
+
+        call: LPAREN parametros? RPAREN
+        ;
+
+        parametros: expr (COMMA expr)*
+        ;
+    
+    */
+    public override ValueWrapper VisitLlamada(LanguageParser.LlamadaContext context)
+    {
+        ValueWrapper llamadaEmb = Visit(context.expr());
+
+        // recorrer cada llamada:
+        foreach (var llamada in context.call())
+        {
+            if (llamadaEmb is FuncionValue funtionValue)
+            {
+                llamadaEmb = VisitCall(funtionValue.invocable, llamada.parametros());
+            }
+            else
+            {
+                throw new SemanticError($"ERROR: la llamada es invalida {llamadaEmb}", context.Start);
+            }
+        }
+
+        return llamadaEmb;
+    }
+
+    // call: LPAREN parametros? RPAREN
+    public ValueWrapper VisitCall(Invocable invocable, LanguageParser.ParametrosContext context ){
+        // definir una lista de argunmentos:
+        List<ValueWrapper> argumetos = new List<ValueWrapper>();
+        
+        if (context != null){
+            // si el contexto es diferente de nulo hay que recorrer todos los parametros ---> parametros?
+            foreach(var expr in context.expr()){
+                argumetos.Add(Visit(expr));
+            }
+        }
+
+        // validar tipos
+
+        // validar cantidad de parametros:
+        if (context != null && argumetos.Count != invocable.Arity()){
+            throw new SemanticError($"ERROR: La cantidad de parametros es invalida --> {argumetos}", context.Start);
+        }
+
+        return invocable.Invoke(argumetos, this);
     }
 
 

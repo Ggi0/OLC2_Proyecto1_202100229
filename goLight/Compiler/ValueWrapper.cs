@@ -18,6 +18,9 @@ public record BoolValue (bool Value) : ValueWrapper;
 public record RuneValue(char Value) : ValueWrapper;
 public record VoidValue : ValueWrapper;
 
+// tipo funcion 
+public record FuncionValue(Invocable invocable, string name) : ValueWrapper;
+
 
 
 
