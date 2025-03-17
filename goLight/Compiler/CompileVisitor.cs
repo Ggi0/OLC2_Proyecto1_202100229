@@ -807,6 +807,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
 
 
+
         switch (op)
         {
             case "+":
@@ -871,6 +872,13 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         ValueWrapper value = Visit(context.expr());
         var op = context.op.Text;
         Console.WriteLine("---> operador: " + op);
+
+        // Comprobar que los operandos no sean null
+        if (value == null)
+        {
+            throw new SemanticError($"ERROR: El operando {value} es nulo", context.Start);
+        }
+
 
         switch (op)
         {
@@ -1008,6 +1016,17 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         
         var op = context.op.Text;
         Console.WriteLine("---> operador: "+ op);
+
+        // Comprobar que los operandos no sean null
+        if (left == null)
+        {
+            throw new SemanticError($"ERROR: El operando izquierdo de {context.op.Text} es nulo", context.Start);
+        }
+
+        if (right == null)
+        {
+            throw new SemanticError($"ERROR: El operando derecho de {context.op.Text} es nulo", context.Start);
+        }
         
         
         switch (op)
@@ -1135,6 +1154,17 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         ValueWrapper left = Visit(context.expr(0));
         ValueWrapper right = Visit(context.expr(1));
 
+        // Comprobar que los operandos no sean null
+        if (left == null)
+        {
+            throw new SemanticError($"ERROR: El operando izquierdo de {left} es nulo", context.Start);
+        }
+
+        if (right == null)
+        {
+            throw new SemanticError($"ERROR: El operando derecho de {right} es nulo", context.Start);
+        }
+
         switch (left, right)
         {
             case (BoolValue l, BoolValue r): // int && int = bool
@@ -1153,6 +1183,17 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         ValueWrapper left = Visit(context.expr(0));
         ValueWrapper right = Visit(context.expr(1));
+
+        // Comprobar que los operandos no sean null
+        if (left == null)
+        {
+            throw new SemanticError($"ERROR: El operando izquierdo de {left} es nulo", context.Start);
+        }
+
+        if (right == null)
+        {
+            throw new SemanticError($"ERROR: El operando derecho de {right} es nulo", context.Start);
+        }
 
         switch (left, right)
         {
