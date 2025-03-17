@@ -25,7 +25,7 @@ public class ReturnException : Exception
         Value = value;  // Asegúrate de que esta asignación esté presente
         
         // Para depuración
-        Console.WriteLine($"DEBUG: ReturnException creada con valor: {value}");
+        //Console.WriteLine($"DEBUG: ReturnException creada con valor: {value}");
 
     }
 

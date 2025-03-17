@@ -18,7 +18,7 @@ public record BoolValue (bool Value) : ValueWrapper;
 public record RuneValue(char Value) : ValueWrapper;
 public record VoidValue : ValueWrapper;
 
-// tipo funcion 
+// FuncionValue envuelve un Invocable, lo que significa que cualquier Invocable (como FuncionForanea) se almacena como ValueWrapper
 public record FuncionValue(Invocable invocable, string name) : ValueWrapper;
 
 

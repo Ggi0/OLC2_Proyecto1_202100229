@@ -10,7 +10,7 @@ using analyzer;
 */
 public class FuncionForanea : Invocable{
     
-    private Entorno clousure;
+    private Entorno clousure; // el entorno en el que se declaró la función
     private LanguageParser.FuncionDclContext context; // contexto de la funcion --> cuerpo -> se ejecuta en la llamada y no en la declaracion
     private string tipoRetorno; // Almacena el tipo de retorno esperado de la función
 
@@ -35,7 +35,7 @@ public class FuncionForanea : Invocable{
 
 
     private void ValidarTiposParametros(List<ValueWrapper> args) {
-        if (context.parametrosF() == null) return;
+        if (context.parametrosF() == null) return; // si no vienen parametros regresa normal
         
         // Para cada parámetro definido, comprobar si el tipo del argumento correspondiente es compatible
         for (int i = 0; i < context.parametrosF().ID().Length; i++) {
@@ -123,8 +123,17 @@ public class FuncionForanea : Invocable{
     }
 
 
+    /*
     
-
+        1) Valida que el número de argumentos coincida con Arity().
+        2) Valida los tipos de los argumentos.
+        3) Crea un nuevo entorno (Entorno nuevoENV) donde vivirán los parámetros.
+        4) Asigna los valores de los argumentos a los parámetros de la función.
+        5) Ejecuta las instrucciones de la función en el nuevo entorno.
+        6) Maneja el return con una ReturnException.
+        7) Restaura el entorno original y retorna el resultado.
+    
+    */
      public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor){
 
         // Validar cantidad de parámetros
@@ -164,59 +173,65 @@ public class FuncionForanea : Invocable{
         try
         {
             // ejecutar las instrucciones de la funcion
-            foreach(var instruccion in context.dcl()){
+            foreach (var instruccion in context.dcl())
+            {
                 visitor.Visit(instruccion);
             }
 
             // Si llegamos aquí y no hubo return pero la función debe retornar un valor, es un error
-            if (tipoRetorno != null && tipoRetorno != "void") {
+            if (tipoRetorno != null && tipoRetorno != "void")
+            {
                 throw new SemanticError($"ERROR: La función debe retornar un valor de tipo '{tipoRetorno}'", context.Start);
             }
 
             return visitor.defaultValue; // void
 
-        }catch (ReturnException e){
-            // Capturar el valor de retorno
-        result = e.Value;
-        
-        // Comprobar que no sea null
-        if (result == null) {
-            throw new SemanticError($"ERROR: La función '{context.ID().GetText()}' retornó un valor nulo", context.Start);
         }
-        
-        // Debug
-        Console.WriteLine($"DEBUG: Valor capturado en ReturnException: {result}");
-        
-        // Validar el tipo
-        result = ValidarTipoRetorno(result);
-    }
-    finally {
-        // Restaurar el entorno anterior siempre
-        visitor.entornoActual = beforeCallEnv;
-    }
+        catch (ReturnException e)
+        {
+            // Capturar el valor de retorno
+            result = e.Value;
 
-    return result;
-            /*
-            // IMPORTANTE: Primero restaurar el entorno antes de validar
-            visitor.entornoActual = beforeCallEnv; // regresar al entorno en donde estaba antes de ejecutar la funcion
-
-            // Asegurarnos de que el valor no sea null
-            if (e.Value == null)
+            // Comprobar que no sea null
+            if (result == null)
             {
                 throw new SemanticError($"ERROR: La función '{context.ID().GetText()}' retornó un valor nulo", context.Start);
             }
 
+            // Debug
+            //Console.WriteLine($"DEBUG: Valor capturado en ReturnException: {result}");
 
-            // Validar el tipo de retorno
-            ValueWrapper resultado = ValidarTipoRetorno(e.Value);
-            return resultado;
+            // Validar el tipo
+            result = ValidarTipoRetorno(result);
         }
-        catch (Exception ex)
+        finally
         {
-            // Restaurar el entorno en caso de cualquier otra excepción
+            // Restaurar el entorno anterior siempre
             visitor.entornoActual = beforeCallEnv;
-            throw; // Re-lanzar la excepción original
-        }*/
+        }
+
+        return result; // no regreso nada (void)
+        /*
+        // IMPORTANTE: Primero restaurar el entorno antes de validar
+        visitor.entornoActual = beforeCallEnv; // regresar al entorno en donde estaba antes de ejecutar la funcion
+
+        // Asegurarnos de que el valor no sea null
+        if (e.Value == null)
+        {
+            throw new SemanticError($"ERROR: La función '{context.ID().GetText()}' retornó un valor nulo", context.Start);
+        }
+
+
+        // Validar el tipo de retorno
+        ValueWrapper resultado = ValidarTipoRetorno(e.Value);
+        return resultado;
+    }
+    catch (Exception ex)
+    {
+        // Restaurar el entorno en caso de cualquier otra excepción
+        visitor.entornoActual = beforeCallEnv;
+        throw; // Re-lanzar la excepción original
+    }*/
 
         //visitor.entornoActual = beforeCallEnv;
         //return visitor.defaultValue; // no regreso nada (void)

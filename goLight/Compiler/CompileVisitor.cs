@@ -567,7 +567,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             {
                 throw new SemanticError($"ERROR: El valor de retorno es nulo", context.Start);
             }
-            Console.WriteLine($"DEBUG: Valor de retorno: {value}"); // Añade este log para depuración
+            //Console.WriteLine($"DEBUG: Valor de retorno: {value}"); // Añade este log para depuración
         }
         // Lanza una ReturnException con el valor que se debe devolver.
         throw new ReturnException(value);
@@ -602,9 +602,10 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         ValueWrapper llamadaEmb = Visit(context.expr());
 
         // Verificar que el resultado de la expresión no sea null
-    if (llamadaEmb == null) {
-        throw new SemanticError($"ERROR: La expresión de la llamada evaluó a null", context.Start);
-    }
+        if (llamadaEmb == null)
+        {
+            throw new SemanticError($"ERROR: La expresión de la llamada evaluó a null", context.Start);
+        }
 
         // recorrer cada llamada:
         foreach (var llamada in context.call())
@@ -673,6 +674,22 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
     /*
         ---> funciones FORANEAS
+
+        // Función sin parámetros y sin retorno
+        func <nombreFuncion>() {
+            // <cuerpo de la función>
+        }
+
+        // Función con parámetros y sin retorno
+        func <nombreFuncion>(<param1> <tipo1>, <param2> <tipo2>) {
+            // <cuerpo de la función>
+        }
+        
+        // Función con parámetros y con retorno
+        func <nombreFuncion>(<param1> <tipo1>, <param2> <tipo2>) <tipoRetorno> {
+            // <cuerpo de la función>
+            return <valorDeRetorno>
+        }
     */
     public override ValueWrapper VisitFuncionDcl(LanguageParser.FuncionDclContext context)
     {

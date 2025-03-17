@@ -1,8 +1,16 @@
 
-// interfas para las funciones
+/*
+    interfas para las funciones
+
+    Define una interfaz para todas las entidades que pueden ser invocadas (como funciones).
+
+    Permite que diferentes tipos de funciones 
+    por ejemplo, funciones definidas por el usuario y funciones nativas 
+    compartan un mismo comportamiento.
+*/ 
 
 public interface Invocable{
-    int Arity(); // ---> numero de parametros para la funcion
+    int Arity(); // ---> Retorna el número de parámetros que la función espera.
     
     /*
         List<ValueWrapper> args --> lista de parametros
