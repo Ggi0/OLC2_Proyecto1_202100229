@@ -24,9 +24,9 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
     // output ---> publica ya que se accedera desde el controlador
     public string output = "";
-    private ValueWrapper defaultValue = new VoidValue();
+    public ValueWrapper defaultValue = new VoidValue();
     // declaraclando entorno
-    private Entorno entornoActual; // entorno limpio cuando se inicializa el visitor
+    public Entorno entornoActual; // entorno limpio cuando se inicializa el visitor
 
     // para funciones embebidas
     public CompilerVisitor(){
@@ -118,7 +118,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         // Si es válido, guardamos la variable en el entorno
         Console.WriteLine($" \t asignacion --> id: {id} --> valor: {value} --> tipo: {value.GetType()} <--");
-        entornoActual.DeclaracionVar(id, value, context.Start);
+        entornoActual.Declaracion(id, value, context.Start);
 
         return defaultValue; // una declaración no regresa ningun valor
     }
@@ -147,7 +147,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         };
 
         Console.WriteLine($" \t asignacion --> id: {id} --> valor: {value} --> tipo: {value.GetType()} <--");
-        entornoActual.DeclaracionVar(id, value, context.Start);
+        entornoActual.Declaracion(id, value, context.Start);
 
         return defaultValue; // una declaración no regresa ningun valor
     }
@@ -166,7 +166,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         Console.WriteLine($" \t asignacion --> id: {id} --> valor: {value} --> tipo: {value.GetType()} <--");
         // Almacena la variable en el entorno
-        entornoActual.DeclaracionVar(id, value, context.Start); 
+        entornoActual.Declaracion(id, value, context.Start); 
 
         return defaultValue; // una declaración no regresa ningun valor
     }
@@ -196,7 +196,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             throw new Exception($"ERROR: Para la asignacion {op} sea valida se le debe asignar un valor");
         }*/
 
-        return entornoActual.AsignarVar(id, value, op, context.Start);
+        return entornoActual.Asignacion(id, value, op, context.Start);
     }
 
     public override ValueWrapper VisitUpdateVar(LanguageParser.UpdateVarContext context)
@@ -208,21 +208,23 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         var op = context.op.Text;
         Console.WriteLine("---> op actualizador: "+ op);
 
-        return entornoActual.AsignarVar(id, value, op, context.Start);
+        return entornoActual.Asignacion(id, value, op, context.Start);
     }
 
 
 
 
-
+  
     // Identificador--> VisitIdentifier
     public override ValueWrapper VisitIdentifier( LanguageParser.IdentifierContext context)
     {
         // se debe ir a buscar a la tabla de simbolos
         string id = context.ID().GetText();
         
+        // Console.WriteLine($"DEBUG: Accediendo a variable '{id}'");
+
         // ENTORNOS
-        return entornoActual.GetVariable(id, context.Start);
+        return entornoActual.Get(id, context.Start);
     }
 
     // PARENTESIS --> VisitParens
@@ -556,10 +558,18 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         ValueWrapper value = defaultValue;
 
         // Lanza una ReturnException con el valor que se debe devolver.
-        if(context.expr() != null){
+        if (context.expr() != null)
+        {
             value = Visit(context.expr());
-        }
 
+            // Verificar que el valor no sea null
+            if (value == null)
+            {
+                throw new SemanticError($"ERROR: El valor de retorno es nulo", context.Start);
+            }
+            Console.WriteLine($"DEBUG: Valor de retorno: {value}"); // Añade este log para depuración
+        }
+        // Lanza una ReturnException con el valor que se debe devolver.
         throw new ReturnException(value);
     }
 
@@ -571,6 +581,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
     /*
      ---> Funciones EMBEBIDAS:
+
           predefinidas en los lenguajes de programación que permiten realizar tareas comunes de manera eficiente.
 
         expr:
@@ -590,16 +601,26 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     {
         ValueWrapper llamadaEmb = Visit(context.expr());
 
+        // Verificar que el resultado de la expresión no sea null
+    if (llamadaEmb == null) {
+        throw new SemanticError($"ERROR: La expresión de la llamada evaluó a null", context.Start);
+    }
+
         // recorrer cada llamada:
         foreach (var llamada in context.call())
         {
             if (llamadaEmb is FuncionValue funtionValue)
             {
                 llamadaEmb = VisitCall(funtionValue.invocable, llamada.parametros());
+                // Verificar que el resultado de la llamada no sea null
+                if (llamadaEmb == null)
+                {
+                    throw new SemanticError($"ERROR: La llamada a la función {funtionValue.name} retornó null", context.Start);
+                }
             }
             else
             {
-                throw new SemanticError($"ERROR: la llamada es invalida {llamadaEmb}", context.Start);
+                throw new SemanticError($"ERROR: La llamada es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
             }
         }
 
@@ -607,26 +628,65 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     }
 
     // call: LPAREN parametros? RPAREN
-    public ValueWrapper VisitCall(Invocable invocable, LanguageParser.ParametrosContext context ){
+    public ValueWrapper VisitCall(Invocable invocable, LanguageParser.ParametrosContext context)
+    {
         // definir una lista de argunmentos:
-        List<ValueWrapper> argumetos = new List<ValueWrapper>();
-        
-        if (context != null){
+        List<ValueWrapper> argumentos = new List<ValueWrapper>();
+
+        if (context != null)
+        {
             // si el contexto es diferente de nulo hay que recorrer todos los parametros ---> parametros?
-            foreach(var expr in context.expr()){
-                argumetos.Add(Visit(expr));
+            foreach (var expr in context.expr())
+            {
+                ValueWrapper arg = Visit(expr);
+
+                // Verificar que el argumento no sea null
+                if (arg == null)
+                {
+                    throw new SemanticError($"ERROR: Uno de los argumentos de la llamada evaluó a null", context.Start);
+                }
+
+                argumentos.Add(arg);
             }
         }
 
         // validar tipos
 
         // validar cantidad de parametros:
-        if (context != null && argumetos.Count != invocable.Arity()){
-            throw new SemanticError($"ERROR: La cantidad de parametros es invalida --> {argumetos}", context.Start);
+        if (context != null && argumentos.Count != invocable.Arity())
+        {
+            throw new SemanticError($"ERROR: La función esperaba {invocable.Arity()} parámetros, pero se recibieron {argumentos.Count}", context.Start);
         }
 
-        return invocable.Invoke(argumetos, this);
+        try
+        {
+            return invocable.Invoke(argumentos, this);
+        }
+        catch (Exception e) when (!(e is SemanticError))
+        {
+            // Capturar excepciones inesperadas y convertirlas en SemanticError
+            throw new SemanticError($"ERROR: Ocurrió un error durante la llamada a la función: {e.Message}", context.Start);
+        }
     }
+
+
+
+    /*
+        ---> funciones FORANEAS
+    */
+    public override ValueWrapper VisitFuncionDcl(LanguageParser.FuncionDclContext context)
+    {
+        var nuevaFun = new FuncionForanea(entornoActual, context); // crear la funcion
+       
+        // nombre de la funcion // un valor tipo Funcion // token de inicio 
+        entornoActual.Declaracion(context.ID().GetText(), new FuncionValue(nuevaFun, context.ID().GetText()), context.Start);
+       
+        return defaultValue;
+    }
+
+
+
+
 
 
 
@@ -730,9 +790,22 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         ValueWrapper left = Visit(context.expr(0));
         ValueWrapper right = Visit(context.expr(1));
-        
+
         var op = context.op.Text;
-        Console.WriteLine("---> operador: "+ op);
+        Console.WriteLine("---> operador: " + op);
+
+        // Comprobar que los operandos no sean null
+        if (left == null)
+        {
+            throw new SemanticError($"ERROR: El operando izquierdo de {context.op.Text} es nulo", context.Start);
+        }
+
+        if (right == null)
+        {
+            throw new SemanticError($"ERROR: El operando derecho de {context.op.Text} es nulo", context.Start);
+        }
+
+
 
         switch (op)
         {
@@ -787,10 +860,9 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
                 }
 
             default:
-                throw new SemanticError($"ERROR: Operador {op} valido.", context.Start);
+                throw new SemanticError($"ERROR: Operador no reconocido {context.op.Text}", context.Start);
         }
     }
-
 
 
     // Negación unitaria 
@@ -839,6 +911,10 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
         ValueWrapper left = Visit(context.expr(0));
         ValueWrapper right = Visit(context.expr(1));
+
+        if (left == null || right == null) {
+        throw new SemanticError($"ERROR: Operando nulo en comparación {context.op.Text}", context.Start);
+    }
         
         var op = context.op.Text;
         Console.WriteLine("---> operador: "+ op);

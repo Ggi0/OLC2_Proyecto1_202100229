@@ -1,0 +1,228 @@
+
+
+using analyzer;
+
+/*
+
+    Clousure --> es una función que "recuerda" el entorno donde fue creada, 
+                 incluso después de que ese entorno ha dejado de existir.
+
+*/
+public class FuncionForanea : Invocable{
+    
+    private Entorno clousure;
+    private LanguageParser.FuncionDclContext context; // contexto de la funcion --> cuerpo -> se ejecuta en la llamada y no en la declaracion
+    private string tipoRetorno; // Almacena el tipo de retorno esperado de la función
+
+    // constructor
+    public FuncionForanea(Entorno clousure, LanguageParser.FuncionDclContext context){
+        this.clousure =  clousure; // --> en que contexto padre estaba viviendo la funcion cuando se declaro
+        this.context = context;  // el contexto que tiene el "nodo" del ast
+
+        // Determinar el tipo de retorno... si existe
+        this.tipoRetorno = context.tiposD() != null ? context.tiposD().GetText() : null;
+    }
+
+
+    // Numero de parametros que tiene definida la funcion 
+    public int Arity(){
+        
+        if (context.parametrosF() ==  null){ // es posible que no vengan parametros
+            return 0;
+        }
+        return context.parametrosF().ID().Length; // --> cuantos IDs vienen (parametrosF: ID tiposD (COMMA ID tiposD)*)
+    }
+
+
+    private void ValidarTiposParametros(List<ValueWrapper> args) {
+        if (context.parametrosF() == null) return;
+        
+        // Para cada parámetro definido, comprobar si el tipo del argumento correspondiente es compatible
+        for (int i = 0; i < context.parametrosF().ID().Length; i++) {
+            var tipoParametro = context.parametrosF().tiposD(i).GetText();
+            var argumento = args[i];
+            
+            // Validación de tipos (simplificada)
+            bool compatible = false;
+            
+            switch (tipoParametro) {
+                case "int":
+                    compatible = argumento is IntValue;
+                    break;
+                case "float64":
+                    compatible = argumento is FloatValue || argumento is IntValue; // Conversión implícita int -> float64
+                    break;
+                case "string":
+                    compatible = argumento is StringValue;
+                    break;
+                case "bool":
+                    compatible = argumento is BoolValue;
+                    break;
+                case "rune":
+                    compatible = argumento is RuneValue;
+                    break;
+            }
+            
+            if (!compatible) {
+                throw new SemanticError($"ERROR: El parámetro '{context.parametrosF().ID(i).GetText()}' espera un valor de tipo '{tipoParametro}', pero se recibió {argumento.GetType().Name}", context.Start);
+            }
+        }
+    }
+
+
+    // Verifica que el valor de retorno coincida con el tipo esperado
+    private ValueWrapper ValidarTipoRetorno(ValueWrapper valorRetorno)
+    {
+
+        if (valorRetorno == null)
+        {
+            throw new SemanticError($"ERROR: El valor de retorno es nulo", context.Start);
+        }
+
+        if (tipoRetorno == null)
+        {
+            // Si no hay tipo de retorno definido, no debería devolver un valor (excepto void)
+            if (!(valorRetorno is VoidValue))
+            {
+                throw new SemanticError($"ERROR: La función no tiene tipo de retorno definido pero está intentando retornar un valor de tipo {valorRetorno.GetType().Name}", context.Start);
+            }
+            return valorRetorno;
+        }
+
+        // Comprobar que el tipo del valor de retorno sea compatible con el tipo definido
+        bool compatible = false;
+        
+        switch (tipoRetorno) {
+            case "int":
+                compatible = valorRetorno is IntValue;
+                break;
+            case "float64":
+                compatible = valorRetorno is FloatValue || valorRetorno is IntValue; // Conversión implícita int -> float64
+                break;
+            case "string":
+                compatible = valorRetorno is StringValue;
+                break;
+            case "bool":
+                compatible = valorRetorno is BoolValue;
+                break;
+            case "rune":
+                compatible = valorRetorno is RuneValue;
+                break;
+        }
+        
+        if (!compatible) {
+            throw new SemanticError($"ERROR: La función debe retornar un valor de tipo '{tipoRetorno}', pero se está retornando un valor de tipo {valorRetorno.GetType().Name}", context.Start);
+        }
+        
+        // Realizar conversión implícita si es necesario (int -> float64)
+        if (tipoRetorno == "float64" && valorRetorno is IntValue intValue) {
+            return new FloatValue(intValue.Value);
+        }
+        
+        return valorRetorno;
+    }
+
+
+    
+
+     public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor){
+
+        // Validar cantidad de parámetros
+        if (Arity() != args.Count) {
+            throw new SemanticError($"ERROR: La función esperaba {Arity()} parámetros, pero se recibieron {args.Count}", context.Start);
+        }
+
+        // Validar tipos de parámetros
+        ValidarTiposParametros(args);
+        
+        // 1) nuevo entorno --> en donde viviran los parametros de la funcion
+        var nuevoENV = new Entorno(clousure); // --> el padre es el clousere --> entorno que encierra a la funcion
+        var beforeCallEnv = visitor.entornoActual; // --> antes de la llamada en que entorno estabamos
+
+        Console.WriteLine("\t ---> nuevo Entorno para la FUNCION <---");
+        visitor.entornoActual = nuevoENV; // cambiar al nuevo entorno
+
+        // 2) ir asignando a cada uno de los parametros con un argumento
+        if (context.parametrosF() != null)
+        { 
+            Console.WriteLine($"Si hay parametros y son: {context.parametrosF().ID().Length} ");
+            // SI hay parametros
+            // recorrerlos y declararlos
+            for (int i = 0; i < context.parametrosF().ID().Length; i++)
+            {
+                // public void Declaracion(string id, ValueWrapper value, Antlr4.Runtime.IToken? token)
+                // --> ID --> nombre
+                // --> valor --> List<ValueWrapper> args
+                // --> el token donde inicia
+                nuevoENV.Declaracion(context.parametrosF().ID(i).GetText(), args[i], null);
+            }
+        }
+
+        ValueWrapper result = visitor.defaultValue; // Inicializar con el valor por defecto
+
+        // ya que dentro de la funcion puede venir un return hay que capturarlo
+        try
+        {
+            // ejecutar las instrucciones de la funcion
+            foreach(var instruccion in context.dcl()){
+                visitor.Visit(instruccion);
+            }
+
+            // Si llegamos aquí y no hubo return pero la función debe retornar un valor, es un error
+            if (tipoRetorno != null && tipoRetorno != "void") {
+                throw new SemanticError($"ERROR: La función debe retornar un valor de tipo '{tipoRetorno}'", context.Start);
+            }
+
+            return visitor.defaultValue; // void
+
+        }catch (ReturnException e){
+            // Capturar el valor de retorno
+        result = e.Value;
+        
+        // Comprobar que no sea null
+        if (result == null) {
+            throw new SemanticError($"ERROR: La función '{context.ID().GetText()}' retornó un valor nulo", context.Start);
+        }
+        
+        // Debug
+        Console.WriteLine($"DEBUG: Valor capturado en ReturnException: {result}");
+        
+        // Validar el tipo
+        result = ValidarTipoRetorno(result);
+    }
+    finally {
+        // Restaurar el entorno anterior siempre
+        visitor.entornoActual = beforeCallEnv;
+    }
+
+    return result;
+            /*
+            // IMPORTANTE: Primero restaurar el entorno antes de validar
+            visitor.entornoActual = beforeCallEnv; // regresar al entorno en donde estaba antes de ejecutar la funcion
+
+            // Asegurarnos de que el valor no sea null
+            if (e.Value == null)
+            {
+                throw new SemanticError($"ERROR: La función '{context.ID().GetText()}' retornó un valor nulo", context.Start);
+            }
+
+
+            // Validar el tipo de retorno
+            ValueWrapper resultado = ValidarTipoRetorno(e.Value);
+            return resultado;
+        }
+        catch (Exception ex)
+        {
+            // Restaurar el entorno en caso de cualquier otra excepción
+            visitor.entornoActual = beforeCallEnv;
+            throw; // Re-lanzar la excepción original
+        }*/
+
+        //visitor.entornoActual = beforeCallEnv;
+        //return visitor.defaultValue; // no regreso nada (void)
+
+    }
+
+
+
+}

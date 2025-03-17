@@ -15,7 +15,7 @@ public class Embebidas{
         // Declarar referencia al valor --> la referencia se llama  time
         // retorna --> FuncionValue(new TimeEmbeded(), "time")
         // token  ---> null
-        env.DeclaracionVar("time", new FuncionValue(new TimeEmbeded(), "time"), null);
+        env.Declaracion("time", new FuncionValue(new TimeEmbeded(), "time"), null);
     }
 }
 

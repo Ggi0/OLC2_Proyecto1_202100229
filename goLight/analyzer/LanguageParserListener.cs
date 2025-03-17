@@ -88,6 +88,26 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitVarDcl3([NotNull] LanguageParser.VarDcl3Context context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.funcionDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFuncionDcl([NotNull] LanguageParser.FuncionDclContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.funcionDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFuncionDcl([NotNull] LanguageParser.FuncionDclContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.parametrosF"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParametrosF([NotNull] LanguageParser.ParametrosFContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.parametrosF"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParametrosF([NotNull] LanguageParser.ParametrosFContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
 	/// </summary>

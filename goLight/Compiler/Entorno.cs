@@ -11,7 +11,7 @@ public class Entorno{
     }
 
     // obtener una variable
-    public ValueWrapper GetVariable(string id, Antlr4.Runtime.IToken token)
+    public ValueWrapper Get(string id, Antlr4.Runtime.IToken token)
     {
         if (variables.ContainsKey(id))
         {
@@ -20,23 +20,24 @@ public class Entorno{
 
         if (parent != null)
         {
-            return parent.GetVariable(id, token);
+            return parent.Get(id, token);
         }
 
         throw new SemanticError($"ERROR: La variable {id} no existe", token);
     }
 
-    // DECLARACION
-    public void DeclaracionVar(string id, ValueWrapper value, Antlr4.Runtime.IToken? token)
+    // DECLARACION --> funciones, clases  y variables
+    public void Declaracion(string id, ValueWrapper value, Antlr4.Runtime.IToken? token)
     {
         if (variables.ContainsKey(id)){
             if (token != null) throw new SemanticError($"ERROR: Declaracion, la variable  {id} ya existe", token);
         }else{
+            Console.WriteLine($"Declaracion correcta -> id: {id}, valor: {value}");
             variables[id] = value;
         }
     }
 
-    public ValueWrapper AsignarVar(string id, ValueWrapper valorNuevo, string op, Antlr4.Runtime.IToken token)
+    public ValueWrapper Asignacion(string id, ValueWrapper valorNuevo, string op, Antlr4.Runtime.IToken token)
     {
         // Buscar la variable en el entorno actual
         if (variables.ContainsKey(id))
@@ -101,7 +102,7 @@ public class Entorno{
         // Si no está en el entorno actual, buscar en el entorno padre
         if (parent != null)
         {
-            return parent.AsignarVar(id, valorNuevo, op, token);
+            return parent.Asignacion(id, valorNuevo, op, token);
         }
 
         throw new SemanticError($"ERROR: No se puede ASIGNAR el valor a la variable \"{id}\" porque no existe.", token);

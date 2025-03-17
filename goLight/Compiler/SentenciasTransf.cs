@@ -22,6 +22,10 @@ public class ReturnException : Exception
     public ValueWrapper Value { get; }
 
     public ReturnException(ValueWrapper value) : base("Return statement"){
+        Value = value;  // Asegúrate de que esta asignación esté presente
+        
+        // Para depuración
+        Console.WriteLine($"DEBUG: ReturnException creada con valor: {value}");
 
     }
 
