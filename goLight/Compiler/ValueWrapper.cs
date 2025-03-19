@@ -27,5 +27,10 @@ public record InstanciaValue(Instancia instancia) : ValueWrapper;
 public record ClassValue(StructsDef structsDef) : ValueWrapper;
 
 
+/*
 
+Clave: nombre del atributo
+Valor: (nombre del tipo, esStruct), donde esStruct es un booleano que indica si el tipo es un struct o un tipo primitivo.
 
+*/
+public record StructValue(string Nombre, Dictionary<string, (string, bool)> Atributos) : ValueWrapper;

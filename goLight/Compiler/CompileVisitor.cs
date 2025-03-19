@@ -682,11 +682,91 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
 
 
-    //       -----------> CLASES <-----------
+    //       -----------> STRUCTS <-----------
     /*
-        esto se convertira en los structs
+        ---> declaracion basica:
+        
+        type <NombreStruct> struct 
+        { 
+            <NombreAtributo1> <Tipo1>  
+            <NombreAtributo2> <Tipo2> 
+            <NombreAtributo3> <Tipo3> 
+        }
+
+        los tipos pueden ser:
+            int, string, float64, bool, rune o struct
+
     */
 
+public override ValueWrapper VisitStructDcl(LanguageParser.StructDclContext context) {
+    Console.WriteLine($"Procesando declaración de struct: {context.ID().GetText()}");
+    
+    // Verificar que el struct tenga al menos un atributo de lo contrario es un error
+    if (context.atriBody().Length == 0) {
+        throw new SemanticError($"Error: El struct '{context.ID().GetText()}' debe tener al menos un atributo", context.Start);
+    }
+    
+    // Elementos necesarios para el struct
+    Dictionary<string, (string, bool)> atributos = new Dictionary<string, (string, bool)>();
+    
+    // Recorrer los atributos del struct
+    foreach (var atributo in context.atriBody()) {
+        string nombreAtributo = atributo.ID(0).GetText(); // El primer ID es el nombre del atributo
+        
+        // Validar que el atributo no esté duplicado
+        if (atributos.ContainsKey(nombreAtributo)) {
+            throw new SemanticError($"Error: El atributo '{nombreAtributo}' ya está definido en el struct '{context.ID().GetText()}'", context.Start);
+        }
+        
+        // Determinar el tipo y si es un struct
+        string tipoAtributo;
+        bool esStruct = false; // solo una bandera la validacion sera en el uso del mismo
+        
+        if (atributo.tiposD() != null) {
+            // Es un tipo primitivo
+            tipoAtributo = atributo.tiposD().GetText();
+            esStruct = false;
+        } else if (atributo.ID().Length > 1) { // si hay más de un ID en la regla
+            // Es un ID (otro struct) ---> aquie no estoy validando que este id tenga ya el tipo Struct, unicamente lo estoy asumindo
+            tipoAtributo = atributo.ID(1).GetText();
+            esStruct = true;
+
+            // Verificar que exista y sea un struct
+            try {
+                ValueWrapper tipoValor = entornoActual.Get(tipoAtributo, atributo.Start);
+                if (!(tipoValor is StructValue)) {
+                    throw new SemanticError($"Error: El tipo '{tipoAtributo}' del atributo '{nombreAtributo}' debe ser un struct", atributo.Start);
+                }
+            } catch (SemanticError) {
+                // Si no existe, lanzar un error
+                throw new SemanticError($"Error: El tipo '{tipoAtributo}' del atributo '{nombreAtributo}' no está definido", atributo.Start);
+            }
+
+        } else {
+            throw new SemanticError($"Error: No se pudo determinar el tipo del atributo '{nombreAtributo}'", atributo.Start);
+        }
+        
+        Console.WriteLine($"\t Atributo: {nombreAtributo}, Tipo: {tipoAtributo}, Es struct: {esStruct}");
+        
+        // Guardar el atributo
+        atributos.Add(nombreAtributo, (tipoAtributo, esStruct));
+    }
+    
+    // Crear el valor del struct
+    StructValue structValue = new StructValue(context.ID().GetText(), atributos);
+    
+    // Registrar el struct en el entorno actual
+    entornoActual.Declaracion(context.ID().GetText(), structValue, context.Start);
+    
+    Console.WriteLine($"Struct '{context.ID().GetText()}' declarado correctamente con {atributos.Count} atributos");
+    
+    return defaultValue;
+}
+
+
+/*
+
+para clases
     public override ValueWrapper VisitStructDcl(LanguageParser.StructDclContext context)
     {
         // elementos necesarios para el objeto de clase
@@ -698,7 +778,6 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         // recorrer el cuerpo de la clase (que sera el cuerpo del struct)
         foreach (var prop in context.stBody())
         { // si es una declaracion de funcion
-          //if (declaracion is LanguageParser.VarDcl1Context idDeclaracion)
             if (prop.varDcl() != null)
             {
                 var vardcl = prop.varDcl();
@@ -730,7 +809,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
     }
 
-
+*/
 
     // para las instancias --> llamar al constructo o a la clase para saber si es algo invocable
     public override ValueWrapper VisitNewInstan( LanguageParser.NewInstanContext context)

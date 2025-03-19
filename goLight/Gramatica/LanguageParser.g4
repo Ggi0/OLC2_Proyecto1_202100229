@@ -20,10 +20,10 @@ parametrosF: ID tiposD (COMMA ID tiposD)*
 ;
 
 // -------- structs declaracion ---------------
-structDcl : STTYPE ID STRUCT LBRACE stBody* RBRACE 
+structDcl : STTYPE ID STRUCT LBRACE atriBody* RBRACE 
 ;
 
-stBody : varDcl | funcionDcl
+atriBody : ID (tiposD | ID)
 ;
 
 statement: expr (SEMICOLON)?                                         # ExprStmt
