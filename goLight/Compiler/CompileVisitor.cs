@@ -1,5 +1,7 @@
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Reflection.Metadata;
+using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using analyzer;
@@ -179,16 +181,119 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         asignaciones VARIABLES
         Inmutabilidad del tipo: Una variable puede cambiar su valor, pero su tipo no puede ser modificado una vez declarado.
         Si una variable ya existe, su valor puede ser actualizado, pero el nuevo valor debe ser del mismo tipo que el original.
+
+        
+        expr op=(IGUAL | ASIGSUM | ASIGMIN) expr
+        expr(0) --> en donde lo voy asignar (ID o llamada --> una llamada.context)
+        expr(1) --> lo que voy asignar
+
     */
     public override ValueWrapper VisitAssignVar(LanguageParser.AssignVarContext context)
     {
+        /*
+        
         // retornara lo asignado
         string id = context.ID().GetText(); // obtener nombre de la variable
         Console.WriteLine(context.expr());
         ValueWrapper value = Visit(context.expr()); // obtener el valor de la variable
-       
+
+        */
+
+        var asignee = context.expr(0);
+        ValueWrapper value = Visit(context.expr(1));
+
         var op = context.op.Text;
         Console.WriteLine("---> operador asig: "+ op);
+
+        // asignee es un ID?
+        if (asignee is LanguageParser.IdentifierContext idContext){
+            // ASIGNACION normal
+            string id = idContext.ID().GetText();
+            
+            return entornoActual.Asignacion(id, value, op, context.Start); // retornar valor
+
+        }
+        else if (asignee is LanguageParser.LlamadaContext llamadaContext)
+        {
+            ValueWrapper llamadaEmb = Visit(llamadaContext.expr()); // lo primero que se debe resolver
+
+            // Verificar que el resultado de la expresión no sea null
+            if (llamadaEmb == null)
+            {
+                throw new SemanticError($"ERROR: La expresión de la llamada evaluó a null", context.Start);
+            }
+
+            // recorrer cada llamada:
+            for (int i = 0; i<llamadaContext.call().Length; i++)
+            {
+                var action = llamadaContext.call(i);
+
+                // verificar si estamos en la ultima interacion
+                if (i == llamadaContext.call().Length - 1)
+                {
+                    if (action is LanguageParser.GetAtrContext porpertyAccess)
+                    {
+                        if (llamadaEmb is InstanciaValue instanciaValue)
+                        {
+                            var intancia = instanciaValue.instancia;
+                            var propertyName = porpertyAccess.ID().GetText();
+                            intancia.Set(propertyName, value); // guardar justo la ultima interacion del recorrido de acciones
+                        }
+                        else
+                        {
+                            throw new SemanticError($"ERROR: La INSTANCIACION es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
+                        }
+                    }else{
+                        throw new SemanticError ($"ERROR: Asignacion invalida", context.Start);
+                    }
+                }
+
+                // si es una llamada a funcion:
+                if (action is LanguageParser.FuncCallContext funcall)
+                {
+                    if (llamadaEmb is FuncionValue funtionValue)
+                    {
+                        // CAMBIO: esta parte no siempre van a ser parametros, sino tambien accesos a propiedades
+                        llamadaEmb = VisitCall(funtionValue.invocable, funcall.parametros());
+                        // Verificar que el resultado de la llamada no sea null
+                        if (llamadaEmb == null)
+                        {
+                            throw new SemanticError($"ERROR: La llamada a la función {funtionValue.name} retornó null", context.Start);
+                        }
+                    }
+                    else
+                    {
+                        throw new SemanticError($"ERROR: La llamada es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
+                    }
+
+                }
+
+                else if (action is LanguageParser.GetAtrContext porpertyAccess)
+                {
+                    if (llamadaEmb is InstanciaValue instanciaValue)
+                    {
+                        llamadaEmb = instanciaValue.instancia.Get(porpertyAccess.ID().GetText(), porpertyAccess.Start);
+                    }
+                    else
+                    {
+                        throw new SemanticError($"ERROR: La INSTANCIACION es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
+                    }
+                }
+
+            }
+
+            return llamadaEmb;
+
+        }
+        else
+        {
+            throw new SemanticError($"ERROR: asignacion invalida para {asignee.GetText} .", context.Start);
+        }
+        
+       
+        
+
+
         
         /*if (value.Equals(null) && (!op.Equals("++") || !op.Equals("--")))
         {
@@ -196,7 +301,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
             throw new Exception($"ERROR: Para la asignacion {op} sea valida se le debe asignar un valor");
         }*/
 
-        return entornoActual.Asignacion(id, value, op, context.Start);
+        //return entornoActual.Asignacion(id, value, op, context.Start);
     }
 
     public override ValueWrapper VisitUpdateVar(LanguageParser.UpdateVarContext context)
@@ -577,6 +682,83 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
 
 
 
+    //       -----------> CLASES <-----------
+    /*
+        esto se convertira en los structs
+    */
+
+    public override ValueWrapper VisitStructDcl(LanguageParser.StructDclContext context)
+    {
+        // elementos necesarios para el objeto de clase
+        Dictionary<string, LanguageParser.VarDcl1Context> Atributos = new Dictionary<string, LanguageParser.VarDcl1Context>();
+        Dictionary<string, FuncionForanea> Methods = new Dictionary<string, FuncionForanea>();
+
+        //var asignee = Visit();
+
+        // recorrer el cuerpo de la clase (que sera el cuerpo del struct)
+        foreach (var prop in context.stBody())
+        { // si es una declaracion de funcion
+          //if (declaracion is LanguageParser.VarDcl1Context idDeclaracion)
+            if (prop.varDcl() != null)
+            {
+                var vardcl = prop.varDcl();
+
+                // Verifica si pertenece a la producción varDcl1Context
+                if (vardcl is LanguageParser.VarDcl1Context varDcl1Context)
+                {
+                    // Obtiene el ID de la producción varDcl1
+                    var id = varDcl1Context.ID().GetText();
+                    Atributos.Add(id, varDcl1Context);
+                }
+            }
+            else if (prop.funcionDcl() != null)
+            { // si es una declaracion de funcion
+                var funcDcl = prop.funcionDcl();
+                var FuncionForanea = new FuncionForanea(entornoActual, funcDcl);
+                Methods.Add(funcDcl.ID().GetText(), FuncionForanea);
+            }
+
+
+
+        }
+
+        // los structs no tiene construcctor
+        StructsDef structsDef = new StructsDef(context.ID().GetText(), Atributos, Methods);
+        entornoActual.Declaracion(context.ID().GetText(), new ClassValue(structsDef), context.Start);
+        return defaultValue;
+
+
+    }
+
+
+
+    // para las instancias --> llamar al constructo o a la clase para saber si es algo invocable
+    public override ValueWrapper VisitNewInstan( LanguageParser.NewInstanContext context)
+    {
+        // buscamos la clase que instaciamos en el entorno actual
+        ValueWrapper classValue = entornoActual.Get(context.ID().GetText(), context.Start);
+
+        // si no es de tipo Clase es un error (no se puede instanciar algo que no es una clase)
+        if(classValue is not ClassValue){
+            throw new SemanticError("ERROR: Instancia de clase Invalida", context.Start);
+
+        }
+
+        // recorrer los argumentos
+        List<ValueWrapper> arguments = new List<ValueWrapper>();
+        if(context.parametros() != null){
+            foreach(var arg in context.parametros().expr()){
+                arguments.Add(Visit(arg));
+            }
+        }
+
+        var instancia = ((ClassValue)classValue).structsDef.Invoke(arguments, this);
+
+        return instancia;
+    }
+
+
+
     //       -----------> FUNCIONES <-----------
 
     /*
@@ -599,7 +781,7 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     */
     public override ValueWrapper VisitLlamada(LanguageParser.LlamadaContext context)
     {
-        ValueWrapper llamadaEmb = Visit(context.expr());
+        ValueWrapper llamadaEmb = Visit(context.expr()); // lo primero que se debe resolver
 
         // Verificar que el resultado de la expresión no sea null
         if (llamadaEmb == null)
@@ -608,21 +790,37 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         }
 
         // recorrer cada llamada:
-        foreach (var llamada in context.call())
+        foreach (var action in context.call())
         {
-            if (llamadaEmb is FuncionValue funtionValue)
+            // si es una llamada a funcion:
+            if (action is LanguageParser.FuncCallContext funcall)
             {
-                llamadaEmb = VisitCall(funtionValue.invocable, llamada.parametros());
-                // Verificar que el resultado de la llamada no sea null
-                if (llamadaEmb == null)
+                if (llamadaEmb is FuncionValue funtionValue)
                 {
-                    throw new SemanticError($"ERROR: La llamada a la función {funtionValue.name} retornó null", context.Start);
+                    // CAMBIO: esta parte no siempre van a ser parametros, sino tambien accesos a propiedades
+                    llamadaEmb = VisitCall(funtionValue.invocable, funcall.parametros());
+                    // Verificar que el resultado de la llamada no sea null
+                    if (llamadaEmb == null)
+                    {
+                        throw new SemanticError($"ERROR: La llamada a la función {funtionValue.name} retornó null", context.Start);
+                    }
+                }
+                else
+                {
+                    throw new SemanticError($"ERROR: La llamada es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
+                }
+
+            }
+
+            else if(action is LanguageParser.GetAtrContext porpertyAccess){
+                if (llamadaEmb is InstanciaValue instanciaValue){
+                    llamadaEmb = instanciaValue.instancia.Get(porpertyAccess.ID().GetText(), porpertyAccess.Start);
+                }else
+                {
+                    throw new SemanticError($"ERROR: La INSTANCIACION es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
                 }
             }
-            else
-            {
-                throw new SemanticError($"ERROR: La llamada es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
-            }
+
         }
 
         return llamadaEmb;
@@ -693,11 +891,13 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     */
     public override ValueWrapper VisitFuncionDcl(LanguageParser.FuncionDclContext context)
     {
+        Console.WriteLine("\t --> funcion {");
+        
         var nuevaFun = new FuncionForanea(entornoActual, context); // crear la funcion
-       
         // nombre de la funcion // un valor tipo Funcion // token de inicio 
         entornoActual.Declaracion(context.ID().GetText(), new FuncionValue(nuevaFun, context.ID().GetText()), context.Start);
-       
+        
+        Console.WriteLine("\t -->         }");
         return defaultValue;
     }
 
@@ -720,6 +920,17 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
         
         var op = context.op.Text;
         Console.WriteLine("---> operador: "+ op);
+
+        // Comprobar que los operandos no sean null
+        if (left == null)
+        {
+            throw new SemanticError($"ERROR: El operando izquierdo de {context.op.Text} es nulo", context.Start);
+        }
+
+        if (right == null)
+        {
+            throw new SemanticError($"ERROR: El operando derecho de {context.op.Text} es nulo", context.Start);
+        }
 
         switch (op)
         {

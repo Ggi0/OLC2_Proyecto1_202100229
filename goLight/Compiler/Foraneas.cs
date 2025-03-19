@@ -135,6 +135,7 @@ public class FuncionForanea : Invocable{
     
     */
      public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor){
+        Console.WriteLine("\t -> iniciando procesado de la funcion: ");
 
         // Validar cantidad de parámetros
         if (Arity() != args.Count) {
@@ -206,6 +207,7 @@ public class FuncionForanea : Invocable{
         }
         finally
         {
+            Console.WriteLine("\t    finalizando proceso funcion <--");
             // Restaurar el entorno anterior siempre
             visitor.entornoActual = beforeCallEnv;
         }
@@ -239,5 +241,15 @@ public class FuncionForanea : Invocable{
     }
 
 
+    // En Funciones foraneas vamos a validar que exita el THIS. algo
+    // sera como una copia de la funcion pero en donde exista el this.
+    public FuncionForanea Bind(Instancia instancia){
+        // entorno oculto --> el entorno padre es el clousure
+        // para esto usar un ValueWrapper tipo instancia.
+        var entornoOculto = new Entorno(clousure);
+        entornoOculto.Declaracion("this", new InstanciaValue(instancia), null);
+        return new FuncionForanea(entornoOculto, context); // una nueva copia pero se le cambia el entorno
+
+    }
 
 }

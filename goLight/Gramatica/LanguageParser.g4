@@ -4,10 +4,8 @@ options { tokenVocab=LanguageLexer; }  // Importa los tokens del lexer
 
 program: dcl*;
 
-dcl: varDcl // |classDcl | structDcl
-    | funcionDcl 
-    | statement // stamtement No declarativo
-
+// |classDcl | structDcl
+dcl: varDcl | funcionDcl | statement | structDcl // stamtement No declarativo
 ;
 
 varDcl: VAR ID tiposD IGUAL expr SEMICOLON # varDcl1
@@ -19,6 +17,13 @@ funcionDcl: STFUNC ID LPAREN parametrosF? RPAREN tiposD? LBRACE dcl* RBRACE
 ;
 
 parametrosF: ID tiposD (COMMA ID tiposD)*
+;
+
+// -------- structs declaracion ---------------
+structDcl : STTYPE ID STRUCT LBRACE stBody* RBRACE 
+;
+
+stBody : varDcl | funcionDcl
 ;
 
 statement: expr (SEMICOLON)?                                         # ExprStmt
@@ -52,18 +57,20 @@ expr:
     | expr op=(EQUALS | DIFF) expr                       # Comparation
     | expr AND expr                                      # And
     | expr OR expr                                       # Or
+    | expr op=(IGUAL | ASIGSUM | ASIGMIN) expr             # AssignVar // estoy cambiando el ID por un expr --> para las llamadas
+    | ID op=(INCREMENTO |DECREMENTO)                     # UpdateVar
     | INT                                                # Int
     | FLOAT                                              # Float
     | STRING                                             # String
     | BOOL                                               # Bool
     | RUNE                                               # Rune
-    | ID op=(IGUAL | ASIGSUM | ASIGMIN) expr             # AssignVar 
-    | ID op=(INCREMENTO |DECREMENTO)                     # UpdateVar
+    | NUEVO ID LPAREN parametros? RPAREN # NewInstan // hacer la instacia de una clase -> id hace referencia a la clase
     | ID                                                 # Identifier
     | LPAREN expr RPAREN                                 # Parens
 ;
 
-call: LPAREN parametros? RPAREN
+// declaracion de funcion    o    acceso a una propiedad por punto
+call: LPAREN parametros? RPAREN # FuncCall | DOT ID # GetAtr
 ;
 
 parametros: expr (COMMA expr)*

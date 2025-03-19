@@ -65,7 +65,12 @@ STBREAK    : 'break'    ;
 STCONTINUE : 'continue' ;
 STRETURN   : 'return'   ;
 
-STFUNC : 'func' ;
+STFUNC : 'func'   ;
+
+STRUCT : 'struct' ;
+STTYPE : 'type'   ;
+NUEVO  : 'new' ;
+
 
 // --------- VALORES de datos ------------
 INT: [0-9]+;              // entero

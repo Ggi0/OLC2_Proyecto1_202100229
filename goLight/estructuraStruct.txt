@@ -1,0 +1,94 @@
+
+
+Declaracion basica:
+
+type <NombreStruct> struct 
+{ 
+    <NombreAtributo1> <Tipo1>  
+    <NombreAtributo2> <Tipo2> 
+    <NombreAtributo3> <Tipo3> 
+}
+
+los tipos pueden ser:
+    int, string, float64, bool, rune o struct
+
+Asignacion basica:
+1) var <variableNombre> <NombreStruct>
+    aquí <variableNombre> sería una instanciacion del struct, tambien puede verse como la Inicialización de la variable, pero yo le voy a dar un enfoque de instancia.
+
+2) <variableNombre> := <NombreStruct>{ 
+        <NombreAtributo1>: <Valor1>, 
+        <NombreAtributo2>: <Valor2>,  
+        <NombreAtributo3>: <Valor3>, 
+        ... 
+    }
+    aquí <variableNombre> es una instancia del struct por lo tanto puede acceder a sus valores para asignarles un valor.
+
+3) var <variableNombre> <NombreStruct>  --> primero la instancia
+   <variableNombre>.<NombreAtributo1> = <Valor1>  
+   <variableNombre>.<NombreAtributo2> = <Valor2> 
+   <variableNombre>.<NombreAtributo3> = <Valor3> 
+   esta es la Asignacion directa, donde <variableNombre> es una instancia del struct por lo tanto puede acceder a sus atributos por medio de operador `.`
+
+4) para struct anidados hay 2 formas:
+
+    type nombre1 struct 
+    { 
+        <NombreAtributo1> <Tipo1>  
+        <NombreAtributo2> <Tipo2> 
+        <NombreAtributo3> <Tipo3> 
+    }
+
+    type StructPrincipal struct 
+    { 
+        <NombreAtributo1> <Tipo1>  
+        <NombreAtributo2> nombre1
+        <NombreAtributo3> <Tipo3> 
+    }
+
+    variableStructAnidado := nombre1
+    {
+        Atributo1: Valor1,
+        Atributo2: Valor2,
+        // ... otros atributos
+    }
+
+    variableStructPrincipal := StructPrincipal
+    {
+        <NombreAtributo1>: ValorPrincipal1,
+        <NombreAtributo2>: variableStructAnidado, // Asignación del struct anidado
+        // ... otros atributos
+    }
+
+La segunda forma para acceder a struct anidados es:
+
+variableStructPrincipal := StructPrincipal{
+    
+    AtributoPrincipal1: ValorPrincipal1,
+    
+    AtributoPrincipal2: StructAnidado{ // Asignación directa del struct anidado
+        Atributo1: Valor1,
+        Atributo2: Valor2,
+        // ... otros atributos
+    },
+
+    // ... otros atributos
+} 
+
+Acceso a los atributos basico:
+
+    1) <NombreStruct>.<NombreAtributo1>
+
+    para structs anidados:
+    <NombreStruct>.<NombreAtributo1>.<AtributoAnidado>
+
+
+Funciones de Struct
+
+Go permite asociar funciones a structs, las cuales siempre operan por referencia:
+
+    func (<ReferenciaStruct> <NombreStruct>) <NombreFuncion>(<Parámetros>) <TipoRetorno> {
+    // Implementación
+    }
+
+    miInstancia.<NombreFuncion>(<Argumentos>);

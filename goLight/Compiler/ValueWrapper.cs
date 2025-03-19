@@ -21,6 +21,11 @@ public record VoidValue : ValueWrapper;
 // FuncionValue envuelve un Invocable, lo que significa que cualquier Invocable (como FuncionForanea) se almacena como ValueWrapper
 public record FuncionValue(Invocable invocable, string name) : ValueWrapper;
 
+public record InstanciaValue(Instancia instancia) : ValueWrapper;
+
+// valor para las clases --> que se volvera para las structs
+public record ClassValue(StructsDef structsDef) : ValueWrapper;
+
 
 
 
