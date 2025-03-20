@@ -8,7 +8,8 @@ program: dcl*;
 dcl: varDcl | funcionDcl | statement | structDcl // stamtement No declarativo
 ;
 
-varDcl: VAR ID tiposD IGUAL expr SEMICOLON # varDcl1
+varDcl: VAR ID ID SEMICOLON                 # varDclStruct //La producción varDclStruct manejará la declaración de variables de tipo struct
+        |VAR ID tiposD IGUAL expr SEMICOLON # varDcl1
         | VAR ID tiposD SEMICOLON          # varDcl2
         | ID DCLIMPL expr SEMICOLON        # varDcl3
 ;
@@ -59,6 +60,7 @@ expr:
     | expr OR expr                                       # Or
     | expr op=(IGUAL | ASIGSUM | ASIGMIN) expr             # AssignVar // estoy cambiando el ID por un expr --> para las llamadas
     | ID op=(INCREMENTO |DECREMENTO)                     # UpdateVar
+    | ID DCLIMPL ID LBRACE (initAttr COMMA (initAttr COMMA )*)* RBRACE  # NewStructInit //manejará la inicialización con valores
     | INT                                                # Int
     | FLOAT                                              # Float
     | STRING                                             # String
@@ -75,6 +77,10 @@ call: LPAREN parametros? RPAREN # FuncCall | DOT ID # GetAtr
 
 parametros: expr (COMMA expr)*
 ;
+
+
+// Inicialización de un atributo
+initAttr: ID COLON expr;
 
 tiposD: T_INT
         |T_FLOAT

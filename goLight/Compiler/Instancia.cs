@@ -1,32 +1,62 @@
 //instancia a la clase --> struct
 
 // una instancia solo guarda las propiedades y las referecias a la clase
+// Representa una instancia de un struct en memoria
+
 
 public class Instancia{
 
-    // propiedades
-    // 1) una referencia a la clase --> cada instancia parte de una clase
-    private StructsDef structsDef;
-
-    // 2) un diccionario --> de propiedades
-    private Dictionary<string, ValueWrapper> Propiedades;
+    // Nombre del tipo de struct al que pertenece esta instancia
+    private string typeName;
+    
+    // Diccionario que almacena los valores de los atributos
+    private Dictionary<string, ValueWrapper> values;
 
     // constructor --> a que clase pertenece esta Instancia
-    public Instancia( StructsDef structsDef){
+    public Instancia(string typeName, Dictionary<string, ValueWrapper> values) {
         // 1) lo ejecuta a que clase pertenece
-        this.structsDef = structsDef; 
+        this.typeName = typeName;
 
         // 2) genera un entorno limpio, diccionario de que propiedades tiene
-        Propiedades = new Dictionary<string, ValueWrapper>();
+        this.values = values;
     }
 
-    // el equivalente a asignar dentro de la instacia sera el metodo SET
-    public void Set(string name, ValueWrapper value){
-        // Guardame en tal punto el valor
-        Propiedades[name] = value;
+    // Método para obtener un atributo
+    // name -->  Nombre del atributo 
+    // token --> Token para el error, si ocurre
+    // regresa valor de atributos
+    public ValueWrapper Get(string name, Antlr4.Runtime.IToken token) {
+        // Si el atributo existe, devolver su valor
+        if (values.ContainsKey(name)) {
+            return values[name];
+        }
+        
+        // Si no existe, lanzar un error semántico
+        throw new SemanticError($"ERROR: El atributo '{name}' no existe en el struct '{typeName}'", token);
     }
 
-    public ValueWrapper Get(string name, Antlr4.Runtime.IToken token){
+    /* Método para establecer un atributo
+    
+    name  -->  Nombre del atributo
+    value -->  Nuevo valor
+
+    */
+    public void Set(string name, ValueWrapper value) {
+        // Guardar el valor en el diccionario
+        values[name] = value;
+    }
+
+    /*
+    Obtiene el nombre del tipo de struct
+    regresa : Nombre del tipo
+    */
+    public string GetTypeName() {
+        return typeName;
+    }
+
+   
+
+    /*public ValueWrapper Get(string name, Antlr4.Runtime.IToken token){
         if(Propiedades.ContainsKey(name)){
             return Propiedades[name];
         }
@@ -38,7 +68,7 @@ public class Instancia{
         }
         // sino es una propiedad y no es un metodo es un error
         throw new SemanticError($"La propiedad: {name} no ha sido encontrada", token);
-    }
+    }*/
 
 
 }
