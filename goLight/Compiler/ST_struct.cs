@@ -13,14 +13,14 @@ public class StructsDef : Invocable
 
     // un Diccionario --> nombre de la propiedad y que es lo que hace referencia (el contexto de la declaracion de la variable)
     // Para cada atributo, guardamos su tipo y un booleano que indica si es un struct
-    public Dictionary<string, (string, bool)> Atributos { get; set; }
+    public Dictionary<string, (string, bool, bool)> Atributos { get; set; }
     
     // Métodos asociados (se implementarán en el futuro)
     public Dictionary<string, FuncionForanea> Methods { get; set; }
     
     // Constructor
     // Constructor de la clase StructsDef
-    public StructsDef(string name, Dictionary<string, (string, bool)> atributos, Dictionary<string, FuncionForanea> methods) {
+    public StructsDef(string name, Dictionary<string, (string, bool, bool)> atributos, Dictionary<string, FuncionForanea> methods) {
         Name = name;         // Nombre del struct
         Atributos = atributos; // Atributos del struct
         Methods = methods;     // Métodos del struct (para implementación futura)
@@ -94,7 +94,7 @@ public class StructsDef : Invocable
 // Implementar el método Invoke para la instanciación
 // Método para crear una instancia del struct (implementa Invocable)
     public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor) {
-        Console.WriteLine($"Instanciando struct '{Name}'");
+        Console.WriteLine($"\t (struct) -->   Instanciando struct '{Name}'");
         
         // Crear un diccionario para los valores de los atributos
         Dictionary<string, ValueWrapper> atributosValores = new Dictionary<string, ValueWrapper>();
@@ -104,15 +104,24 @@ public class StructsDef : Invocable
             string nombreAtributo = atributo.Key;
             string tipoAtributo = atributo.Value.Item1;
             bool esStruct = atributo.Value.Item2;
-            
+            bool esPuntero = atributo.Value.Item3; 
+
             ValueWrapper valorDefecto;
             
             // Asignar valor por defecto según el tipo
-            if (!esStruct) {
+            if (esPuntero)
+            {
+                // Si es un puntero, inicializar con nil
+                Console.WriteLine($"\t (struct) -->   Inicializando puntero '{nombreAtributo}' con nil");
+                valorDefecto = new NilValue();
+            }
+            else if (!esStruct)
+            {
                 // Es un tipo primitivo
-                valorDefecto = tipoAtributo switch {
+                valorDefecto = tipoAtributo switch
+                {
                     "int" => new IntValue(0),
-                    "float64" => new FloatValue(0),
+                    "float64" => new FloatValue(0.0f),
                     "string" => new StringValue(""),
                     "bool" => new BoolValue(false),
                     "rune" => new RuneValue('\0'),
@@ -131,17 +140,25 @@ public class StructsDef : Invocable
                             string nombreAnidado = atributoAnidado.Key;
                             string tipoAnidado = atributoAnidado.Value.Item1;
                             bool esStructAnidado = atributoAnidado.Value.Item2;
-                            
+                            bool esPunteroAnidado = atributoAnidado.Value.Item3;
+
                             // Asignar valor por defecto
-                            ValueWrapper valorAnidado = !esStructAnidado ? 
-                                tipoAnidado switch {
-                                    "int" => new IntValue(0),
-                                    "float64" => new FloatValue(0),
-                                    "string" => new StringValue(""),
-                                    "bool" => new BoolValue(false),
-                                    "rune" => new RuneValue('\0'),
-                                    _ => visitor.defaultValue
-                                } : visitor.defaultValue;
+                        ValueWrapper valorAnidado;
+                        
+                        if (esPunteroAnidado) {
+                            valorAnidado = new NilValue();
+                        } else if (!esStructAnidado) {
+                            valorAnidado = tipoAnidado switch {
+                                "int" => new IntValue(0),
+                                "float64" => new FloatValue(0.0f),
+                                "string" => new StringValue(""),
+                                "bool" => new BoolValue(false),
+                                "rune" => new RuneValue('\0'),
+                                _ => visitor.defaultValue
+                            };
+                        } else {
+                            valorAnidado = visitor.defaultValue;
+                        }
                             
                             atributosAnidados.Add(nombreAnidado, valorAnidado);
                         }

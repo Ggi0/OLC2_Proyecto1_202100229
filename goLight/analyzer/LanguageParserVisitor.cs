@@ -236,6 +236,13 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitString([NotNull] LanguageParser.StringContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>ValorNulo</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitValorNulo([NotNull] LanguageParser.ValorNuloContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>Int</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>

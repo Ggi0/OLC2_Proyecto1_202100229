@@ -443,6 +443,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitString([NotNull] LanguageParser.StringContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ValorNulo</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterValorNulo([NotNull] LanguageParser.ValorNuloContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ValorNulo</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitValorNulo([NotNull] LanguageParser.ValorNuloContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Int</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>

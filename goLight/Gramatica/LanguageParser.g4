@@ -67,6 +67,7 @@ expr:
     | STRING                                             # String
     | BOOL                                               # Bool
     | RUNE                                               # Rune
+    | V_NULO # ValorNulo
     | NUEVO ID LPAREN parametros? RPAREN                 # NewInstan // hacer la instacia de una clase -> id hace referencia a la clase
     | ID                                                 # Identifier
     | LPAREN expr RPAREN                                 # Parens

@@ -44,6 +44,10 @@ OR   : '||' ;
 AND  : '&&' ;
 NOT  : '!'  ;
 
+// ---> Operador para referencia
+AMPERSAND : '&' ; 
+
+
 // ---> 
 PRINT  : 'Println' ;
 FMT    : 'fmt' ;
@@ -85,6 +89,8 @@ T_FLOAT: 'float64';
 T_STR:   'string';
 T_BOOL:  'bool';
 T_RUNE:  'rune';
+
+V_NULO: 'nil';
 
 ID: [a-zA-Z][a-zA-Z0-9_]*;
 

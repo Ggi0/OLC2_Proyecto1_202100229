@@ -252,8 +252,12 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue) {
         string nombreAtributo = atributo.Key;
         string tipoAtributo = atributo.Value.Item1;
         bool esStruct = atributo.Value.Item2;
+        bool esPuntero = atributo.Value.Item3;
         
-        if (!esStruct) {
+        if (esPuntero) {
+            // Si es un puntero, inicializar con nil
+            instanciaAtributos.Add(nombreAtributo, new NilValue());
+        } else if (!esStruct) {
             // Es un tipo primitivo, asignar valor por defecto
             ValueWrapper valorDefecto = tipoAtributo switch {
                 "int" => new IntValue(0),
@@ -478,6 +482,9 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue) {
             RuneValue r => Convert.ToByte(r.Value).ToString(),
             VoidValue v => "void",
             FuncionValue fn => "-> fn "+ fn.name + " <-",
+            StructValue st => st.Nombre,
+            InstanciaValue ins => ins.instancia.GetTypeName(),
+            NilValue nulo => "<nil>",
             _ => throw new SemanticError("ERROR: tipo de valor no valido", context.Start)
         };
         output += "\n";
@@ -815,13 +822,15 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue) {
 public override ValueWrapper VisitStructDcl(LanguageParser.StructDclContext context) {
     Console.WriteLine($"Procesando declaración de struct: {context.ID().GetText()}");
     
+    string nombreStruct = context.ID().GetText();
+
     // Verificar que el struct tenga al menos un atributo de lo contrario es un error
     if (context.atriBody().Length == 0) {
         throw new SemanticError($"Error: El struct '{context.ID().GetText()}' debe tener al menos un atributo", context.Start);
     }
     
     // Elementos necesarios para el struct
-    Dictionary<string, (string, bool)> atributos = new Dictionary<string, (string, bool)>();
+    Dictionary<string, (string, bool, bool)> atributos = new Dictionary<string, (string, bool, bool)>();
     
     // Recorrer los atributos del struct
     foreach (var atributo in context.atriBody()) {
@@ -829,46 +838,64 @@ public override ValueWrapper VisitStructDcl(LanguageParser.StructDclContext cont
         
         // Validar que el atributo no esté duplicado
         if (atributos.ContainsKey(nombreAtributo)) {
-            throw new SemanticError($"Error: El atributo '{nombreAtributo}' ya está definido en el struct '{context.ID().GetText()}'", context.Start);
+            throw new SemanticError($"ERROR: El atributo '{nombreAtributo}' ya está definido en el struct '{context.ID().GetText()}'", context.Start);
         }
         
         // Determinar el tipo y si es un struct
         string tipoAtributo;
         bool esStruct = false; // solo una bandera la validacion sera en el uso del mismo
-        
-        if (atributo.tiposD() != null) {
-            // Es un tipo primitivo
-            tipoAtributo = atributo.tiposD().GetText();
-            esStruct = false;
-        } else if (atributo.ID().Length > 1 ) { // si hay más de un ID en la regla
-            // Es un ID (otro struct) ---> aquie no estoy validando que este id tenga ya el tipo Struct, unicamente lo estoy asumindo
-            tipoAtributo = atributo.ID(1).GetText();
-            esStruct = true;
+        bool esPuntero = false;
 
-            if(tipoAtributo == nombreAtributo){
-                // TODO: validar que sea un struct recursivos
 
+            if (atributo.tiposD() != null)
+            {
+                // Es un tipo primitivo
+                tipoAtributo = atributo.tiposD().GetText();
+                esStruct = false;
+                esPuntero = false;
             }
+            else if (atributo.ID().Length > 1)
+            { // si hay más de un ID en la regla
+              // Es un ID (otro struct) ---> aquie no estoy validando que este id tenga ya el tipo Struct, unicamente lo estoy asumindo
+                tipoAtributo = atributo.ID(1).GetText();
+                esStruct = true;
 
-            // Verificar que exista y sea un struct
-            try {
-                ValueWrapper tipoValor = entornoActual.Get(tipoAtributo, atributo.Start);
-                if (!(tipoValor is StructValue)) {
-                    throw new SemanticError($"Error: El tipo '{tipoAtributo}' del atributo '{nombreAtributo}' debe ser un struct", atributo.Start);
+                // Verificar si es un puntero al mismo struct (autorreferencia)
+                if (tipoAtributo == nombreStruct)
+                {
+                    Console.WriteLine($"\t (struct) --> Detectado puntero autorreferenciado: {nombreAtributo} -> {tipoAtributo}");
+                    esPuntero = true;
                 }
-            } catch (SemanticError) {
-                // Si no existe, lanzar un error
-                throw new SemanticError($"Error: El tipo '{tipoAtributo}' del atributo '{nombreAtributo}' no está definido", atributo.Start);
+                else
+                {
+                    // Verificar que exista y sea un struct
+                    try
+                    {
+                        ValueWrapper tipoValor = entornoActual.Get(tipoAtributo, atributo.Start);
+                        if (!(tipoValor is StructValue))
+                        {
+                            throw new SemanticError($"ERROR: El tipo '{tipoAtributo}' del atributo '{nombreAtributo}' debe ser un struct", atributo.Start);
+                        }
+                    }
+                    catch (SemanticError)
+                    {
+                        // Si no existe, lanzar un error
+                        throw new SemanticError($"ERROR: El tipo '{tipoAtributo}' del atributo '{nombreAtributo}' no está definido", atributo.Start);
+                    }
+
+
+                }
+
+            }
+            else
+            {
+                throw new SemanticError($"ERROR: No se pudo determinar el tipo del atributo '{nombreAtributo}'", atributo.Start);
             }
 
-        } else {
-            throw new SemanticError($"Error: No se pudo determinar el tipo del atributo '{nombreAtributo}'", atributo.Start);
-        }
-        
-        Console.WriteLine($"\t Atributo: {nombreAtributo}, Tipo: {tipoAtributo}, Es struct: {esStruct}");
+            Console.WriteLine($"\t (struct) -->  Atributo: {nombreAtributo}, Tipo: {tipoAtributo}, Es struct: {esStruct}, Es puntero: {esPuntero}");
         
         // Guardar el atributo
-        atributos.Add(nombreAtributo, (tipoAtributo, esStruct));
+        atributos.Add(nombreAtributo, (tipoAtributo, esStruct, esPuntero));
     }
     
     // Crear el valor del struct
@@ -1110,7 +1137,7 @@ public override ValueWrapper VisitNewStructInit(LanguageParser.NewStructInitCont
 regresa --> Instancia del struct inicializada
 */
 private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue, List<ValueWrapper> inicializaciones) {
-    Console.WriteLine($"  Creando instancia de struct '{structValue.Nombre}' con {inicializaciones.Count} inicializaciones");
+    Console.WriteLine($"\t (struct) -> Creando instancia de struct '{structValue.Nombre}' con {inicializaciones.Count} inicializaciones");
     
     // Crear un diccionario para almacenar los valores de los atributos
     Dictionary<string, ValueWrapper> instanciaAtributos = new Dictionary<string, ValueWrapper>();
@@ -1120,10 +1147,15 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
         string nombreAtributo = atributo.Key;
         string tipoAtributo = atributo.Value.Item1;
         bool esStruct = atributo.Value.Item2;
+        bool esPuntero = atributo.Value.Item3;
+
         
-        Console.WriteLine($"    Inicializando por defecto: {nombreAtributo} (tipo {tipoAtributo})");
+        Console.WriteLine($"\t (struct) -> Inicializando por defecto: {nombreAtributo} (tipo {tipoAtributo})");
         
-        if (!esStruct) {
+        if (esPuntero) {
+            // Si es un puntero, inicializar con nil
+            instanciaAtributos.Add(nombreAtributo, new NilValue());
+        } else if (!esStruct) {
             // Es un tipo primitivo, asignar valor por defecto
             ValueWrapper valorDefecto = tipoAtributo switch {
                 "int" => new IntValue(0),
@@ -1143,6 +1175,8 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
                     // Crear instancia recursiva
                     var otroStruct = CrearInstanciaStruct(otroStructValue);
                     instanciaAtributos.Add(nombreAtributo, otroStruct);
+                }else {
+                    instanciaAtributos.Add(nombreAtributo, defaultValue);
                 }
             } catch (SemanticError) {
                 // Si hay error, usar valor por defecto
@@ -1157,7 +1191,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
             string nombreAtributo = atributoInit.Nombre;
             ValueWrapper valorAtributo = atributoInit.Valor;
             
-            Console.WriteLine($"    Sobrescribiendo: {nombreAtributo} con valor personalizado");
+            Console.WriteLine($"\t (struct) -> Sobrescribiendo: {nombreAtributo} con valor personalizado");
             
             // Verificar si el atributo existe en el struct
             if (!structValue.Atributos.ContainsKey(nombreAtributo)) {
@@ -1167,8 +1201,22 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
             // Verificar compatibilidad de tipos
             string tipoAtributo = structValue.Atributos[nombreAtributo].Item1;
             bool esStruct = structValue.Atributos[nombreAtributo].Item2;
+            bool esPuntero = structValue.Atributos[nombreAtributo].Item3;
+
             
-            if (!esStruct) {
+            if (esPuntero) {
+                // Si es un puntero, puede ser nil o una referencia a otro struct del mismo tipo
+                if (valorAtributo is NilValue) {
+                    // Es válido asignar nil a un puntero
+                } else if (valorAtributo is InstanciaValue instanciaVal) {
+                    // Verificar que sea del tipo correcto
+                    if (instanciaVal.instancia.GetTypeName() != tipoAtributo) {
+                        throw new SemanticError($"ERROR: No se puede asignar una instancia de tipo '{instanciaVal.instancia.GetTypeName()}' al puntero '{nombreAtributo}' que espera tipo '{tipoAtributo}'", null);
+                    }
+                } else {
+                    throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorAtributo.GetType().Name} al puntero '{nombreAtributo}' que espera tipo '{tipoAtributo}' o nil", null);
+                }
+            } else if (!esStruct) {
                 // Es un tipo primitivo, verificar compatibilidad
                 bool compatible = false;
                 
@@ -1220,7 +1268,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
         new Instancia(structValue.Nombre, instanciaAtributos)
     );
     
-    Console.WriteLine($"  Instancia de struct '{structValue.Nombre}' creada correctamente");
+    Console.WriteLine($"\t (struct) -> Instancia de struct '{structValue.Nombre}' creada correctamente");
     
     return instanciaValue;
 }
@@ -2024,7 +2072,11 @@ para clases
         return new RuneValue(runeValue);
     }
 
-
+    public override ValueWrapper VisitValorNulo( LanguageParser.ValorNuloContext context)
+    {
+        Console.WriteLine("Procesando valor nil (referencia nula)");
+        return new NilValue();
+    }
 
 
     // Función para procesar SECUENCIAS DE ESCAPE en cadenas

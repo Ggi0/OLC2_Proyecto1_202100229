@@ -38,9 +38,14 @@ Valor: (nombre del tipo, esStruct), donde esStruct es un booleano que indica si 
 
 
 */
-public record StructValue(string Nombre, Dictionary<string, (string, bool)> Atributos) : ValueWrapper;
+public record StructValue(string Nombre, Dictionary<string, (string, bool, bool)> Atributos) : ValueWrapper;
+
 
 
 // Clase para representar un atributo inicializado temporalmente durante la construcción
 public record AtributoInicializacionValue(string Nombre, ValueWrapper Valor) : ValueWrapper;
+
+
+// Representa el valor 'nil' (nulo/referencia vacía)
+public record NilValue : ValueWrapper;
 
