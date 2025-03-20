@@ -5,7 +5,7 @@ options { tokenVocab=LanguageLexer; }  // Importa los tokens del lexer
 program: dcl*;
 
 // |classDcl | structDcl
-dcl: varDcl | funcionDcl | statement | structDcl // stamtement No declarativo
+dcl: varDcl | funcionDcl | statement | structDcl | structFunc // stamtement No declarativo
 ;
 
 varDcl: VAR ID ID SEMICOLON                  # varDclStruct //La producción varDclStruct manejará la declaración de variables de tipo struct
@@ -27,6 +27,9 @@ structDcl : STTYPE ID STRUCT LBRACE atriBody* RBRACE
 atriBody : ID (tiposD | ID)
 ;
 
+// struct function - función asociada a un struct
+structFunc: STFUNC LPAREN ID ID RPAREN ID LPAREN parametrosF? RPAREN tiposD? LBRACE dcl* RBRACE 
+;
 
 statement: expr (SEMICOLON)?                                               # ExprStmt
          | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?                   # PrintStmt

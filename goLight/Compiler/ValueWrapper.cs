@@ -38,8 +38,12 @@ Valor: (nombre del tipo, esStruct), donde esStruct es un booleano que indica si 
 
 
 */
-public record StructValue(string Nombre, Dictionary<string, (string, bool, bool)> Atributos) : ValueWrapper;
-
+//public record StructValue(string Nombre, Dictionary<string, (string, bool, bool)> Atributos) : ValueWrapper;
+public record StructValue(string Nombre, Dictionary<string, (string, bool, bool)> Atributos) : ValueWrapper
+{
+    // Cambiamos de FuncionForanea a Invocable para mayor flexibilidad
+    public Dictionary<string, Invocable> Methods { get; set; } = new Dictionary<string, Invocable>();
+}
 
 
 // Clase para representar un atributo inicializado temporalmente durante la construcción

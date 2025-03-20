@@ -97,6 +97,12 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAtriBody([NotNull] LanguageParser.AtriBodyContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="LanguageParser.structFunc"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructFunc([NotNull] LanguageParser.StructFuncContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
 	/// </summary>

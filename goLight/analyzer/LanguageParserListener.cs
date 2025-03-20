@@ -140,6 +140,16 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAtriBody([NotNull] LanguageParser.AtriBodyContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.structFunc"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStructFunc([NotNull] LanguageParser.StructFuncContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.structFunc"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStructFunc([NotNull] LanguageParser.StructFuncContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
 	/// </summary>

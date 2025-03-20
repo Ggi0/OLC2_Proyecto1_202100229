@@ -23,19 +23,19 @@ public class StructsDef : Invocable
     public StructsDef(string name, Dictionary<string, (string, bool, bool)> atributos, Dictionary<string, FuncionForanea> methods) {
         Name = name;         // Nombre del struct
         Atributos = atributos; // Atributos del struct
-        Methods = methods;     // Métodos del struct (para implementación futura)
+        Methods = methods ?? new Dictionary<string, FuncionForanea>();
     }
     
 
     // un metodo que ayuda a buscar metodos --> recibe el nombre del metodo 
     //  Método para buscar un método del struct por su nombre
     // Esto será útil cuando implementemos métodos asociados a structs
-    public FuncionForanea? GetMethod(string name) {
-        // Si el método existe en el diccionario, lo devolvemos
-        if (Methods.ContainsKey(name)) {
+    public FuncionForanea GetMethod(string name) {
+        // Si el diccionario de métodos existe y contiene la clave, devolver el método
+        if (Methods != null && Methods.ContainsKey(name)) {
             return Methods[name];
         }
-        // Si no existe, devolvemos null
+        // Si no existe, devolver null
         return null;
     }
 

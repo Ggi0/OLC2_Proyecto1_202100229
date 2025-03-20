@@ -30,10 +30,16 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     // declaraclando entorno
     public Entorno entornoActual; // entorno limpio cuando se inicializa el visitor
 
+    public static CompilerVisitor Instance { get; private set; }
+
+
     // para funciones embebidas
     public CompilerVisitor(){
         entornoActual = new Entorno(null); // entorno Global
         Embebidas.Generate(entornoActual); // al entorno Gloabal se generan las embebidas.
+
+         // Establecer la instancia singleton
+        Instance = this;
     }
 
 
@@ -220,7 +226,7 @@ public override ValueWrapper VisitVarDclStruct(LanguageParser.VarDclStructContex
             try {
                 var otroTipoValor = entornoActual.Get(tipoAtributo, context.Start);
                 if (otroTipoValor is StructValue otroStructValue) {
-                    var otroStruct = CrearInstanciaStruct(otroStructValue);
+                    var otroStruct = CrearInstanciaStruct(otroStructValue, context.Start);
                     instanciaAtributos.Add(nombreAtributo, otroStruct);
                 }
             } catch (SemanticError) {
@@ -243,7 +249,7 @@ public override ValueWrapper VisitVarDclStruct(LanguageParser.VarDclStructContex
 
 
 // --> Método auxiliar para crear una instancia de un struct con valores por defecto
-private InstanciaValue CrearInstanciaStruct(StructValue structValue) {
+private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runtime.IToken token) {
     // Diccionario para almacenar los valores de los atributos
     Dictionary<string, ValueWrapper> instanciaAtributos = new Dictionary<string, ValueWrapper>();
     
@@ -272,10 +278,10 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue) {
         } else {
             // Es un struct, crear una instancia recursiva
             try {
-                var otroTipoValor = entornoActual.Get(tipoAtributo, null);
+                var otroTipoValor = entornoActual.Get(tipoAtributo, token);
                 if (otroTipoValor is StructValue otroStructValue) {
                     // Llamada recursiva para crear instancia anidada
-                    var otroStruct = CrearInstanciaStruct(otroStructValue);
+                    var otroStruct = CrearInstanciaStruct(otroStructValue, token);
                     instanciaAtributos.Add(nombreAtributo, otroStruct);
                 } else {
                     // Si no es un struct, usar valor por defecto
@@ -958,7 +964,7 @@ public override ValueWrapper VisitInitAttrStruct(LanguageParser.InitAttrStructCo
     }
     
     // Crear una instancia del struct anidado
-    InstanciaValue estructuraAnidada = CrearInstanciaConInicializaciones(structValue, inicializaciones);
+    InstanciaValue estructuraAnidada = CrearInstanciaConInicializaciones(structValue, inicializaciones, context.Start);
     
     // Devolver un par (nombre, valor) para ser procesado por el inicializador de struct principal
     return new AtributoInicializacionValue(nombreAtributo, estructuraAnidada);
@@ -999,7 +1005,7 @@ public override ValueWrapper VisitNewStructInit(LanguageParser.NewStructInitCont
     }
 
     // Crear la instancia con las inicializaciones
-    InstanciaValue instanciaValue = CrearInstanciaConInicializaciones(structValue, inicializaciones);
+    InstanciaValue instanciaValue = CrearInstanciaConInicializaciones(structValue, inicializaciones, context.Start);
     
     // Declarar o asignar la variable en el entorno actual
     if (entornoActual.variables.ContainsKey(nombreVariable)) {
@@ -1013,118 +1019,7 @@ public override ValueWrapper VisitNewStructInit(LanguageParser.NewStructInitCont
     Console.WriteLine($"Struct '{tipoStruct}' inicializado correctamente en variable '{nombreVariable}'");
     
     return instanciaValue;
-    /*
-    // Crear un diccionario para almacenar los valores de los atributos
-    Dictionary<string, ValueWrapper> instanciaAtributos = new Dictionary<string, ValueWrapper>();
-    
-    // PASO 1: Inicializar todos los atributos con valores por defecto
-    foreach (var atributo in structValue.Atributos) {
-        string nombreAtributo = atributo.Key;
-        string tipoAtributo = atributo.Value.Item1;
-        bool esStruct = atributo.Value.Item2;
-        
-        if (!esStruct) {
-            // Es un tipo primitivo, asignar valor por defecto
-            ValueWrapper valorDefecto = tipoAtributo switch {
-                "int" => new IntValue(0),
-                "float64" => new FloatValue(0.0f),
-                "string" => new StringValue(""),
-                "bool" => new BoolValue(false),
-                "rune" => new RuneValue('\0'),
-                _ => defaultValue
-            };
-            
-            instanciaAtributos.Add(nombreAtributo, valorDefecto);
-        } else {
-            // Es un struct, crear una instancia recursiva
-            try {
-                var otroTipoValor = entornoActual.Get(tipoAtributo, context.Start);
-                if (otroTipoValor is StructValue otroStructValue) {
-                    // Crear instancia recursiva usando un método auxiliar
-                    var otroStruct = CrearInstanciaStruct(otroStructValue);
-                    instanciaAtributos.Add(nombreAtributo, otroStruct);
-                }
-            } catch (SemanticError) {
-                // Si hay error, usar valor por defecto
-                instanciaAtributos.Add(nombreAtributo, defaultValue);
-            }
-        }
-    }
 
-    // PASO 2: Procesar los valores iniciales proporcionados explícitamente
-    foreach (var initAttr in context.initAttr()) {
-        string nombreAtributo = initAttr.ID().GetText();
-        ValueWrapper valorAtributo = Visit(initAttr.expr());
-        
-        // Verificar si el atributo existe en el struct
-        if (!structValue.Atributos.ContainsKey(nombreAtributo)) {
-            throw new SemanticError($"Error: El atributo '{nombreAtributo}' no existe en el struct '{tipoStruct}'", initAttr.Start);
-        }
-        
-        // Verificar compatibilidad de tipos
-        string tipoAtributo = structValue.Atributos[nombreAtributo].Item1;
-        bool esStruct = structValue.Atributos[nombreAtributo].Item2;
-        
-        if (!esStruct) {
-            // Es un tipo primitivo, verificar compatibilidad
-            bool compatible = false;
-            
-            switch (tipoAtributo) {
-                case "int":
-                    compatible = valorAtributo is IntValue;
-                    break;
-                case "float64":
-                    compatible = valorAtributo is FloatValue || valorAtributo is IntValue;
-                    break;
-                case "string":
-                    compatible = valorAtributo is StringValue;
-                    break;
-                case "bool":
-                    compatible = valorAtributo is BoolValue;
-                    break;
-                case "rune":
-                    compatible = valorAtributo is RuneValue;
-                    break;
-            }
-            
-            if (!compatible) {
-                throw new SemanticError($"Error: No se puede asignar un valor de tipo {valorAtributo.GetType().Name} al atributo '{nombreAtributo}' de tipo '{tipoAtributo}'", initAttr.Start);
-            }
-            
-            // Realizar conversión implícita si es necesario (int -> float64)
-            if (tipoAtributo == "float64" && valorAtributo is IntValue intValue) {
-                valorAtributo = new FloatValue(intValue.Value);
-            }
-        } else {
-            // Es un struct, verificar compatibilidad
-            // Usamos un nombre diferente (instanciaVal) para evitar conflicto con la variable posterior
-            if (!(valorAtributo is InstanciaValue instanciaVal && 
-                  instanciaVal.instancia.GetTypeName() == tipoAtributo)) {
-                throw new SemanticError($"Error: No se puede asignar un valor de tipo {valorAtributo.GetType().Name} al atributo '{nombreAtributo}' de tipo '{tipoAtributo}'", initAttr.Start);
-            }
-        }
-        
-        // Asignar el valor al atributo (sobrescribiendo el valor por defecto)
-        instanciaAtributos[nombreAtributo] = valorAtributo;
-    }
-    
-    // PASO 3: Crear la instancia del struct con los atributos ya inicializados
-    InstanciaValue instanciaValue = new InstanciaValue(
-        new Instancia(structValue.Nombre, instanciaAtributos)
-    );
-    
-    // PASO 4: Declarar o asignar la variable en el entorno actual
-    if (entornoActual.variables.ContainsKey(nombreVariable)) {
-        // Si la variable ya existe, actualizamos su valor
-        entornoActual.Asignacion(nombreVariable, instanciaValue, "=", context.Start);
-    } else {
-        // Si no existe, creamos una nueva declaración
-        entornoActual.Declaracion(nombreVariable, instanciaValue, context.Start);
-    }
-    
-    Console.WriteLine($"Struct '{tipoStruct}' inicializado correctamente en variable '{nombreVariable}'");
-    
-    return instanciaValue;*/
 
 }
 
@@ -1136,7 +1031,7 @@ public override ValueWrapper VisitNewStructInit(LanguageParser.NewStructInitCont
 
 regresa --> Instancia del struct inicializada
 */
-private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue, List<ValueWrapper> inicializaciones) {
+private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue, List<ValueWrapper> inicializaciones,  Antlr4.Runtime.IToken token) {
     Console.WriteLine($"\t (struct) -> Creando instancia de struct '{structValue.Nombre}' con {inicializaciones.Count} inicializaciones");
     
     // Crear un diccionario para almacenar los valores de los atributos
@@ -1170,10 +1065,10 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
         } else {
             // Es un struct, crear una instancia recursiva vacía
             try {
-                var otroTipoValor = entornoActual.Get(tipoAtributo, null);
+                var otroTipoValor = entornoActual.Get(tipoAtributo, token);
                 if (otroTipoValor is StructValue otroStructValue) {
                     // Crear instancia recursiva
-                    var otroStruct = CrearInstanciaStruct(otroStructValue);
+                    var otroStruct = CrearInstanciaStruct(otroStructValue, token);
                     instanciaAtributos.Add(nombreAtributo, otroStruct);
                 }else {
                     instanciaAtributos.Add(nombreAtributo, defaultValue);
@@ -1195,7 +1090,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
             
             // Verificar si el atributo existe en el struct
             if (!structValue.Atributos.ContainsKey(nombreAtributo)) {
-                throw new SemanticError($"ERROR: El atributo '{nombreAtributo}' no existe en el struct '{structValue.Nombre}'", null);
+                throw new SemanticError($"ERROR: El atributo '{nombreAtributo}' no existe en el struct '{structValue.Nombre}'", token);
             }
             
             // Verificar compatibilidad de tipos
@@ -1211,10 +1106,10 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
                 } else if (valorAtributo is InstanciaValue instanciaVal) {
                     // Verificar que sea del tipo correcto
                     if (instanciaVal.instancia.GetTypeName() != tipoAtributo) {
-                        throw new SemanticError($"ERROR: No se puede asignar una instancia de tipo '{instanciaVal.instancia.GetTypeName()}' al puntero '{nombreAtributo}' que espera tipo '{tipoAtributo}'", null);
+                        throw new SemanticError($"ERROR: No se puede asignar una instancia de tipo '{instanciaVal.instancia.GetTypeName()}' al puntero '{nombreAtributo}' que espera tipo '{tipoAtributo}'", token);
                     }
                 } else {
-                    throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorAtributo.GetType().Name} al puntero '{nombreAtributo}' que espera tipo '{tipoAtributo}' o nil", null);
+                    throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorAtributo.GetType().Name} al puntero '{nombreAtributo}' que espera tipo '{tipoAtributo}' o nil", token);
                 }
             } else if (!esStruct) {
                 // Es un tipo primitivo, verificar compatibilidad
@@ -1239,7 +1134,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
                 }
                 
                 if (!compatible) {
-                    throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorAtributo.GetType().Name} al atributo '{nombreAtributo}' de tipo '{tipoAtributo}'", null);
+                    throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorAtributo.GetType().Name} al atributo '{nombreAtributo}' de tipo '{tipoAtributo}'", token);
                 }
                 
                 // Realizar conversión implícita si es necesario (int -> float64)
@@ -1249,12 +1144,12 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
             } else {
                 // Es un struct, verificar compatibilidad
                 if (!(valorAtributo is InstanciaValue instanciaVal)) {
-                    throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorAtributo.GetType().Name} al atributo '{nombreAtributo}' que debería ser un struct de tipo '{tipoAtributo}'", null);
+                    throw new SemanticError($"ERROR: No se puede asignar un valor de tipo {valorAtributo.GetType().Name} al atributo '{nombreAtributo}' que debería ser un struct de tipo '{tipoAtributo}'", token);
                 }
                 
                 // Verificar que el tipo sea correcto
                 if (instanciaVal.instancia.GetTypeName() != tipoAtributo) {
-                    throw new SemanticError($"ERROR: No se puede asignar un struct de tipo '{instanciaVal.instancia.GetTypeName()}' al atributo '{nombreAtributo}' que debería ser un struct de tipo '{tipoAtributo}'", null);
+                    throw new SemanticError($"ERROR: No se puede asignar un struct de tipo '{instanciaVal.instancia.GetTypeName()}' al atributo '{nombreAtributo}' que debería ser un struct de tipo '{tipoAtributo}'", token);
                 }
             }
             
@@ -1273,54 +1168,69 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
     return instanciaValue;
 }
 
+    /*
+
+    structFunc: STFUNC LPAREN ID ID RPAREN ID parametrosF? tiposD? LBRACE dcl* RBRACE;
+
+        * El primer ID es el nombre del receptor (p)
+        * El segundo ID es el tipo de struct (Persona)
+        * El tercer ID es el nombre de la función (Saludar)
+        * Parámetros opcionales
+        * Tipo de retorno opcional
+        * Un cuerpo con declaraciones
+
+    Función asociada a un struct (método)
+    ---> func ( p Persona ) Saludar() string { ... }
 
 
-/*
-
-para clases
-    public override ValueWrapper VisitStructDcl(LanguageParser.StructDclContext context)
+    */
+    public override ValueWrapper VisitStructFunc(LanguageParser.StructFuncContext context)
     {
-        // elementos necesarios para el objeto de clase
-        Dictionary<string, LanguageParser.VarDcl1Context> Atributos = new Dictionary<string, LanguageParser.VarDcl1Context>();
-        Dictionary<string, FuncionForanea> Methods = new Dictionary<string, FuncionForanea>();
+        // Obtener información básica de la función
+        string nombreReceptor = context.ID(0).GetText();  // nombre del receptor "p"
+        string tipoStruct = context.ID(1).GetText();      // es el tipo de struct --> deberría esta ya declarado --> Persona (debería  ser un puntero)
+        string nombreFuncion = context.ID(2).GetText();   // nombre de la función --> Saludar
 
-        //var asignee = Visit();
+        Console.WriteLine($"\t (struct) --> Procesando función de struct: {nombreFuncion} para tipo {tipoStruct}");
 
-        // recorrer el cuerpo de la clase (que sera el cuerpo del struct)
-        foreach (var prop in context.stBody())
-        { // si es una declaracion de funcion
-            if (prop.varDcl() != null)
-            {
-                var vardcl = prop.varDcl();
-
-                // Verifica si pertenece a la producción varDcl1Context
-                if (vardcl is LanguageParser.VarDcl1Context varDcl1Context)
-                {
-                    // Obtiene el ID de la producción varDcl1
-                    var id = varDcl1Context.ID().GetText();
-                    Atributos.Add(id, varDcl1Context);
-                }
-            }
-            else if (prop.funcionDcl() != null)
-            { // si es una declaracion de funcion
-                var funcDcl = prop.funcionDcl();
-                var FuncionForanea = new FuncionForanea(entornoActual, funcDcl);
-                Methods.Add(funcDcl.ID().GetText(), FuncionForanea);
-            }
-
-
-
+        // Verificar si el struct existe
+        ValueWrapper tipoValor;
+        try
+        {
+            tipoValor = entornoActual.Get(tipoStruct, context.Start);
+        }
+        catch (SemanticError)
+        {
+            throw new SemanticError($"ERROR: El struct '{tipoStruct}' no está definido", context.Start);
         }
 
-        // los structs no tiene construcctor
-        StructsDef structsDef = new StructsDef(context.ID().GetText(), Atributos, Methods);
-        entornoActual.Declaracion(context.ID().GetText(), new ClassValue(structsDef), context.Start);
+        // Verificar que sea un struct
+        if (!(tipoValor is StructValue structDef))
+        {
+            throw new SemanticError($"ERROR: '{tipoStruct}' no es un struct", context.Start);
+        }
+
+        // Verificar si ya existe un método con el mismo nombre
+        if (structDef.Methods.ContainsKey(nombreFuncion))
+        {
+            throw new SemanticError($"ERROR: Ya existe un método '{nombreFuncion}' para el struct '{tipoStruct}'", context.Start);
+        }
+
+        // Crear la función asociada al struct
+        var nuevaFuncion = new FuncionStructForanea(entornoActual, nombreReceptor, tipoStruct, context);
+
+        // Agregar el método al struct
+        structDef.Methods.Add(nombreFuncion, nuevaFuncion);
+
+        Console.WriteLine($"\t (struct) --> Método '{nombreFuncion}' registrado para struct '{tipoStruct}'");
+
         return defaultValue;
-
-
     }
 
-*/
+
+
+
+
 
     // para las instancias --> llamar al constructo o a la clase para saber si es algo invocable
     public override ValueWrapper VisitNewInstan( LanguageParser.NewInstanContext context)

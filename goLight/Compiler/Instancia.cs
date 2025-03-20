@@ -25,15 +25,42 @@ public class Instancia{
     // name -->  Nombre del atributo 
     // token --> Token para el error, si ocurre
     // regresa valor de atributos
-    public ValueWrapper Get(string name, Antlr4.Runtime.IToken token) {
+    public ValueWrapper Get(string name, Antlr4.Runtime.IToken token)
+    {
         // Si el atributo existe, devolver su valor
-        if (values.ContainsKey(name)) {
+        if (values.ContainsKey(name))
+        {
             return values[name];
         }
-        
+
+        // Si no es un atributo, buscar un método en el tipo struct
+        try
+        {
+            ValueWrapper tipoValor = CompilerVisitor.Instance.entornoActual.Get(typeName, token);
+            if (tipoValor is StructValue structValue && structValue.Methods.ContainsKey(name))
+            {
+                // Obtener el método y enlazarlo con esta instancia
+                var metodo = structValue.Methods[name];
+                if (metodo is FuncionStructForanea funcStruct)
+                {
+                    return new FuncionValue(funcStruct.Bind(this), name);
+                }
+            }
+        }
+        catch (SemanticError)
+        {
+            // Ignorar, simplemente significa que no se encontró el struct
+        }
+
+        // Si no se encuentra como atributo ni como método, lanzar error
+        throw new SemanticError($"ERROR: El atributo o método '{name}' no existe en el struct '{typeName}'", token);
+
         // Si no existe, lanzar un error semántico
-        throw new SemanticError($"ERROR: El atributo '{name}' no existe en el struct '{typeName}'", token);
+        //throw new SemanticError($"ERROR: El atributo '{name}' no existe en el struct '{typeName}'", token);
     }
+
+
+
 
     /* Método para establecer un atributo
     

@@ -165,6 +165,18 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitAtriBody([NotNull] LanguageParser.AtriBodyContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.structFunc"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStructFunc([NotNull] LanguageParser.StructFuncContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.structFunc"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStructFunc([NotNull] LanguageParser.StructFuncContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
