@@ -8,10 +8,10 @@ program: dcl*;
 dcl: varDcl | funcionDcl | statement | structDcl // stamtement No declarativo
 ;
 
-varDcl: VAR ID ID SEMICOLON                 # varDclStruct //La producción varDclStruct manejará la declaración de variables de tipo struct
-        |VAR ID tiposD IGUAL expr SEMICOLON # varDcl1
-        | VAR ID tiposD SEMICOLON          # varDcl2
-        | ID DCLIMPL expr SEMICOLON        # varDcl3
+varDcl: VAR ID ID SEMICOLON                  # varDclStruct //La producción varDclStruct manejará la declaración de variables de tipo struct
+        |VAR ID tiposD IGUAL expr SEMICOLON  # varDcl1
+        | VAR ID tiposD SEMICOLON            # varDcl2
+        | ID DCLIMPL expr SEMICOLON          # varDcl3
 ;
 
 funcionDcl: STFUNC ID LPAREN parametrosF? RPAREN tiposD? LBRACE dcl* RBRACE
@@ -27,16 +27,17 @@ structDcl : STTYPE ID STRUCT LBRACE atriBody* RBRACE
 atriBody : ID (tiposD | ID)
 ;
 
-statement: expr (SEMICOLON)?                                         # ExprStmt
-         | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?             # PrintStmt
-         | LBRACE dcl* RBRACE                                        # Bloque
-         | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?   # IfStatement
-         | SWITCH expr LBRACE (caseStmt)+ RBRACE                     # SwitchStmt
-         | FOR (LPAREN)? expr (RPAREN)? statement                    # WhileStmt
+
+statement: expr (SEMICOLON)?                                               # ExprStmt
+         | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?                   # PrintStmt
+         | LBRACE dcl* RBRACE                                              # Bloque
+         | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?         # IfStatement
+         | SWITCH expr LBRACE (caseStmt)+ RBRACE                           # SwitchStmt
+         | FOR (LPAREN)? expr (RPAREN)? statement                          # WhileStmt
          | FOR (LPAREN)? forInit expr SEMICOLON expr (RPAREN)? statement   # ForStmt
-         | STBREAK (SEMICOLON)?           # ST_break
-         | STCONTINUE (SEMICOLON)?        # ST_continue
-         | STRETURN expr? (SEMICOLON)?    # ST_return
+         | STBREAK (SEMICOLON)?                                            # ST_break
+         | STCONTINUE (SEMICOLON)?                                         # ST_continue
+         | STRETURN expr? (SEMICOLON)?                                     # ST_return
 ;
 
 forInit: varDcl 
@@ -51,22 +52,22 @@ caseStmt: CASE expr COLON dcl*    # caseNormal
 
 expr:
     op=(MENOS | NOT) expr                                # NegateU
-    | expr call+ # Llamada
+    | expr call+                                         # Llamada
     | expr op=(MULTI | DIV | MODULO) expr                # MulDiv
     | expr op=(MAS | MENOS) expr                         # AddSub
-    | expr op=(MAYOR | MAYIGUAL | MENOR | MENIGUAL) expr    # Relacionales
+    | expr op=(MAYOR | MAYIGUAL | MENOR | MENIGUAL) expr # Relacionales
     | expr op=(EQUALS | DIFF) expr                       # Comparation
     | expr AND expr                                      # And
     | expr OR expr                                       # Or
-    | expr op=(IGUAL | ASIGSUM | ASIGMIN) expr             # AssignVar // estoy cambiando el ID por un expr --> para las llamadas
+    | expr op=(IGUAL | ASIGSUM | ASIGMIN) expr           # AssignVar // estoy cambiando el ID por un expr --> para las llamadas
     | ID op=(INCREMENTO |DECREMENTO)                     # UpdateVar
-    | ID DCLIMPL ID LBRACE (initAttr COMMA (initAttr COMMA )*)* RBRACE  # NewStructInit //manejará la inicialización con valores
+    | ID DCLIMPL ID LBRACE initAttrList RBRACE           # NewStructInit //manejará la inicialización con valores
     | INT                                                # Int
     | FLOAT                                              # Float
     | STRING                                             # String
     | BOOL                                               # Bool
     | RUNE                                               # Rune
-    | NUEVO ID LPAREN parametros? RPAREN # NewInstan // hacer la instacia de una clase -> id hace referencia a la clase
+    | NUEVO ID LPAREN parametros? RPAREN                 # NewInstan // hacer la instacia de una clase -> id hace referencia a la clase
     | ID                                                 # Identifier
     | LPAREN expr RPAREN                                 # Parens
 ;
@@ -75,12 +76,20 @@ expr:
 call: LPAREN parametros? RPAREN # FuncCall | DOT ID # GetAtr
 ;
 
-parametros: expr (COMMA expr)*
+parametros: 
+        expr (COMMA expr)*
 ;
 
+// para los structs
+initAttrList: 
+        initAttr COMMA (initAttr COMMA)* // Lista de inicializaciones de atributos
+;
 
 // Inicialización de un atributo
-initAttr: ID COLON expr;
+initAttr: 
+        ID COLON expr                                # InitAttrExpr
+        | ID COLON ID LBRACE initAttrList RBRACE     # InitAttrStruct
+;
 
 tiposD: T_INT
         |T_FLOAT

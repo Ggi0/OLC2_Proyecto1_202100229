@@ -61,6 +61,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDcl([NotNull] LanguageParser.DclContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>varDclStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterVarDclStruct([NotNull] LanguageParser.VarDclStructContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>varDclStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitVarDclStruct([NotNull] LanguageParser.VarDclStructContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>varDcl1</c>
 	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -139,17 +153,17 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStructDcl([NotNull] LanguageParser.StructDclContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LanguageParser.stBody"/>.
+	/// Enter a parse tree produced by <see cref="LanguageParser.atriBody"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStBody([NotNull] LanguageParser.StBodyContext context) { }
+	public virtual void EnterAtriBody([NotNull] LanguageParser.AtriBodyContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LanguageParser.stBody"/>.
+	/// Exit a parse tree produced by <see cref="LanguageParser.atriBody"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStBody([NotNull] LanguageParser.StBodyContext context) { }
+	public virtual void ExitAtriBody([NotNull] LanguageParser.AtriBodyContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
@@ -457,6 +471,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFloat([NotNull] LanguageParser.FloatContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>NewStructInit</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterNewStructInit([NotNull] LanguageParser.NewStructInitContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NewStructInit</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitNewStructInit([NotNull] LanguageParser.NewStructInitContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Identifier</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -622,6 +650,46 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParametros([NotNull] LanguageParser.ParametrosContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.initAttrList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInitAttrList([NotNull] LanguageParser.InitAttrListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.initAttrList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInitAttrList([NotNull] LanguageParser.InitAttrListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>InitAttrExpr</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInitAttrExpr([NotNull] LanguageParser.InitAttrExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>InitAttrExpr</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInitAttrExpr([NotNull] LanguageParser.InitAttrExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>InitAttrStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInitAttrStruct([NotNull] LanguageParser.InitAttrStructContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>InitAttrStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInitAttrStruct([NotNull] LanguageParser.InitAttrStructContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="LanguageParser.tiposD"/>.
 	/// <para>The default implementation does nothing.</para>

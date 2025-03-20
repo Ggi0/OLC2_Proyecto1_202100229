@@ -45,6 +45,13 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitDcl([NotNull] LanguageParser.DclContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>varDclStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitVarDclStruct([NotNull] LanguageParser.VarDclStructContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>varDcl1</c>
 	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
 	/// </summary>
@@ -84,11 +91,11 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStructDcl([NotNull] LanguageParser.StructDclContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="LanguageParser.stBody"/>.
+	/// Visit a parse tree produced by <see cref="LanguageParser.atriBody"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStBody([NotNull] LanguageParser.StBodyContext context);
+	Result VisitAtriBody([NotNull] LanguageParser.AtriBodyContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
@@ -243,6 +250,13 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFloat([NotNull] LanguageParser.FloatContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>NewStructInit</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNewStructInit([NotNull] LanguageParser.NewStructInitContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>Identifier</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>
@@ -325,6 +339,26 @@ public interface ILanguageParserVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitParametros([NotNull] LanguageParser.ParametrosContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="LanguageParser.initAttrList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInitAttrList([NotNull] LanguageParser.InitAttrListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>InitAttrExpr</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInitAttrExpr([NotNull] LanguageParser.InitAttrExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>InitAttrStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInitAttrStruct([NotNull] LanguageParser.InitAttrStructContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="LanguageParser.tiposD"/>.
 	/// </summary>

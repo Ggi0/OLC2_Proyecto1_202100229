@@ -32,5 +32,15 @@ public record ClassValue(StructsDef structsDef) : ValueWrapper;
 Clave: nombre del atributo
 Valor: (nombre del tipo, esStruct), donde esStruct es un booleano que indica si el tipo es un struct o un tipo primitivo.
 
+ Valor para los structs
+ Nombre: Nombre del tipo de struct
+ Atributos: Diccionario de atributos con sus tipos y una bandera que indica si son structs
+
+
 */
 public record StructValue(string Nombre, Dictionary<string, (string, bool)> Atributos) : ValueWrapper;
+
+
+// Clase para representar un atributo inicializado temporalmente durante la construcción
+public record AtributoInicializacionValue(string Nombre, ValueWrapper Valor) : ValueWrapper;
+

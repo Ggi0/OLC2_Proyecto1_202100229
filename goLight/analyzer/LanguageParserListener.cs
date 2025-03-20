@@ -52,6 +52,18 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitDcl([NotNull] LanguageParser.DclContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>varDclStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterVarDclStruct([NotNull] LanguageParser.VarDclStructContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>varDclStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitVarDclStruct([NotNull] LanguageParser.VarDclStructContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>varDcl1</c>
 	/// labeled alternative in <see cref="LanguageParser.varDcl"/>.
 	/// </summary>
@@ -118,15 +130,15 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStructDcl([NotNull] LanguageParser.StructDclContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="LanguageParser.stBody"/>.
+	/// Enter a parse tree produced by <see cref="LanguageParser.atriBody"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterStBody([NotNull] LanguageParser.StBodyContext context);
+	void EnterAtriBody([NotNull] LanguageParser.AtriBodyContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="LanguageParser.stBody"/>.
+	/// Exit a parse tree produced by <see cref="LanguageParser.atriBody"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitStBody([NotNull] LanguageParser.StBodyContext context);
+	void ExitAtriBody([NotNull] LanguageParser.AtriBodyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>ExprStmt</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
@@ -390,6 +402,18 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFloat([NotNull] LanguageParser.FloatContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>NewStructInit</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNewStructInit([NotNull] LanguageParser.NewStructInitContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>NewStructInit</c>
+	/// labeled alternative in <see cref="LanguageParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNewStructInit([NotNull] LanguageParser.NewStructInitContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>Identifier</c>
 	/// labeled alternative in <see cref="LanguageParser.expr"/>.
 	/// </summary>
@@ -531,6 +555,40 @@ public interface ILanguageParserListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitParametros([NotNull] LanguageParser.ParametrosContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.initAttrList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInitAttrList([NotNull] LanguageParser.InitAttrListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.initAttrList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInitAttrList([NotNull] LanguageParser.InitAttrListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>InitAttrExpr</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInitAttrExpr([NotNull] LanguageParser.InitAttrExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>InitAttrExpr</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInitAttrExpr([NotNull] LanguageParser.InitAttrExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>InitAttrStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInitAttrStruct([NotNull] LanguageParser.InitAttrStructContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>InitAttrStruct</c>
+	/// labeled alternative in <see cref="LanguageParser.initAttr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInitAttrStruct([NotNull] LanguageParser.InitAttrStructContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="LanguageParser.tiposD"/>.
 	/// </summary>
