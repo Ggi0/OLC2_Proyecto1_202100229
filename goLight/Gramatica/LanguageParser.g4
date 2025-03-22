@@ -5,22 +5,24 @@ options { tokenVocab=LanguageLexer; }  // Importa los tokens del lexer
 program: dcl*;
 
 // |classDcl | structDcl
-dcl: varDcl | funcionDcl | statement | structDcl | structFunc // stamtement No declarativo
+dcl: varDcl | funcionDcl | statement | structDcl | structFunc |sliceDcl // stamtement No declarativo
 ;
 
-varDcl: VAR ID ID SEMICOLON                  # varDclStruct //La producción varDclStruct manejará la declaración de variables de tipo struct
-        |VAR ID tiposD IGUAL expr SEMICOLON  # varDcl1
-        | VAR ID tiposD SEMICOLON            # varDcl2
-        | ID DCLIMPL expr SEMICOLON          # varDcl3
+// -------- VARIABLES declaracion ---------------
+varDcl:   VAR ID ID SEMICOLON                 # varDclStruct //La producción varDclStruct manejará la declaración de variables de tipo struct
+        | VAR ID tiposD IGUAL expr SEMICOLON  # varDcl1
+        | VAR ID tiposD SEMICOLON             # varDcl2
+        | ID DCLIMPL expr SEMICOLON           # varDcl3
 ;
 
+// -------- FUNCION declaracion ---------------
 funcionDcl: STFUNC ID LPAREN parametrosF? RPAREN tiposD? LBRACE dcl* RBRACE
 ;
 
 parametrosF: ID tiposD (COMMA ID tiposD)*
 ;
 
-// -------- structs declaracion ---------------
+// -------- STRUCT declaracion ---------------
 structDcl : STTYPE ID STRUCT LBRACE atriBody* RBRACE 
 ;
 
@@ -30,6 +32,22 @@ atriBody : ID (tiposD | ID)
 // struct function - función asociada a un struct
 structFunc: STFUNC LPAREN ID ID RPAREN ID LPAREN parametrosF? RPAREN tiposD? LBRACE dcl* RBRACE 
 ;
+
+// -------- SLICE declaracion ---------------
+sliceDcl: VAR ID dimension tiposD  # slcDcl1
+        | ID DCLIMPL dimension tiposD LBRACE slcParam* RBRACE  # slcDcl2// <nombreSlice> := []<tipoSlice> { <valor1>, <valor2>, <valor3>, ... , <valorN> };
+;
+
+
+dimension: LBRACKET RBRACKET 
+         | LBRACKET RBRACKET LBRACKET RBRACKET
+;
+
+slcParam: parametros
+        | LBRACE parametros* RBRACE COMMA
+;
+
+
 
 statement: expr (SEMICOLON)?                                               # ExprStmt
          | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?                   # PrintStmt
@@ -71,13 +89,17 @@ expr:
     | BOOL                                               # Bool
     | RUNE                                               # Rune
     | V_NULO # ValorNulo
+    | ID IGUAL dimension tiposD LBRACE parametros? LBRACE  # Slice
     | NUEVO ID LPAREN parametros? RPAREN                 # NewInstan // hacer la instacia de una clase -> id hace referencia a la clase
     | ID                                                 # Identifier
     | LPAREN expr RPAREN                                 # Parens
 ;
 
 // declaracion de funcion    o    acceso a una propiedad por punto
-call: LPAREN parametros? RPAREN # FuncCall | DOT ID # GetAtr
+call: 
+        LPAREN parametros? RPAREN  # FuncCall 
+        | DOT ID                   # GetAtr 
+        | LBRACKET expr RBRACKET   # AccesoSlice
 ;
 
 parametros: 

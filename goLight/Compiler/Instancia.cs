@@ -7,10 +7,10 @@
 public class Instancia{
 
     // Nombre del tipo de struct al que pertenece esta instancia
-    private string typeName;
+    public string typeName;
     
     // Diccionario que almacena los valores de los atributos
-    private Dictionary<string, ValueWrapper> values;
+    public Dictionary<string, ValueWrapper> values;
 
     // constructor --> a que clase pertenece esta Instancia
     public Instancia(string typeName, Dictionary<string, ValueWrapper> values) {

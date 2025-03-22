@@ -1,0 +1,139 @@
+                DECLARCION DE SLICE
+--> Declaracion vacio
+
+    var <nombreSlice> []<tipoSlice> ;
+    
+        var slice []int
+        var nombres []string
+
+    los tipos estan en base a tipos primitivos
+
+--> Declaracion con inicialzacion de valores:
+
+    <nombreSlice> := []<tipoSlice> { <valor1>, <valor2>, <valor3>, ... , <valorN> };
+        
+        numeros := []int { 10, 20, 30, 40, 50 };
+
+--> Declaracion vacio 2 dimensiones
+    var <nombreSlice2S> [][]<tipoSlice> ;
+        
+            var slice2D [][]int
+            var nombres2D [][]string
+
+--> Declaracion con inicialzacion de valores 2D:
+
+    <nombreSlice2D> := [][]<tipoSlice> { 
+        { <valor11>, <valor12>, <valor13> },
+        { <valor21>, <valor22>, <valor23> },
+        { <valor31>, <valor32>, <valor33> },
+        { ...                 , <valorNM> },
+    }
+
+        
+        mtx2 := [][]int{
+                        {0, 0, 0}, // Fila 1
+                        {0, 0, 0}, // Fila 2
+                        {0, 0, 0}, // Fila 3
+                        }
+    pueden ser de 2 dimensiones pero no debe ser especificamente una matriz cuadrada.
+
+
+numeros := []int{1, 2, 3, 4, 5}
+
+    slice := []int{1, 2, 3}
+    tipoSlice := reflect.TypeOf(slice)
+    fmt.Println("Tipo de []int{1, 2, 3}:", tipoSlice)
+
+
+if ( tipoEntero == "int"    && tipoDecimal  == "float64" &&
+        tipoTexto == "string" && tipoBooleano == "bool"    &&
+        tipoSlice == "[]int" )
+{
+    puntosTypeOf = puntosTypeOf + 1
+    fmt.Println("OK reflect.TypeOf: correcto")
+} 
+else 
+{
+    fmt.Println("X reflect.TypeOf: incorrecto")
+}
+
+numeros := []int{10, 20, 30, 40, 50}
+
+numeros := []int{1, 2, 3, 4, 5}
+
+numeros = []int{10, 20, 30, 40, 50}
+
+palabras := []string{"Hola", "mundo", "desde", "Go"}
+
+
+numbers := []int {}
+numbers =  []int {1, 2, 3, 4, 5};
+
+
+---------> slice de 2 dimensiones: <---------
+
+matriz := [][]int{
+		{1, 2, 3},
+		{4, 5, 6},
+		{7, 8, 9},
+	}
+
+matrizIrregular := [][]int{
+		{1, 2, 3, 4},
+		{5, 6},
+		{7, 8, 9},
+	}
+
+mtx1 := [][]int{
+		{1, 2, 3},
+		{4, 5, 6},
+		{7, 8, 9},
+	}
+
+
+
+// funciones para slice
+---> slices.Index 
+    Retorna el índice de la primer coincidencia que encuentre, de lo contrario retornará -1
+
+    numeros := []int{10, 20, 30, 40, 50}
+    // Usar slices.Index para buscar valores
+    fmt.Println(   slices.Index(numeros, 30)   ) // Salida: 2
+    fmt.Println(   slices.Index(numeros, 100)  ) // Salida: -1
+
+---> strings.Join 
+    Permite unir todos los elementos de un slice de cadenas ([]string) en una sola cadena de texto.
+    solo para los slice tipo string
+    
+    palabras := []string{"hola", "mundo", "go"}
+    fmt.Println(    strings.Join(palabras, " ")   ) 
+                
+                // Salida: "hola mundo go"
+
+---> len
+    Devuelve la cantidad de elementos presentes en un slice.
+
+    numeros := []int{1, 2, 3, 4, 5}
+    fmt.Println(   len(numeros)   ) // Salida: 5 (tipo: int)
+
+---> append
+    Agrega elementos a un slice en la ultima posicion, retornando un nuevo slice con los elementos añadidos.
+
+    numeros := []int{1, 2, 3}
+    numeros = append(numeros, 4)
+    fmt.Println(   numeros   )   // Salida: [1 2 3 4]
+
+-----> comportamiento de append
+        
+        otraPrueba := []int{}
+        numeros := []int{1, 2, 3}
+
+        otraPrueba = append(numeros, 4)
+
+        fmt.Println(numeros)               // [1 2 3]
+        fmt.Println(otraPrueba)            // [1 2 3 4]
+        fmt.Println(append(otraPrueba, 5)) // [1 2 3 4 5]
+        fmt.Println(otraPrueba)            // [1 2 3 4]
+
+
+

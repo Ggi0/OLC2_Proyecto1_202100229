@@ -368,7 +368,28 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
                         {
                             throw new SemanticError($"ERROR: La INSTANCIACION es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
                         }
+                    } 
+                    
+                    // implementar el acceso a slice
+
+                    else if (action is LanguageParser.AccesoSliceContext arraryAccess){
+                    // la llamada debe ser una instancia que es lo que retorna una instancia de arreglo:
+                    if (llamadaEmb is InstanciaValue instanciaValue)
+                    {
+                        var index = Visit(arraryAccess.expr());
+                        // los indices deben ser unicamente numericos
+                        if (index is IntValue intValue){
+                            instanciaValue.instancia.Set(intValue.Value.ToString(), value);
+                        }else{
+                            throw new SemanticError("ERROR: acesso invalido al slice por el tipo", context.Start);
+                        }
+
                     }else{
+                        throw new SemanticError("ERROR: accesos invalido al slice no es una instancia", context.Start);
+                    }
+                }
+                    
+                    else{
                         throw new SemanticError ($"ERROR: Asignacion invalida", context.Start);
                     }
                 }
@@ -402,6 +423,24 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
                     else
                     {
                         throw new SemanticError($"ERROR: La INSTANCIACION es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
+                    }
+                }
+
+                // implementar el acceso a slice --> si esta accion es un contexto de acceso a arreglos
+                else if (action is LanguageParser.AccesoSliceContext arraryAccess){
+                    // la llamada debe ser una instancia que es lo que retorna una instancia de arreglo:
+                    if (llamadaEmb is InstanciaValue instanciaValue)
+                    {
+                        var index = Visit(arraryAccess.expr());
+                        // los indices deben ser unicamente numericos
+                        if (index is IntValue intValue){
+                            llamadaEmb = instanciaValue.instancia.Get(intValue.Value.ToString(), arraryAccess.Start);
+                        }else{
+                            throw new SemanticError("ERROR: acesso invalido al slice por el tipo", context.Start);
+                        }
+
+                    }else{
+                        throw new SemanticError("ERROR: accesos invalido al slice no es una instancia", context.Start);
                     }
                 }
 
@@ -1321,6 +1360,30 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
                 }
             }
 
+            // implementar el acceso a slice
+            else if (action is LanguageParser.AccesoSliceContext arraryAccess)
+            {
+                // la llamada debe ser una instancia que es lo que retorna una instancia de arreglo:
+                if (llamadaEmb is InstanciaValue instanciaValue)
+                {
+                    var index = Visit(arraryAccess.expr());
+                    // los indices deben ser unicamente numericos
+                    if (index is IntValue intValue)
+                    {
+                        llamadaEmb = instanciaValue.instancia.Get(intValue.Value.ToString(), arraryAccess.Start);
+                    }
+                    else
+                    {
+                        throw new SemanticError("ERROR: acesso invalido al slice por el tipo", context.Start);
+                    }
+
+                }
+                else
+                {
+                    throw new SemanticError("ERROR: accesos invalido al slice no es una instancia", context.Start);
+                }
+            }
+
         }
 
         return llamadaEmb;
@@ -1400,6 +1463,194 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
         Console.WriteLine("\t -->         }");
         return defaultValue;
     }
+
+
+
+
+
+
+
+/*
+    //       -----------> SLICE <-----------
+    public override ValueWrapper VisitSlice(LanguageParser.SliceContext context)
+    {
+
+        // recorrer los argumentos
+        List<ValueWrapper> arguments = new List<ValueWrapper>();
+        if(context.parametros() != null){
+            foreach(var arg in context.parametros().expr()){
+                arguments.Add(Visit(arg));
+            }
+        }
+
+        // generar una clase cada vez que se cree un arreglo
+        var sliceClase = new SliceDef();
+        var instancia = sliceClase.Invoke(arguments, this); // conectar el mundo de los arreglos al mundo de las instancias
+
+        return instancia;
+    }
+
+
+    // public override ValueWrapper VisitAccesoSlice(LanguageParser.AccesoSliceContext context){ }
+
+
+*/
+
+
+// Visitar una expresión de slice literal: [1, 2, 3]
+    public override ValueWrapper VisitSlice(LanguageParser.SliceContext context)
+    {
+        Console.WriteLine("\t (slice) -->   Visitando expresión de slice literal");
+        
+        // Recopilar los elementos del slice
+        List<ValueWrapper> elementos = new List<ValueWrapper>();
+        if (context.parametros() != null)
+        {
+            foreach (var expr in context.parametros().expr())
+            {
+                elementos.Add(Visit(expr));
+            }
+        }
+        
+        // Determinar el tipo del slice basado en el primer elemento
+        // Si no hay elementos, se usa int como tipo predeterminado
+        string tipoElemento = "int";
+        
+        if (elementos.Count > 0)
+        {
+            ValueWrapper primerElemento = elementos[0];
+            
+            if (primerElemento is IntValue) tipoElemento = "int";
+            else if (primerElemento is FloatValue) tipoElemento = "float64";
+            else if (primerElemento is StringValue) tipoElemento = "string";
+            else if (primerElemento is BoolValue) tipoElemento = "bool";
+            else if (primerElemento is RuneValue) tipoElemento = "rune";
+        }
+        
+        // Crear el SliceDef y la instancia
+        SliceDef sliceDef = new SliceDef(tipoElemento);
+        return sliceDef.Invoke(elementos, this);
+    }
+
+
+// Visitar declaración de slice sin inicialización: var slice []int
+    public override ValueWrapper VisitSlcDcl1(LanguageParser.SlcDcl1Context context)
+    {
+        string id = context.ID().GetText();
+        string tipo = context.tiposD().GetText();
+        
+        Console.WriteLine($"\t (slice) -->   Declarando slice vacío '{id}' de tipo '[]{tipo}'");
+        
+        // Crear un slice vacío
+        SliceDef sliceDef = new SliceDef(tipo);
+        ValueWrapper sliceValue = sliceDef.Invoke(new List<ValueWrapper>(), this);
+        
+        // Declarar la variable en el entorno actual
+        entornoActual.Declaracion(id, sliceValue, context.Start);
+        
+        return sliceValue;
+    }
+
+// Visitar declaración de slice con inicialización: numeros := []int { 10, 20, 30 }
+    public override ValueWrapper VisitSlcDcl2(LanguageParser.SlcDcl2Context context)
+    {
+        // Obtener el ID del slice y su tipo
+        string id = context.ID().GetText(); // Accedemos con índice porque puede haber múltiples IDs
+        string tipo = context.tiposD().GetText();
+        
+        Console.WriteLine($"\t (slice) -->   Declarando slice '{id}' de tipo '[]{tipo}' con inicialización");
+        
+        // Lista para almacenar todos los elementos del slice
+        List<ValueWrapper> elementos = new List<ValueWrapper>();
+        
+        // Iterar por cada parámetro del slice (pueden ser valores directos o slices anidados)
+        foreach (var param in context.slcParam())
+        {
+            // Verificar si este parámetro es un slice anidado (contiene LBRACE)
+            if (param.LBRACE() != null)
+            {
+                // Es un slice anidado como {1, 2, 3}
+                // Crear una lista para los elementos de este subslice
+                List<ValueWrapper> subElementos = new List<ValueWrapper>();
+                
+                // Cada parametros es un array, necesitamos iterar
+                // CORRECCIÓN: parametros() devuelve un array de ParametrosContext
+                if (param.parametros() != null && param.parametros().Length > 0)
+                {
+                    // Iteramos por cada contexto de parámetros
+                    foreach (var parametro in param.parametros())
+                    {
+                        // Ahora podemos acceder a las expresiones dentro de este contexto de parámetros
+                        foreach (var expr in parametro.expr())
+                        {
+                            // Evaluar la expresión y añadirla al subslice
+                            subElementos.Add(Visit(expr));
+                        }
+                    }
+                }
+                
+                // Crear el subslice y añadirlo como un elemento del slice principal
+                SliceDef subSliceDef = new SliceDef(tipo);
+                elementos.Add(subSliceDef.Invoke(subElementos, this));
+            }
+            // Si es un parámetro directo (sin LBRACE)
+            else if (param.parametros() != null && param.parametros().Length > 0)
+            {
+                // Iteramos por cada contexto de parámetros (similar al caso anterior)
+                foreach (var parametro in param.parametros())
+                {
+                    // Procesamos cada expresión en este contexto
+                    foreach (var expr in parametro.expr())
+                    {
+                        // Evaluar y añadir al slice principal
+                        elementos.Add(Visit(expr));
+                    }
+                }
+            }
+        }
+        
+        // Crear el slice principal con todos los elementos recopilados
+        SliceDef sliceDef = new SliceDef(tipo);
+        ValueWrapper sliceValue = sliceDef.Invoke(elementos, this);
+        
+        // Declarar la variable en el entorno actual
+        entornoActual.Declaracion(id, sliceValue, context.Start);
+        
+        return sliceValue;
+    }
+
+
+    // Este es un método auxiliar que se puede llamar desde VisitLlamada para el acceso a slice
+    private ValueWrapper AccederSlice(ValueWrapper sliceValue, int indice, Antlr4.Runtime.IToken token)
+    {
+        if (sliceValue is InstanciaValue instanciaValue)
+        {
+            // Verificar que sea un slice
+            if (!instanciaValue.instancia.GetTypeName().StartsWith("[]"))
+            {
+                throw new SemanticError($"ERROR: No se puede acceder con índice a un valor de tipo '{instanciaValue.instancia.GetTypeName()}'", token);
+            }
+            
+            // Verificar límites del índice
+            int longitud = 0;
+            if (instanciaValue.instancia.values.ContainsKey("length") && 
+                instanciaValue.instancia.values["length"] is IntValue lengthValue)
+            {
+                longitud = lengthValue.Value;
+            }
+            
+            if (indice < 0 || indice >= longitud)
+            {
+                throw new SemanticError($"ERROR: Índice fuera de rango. El slice tiene {longitud} elementos, pero se intentó acceder al índice {indice}", token);
+            }
+            
+            // Obtener el elemento
+            return instanciaValue.instancia.Get(indice.ToString(), token);
+        }
+        
+        throw new SemanticError($"ERROR: No se puede acceder con índice a un valor de tipo '{sliceValue.GetType().Name}'", token);
+    }
+
 
 
 

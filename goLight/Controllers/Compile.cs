@@ -74,7 +74,7 @@ namespace api.Controllers
                 var tree = parser.program();
                 var visitor = new CompilerVisitor();
                 visitor.Visit(tree);
-                Console.WriteLine(" -> Compile <-");
+                Console.WriteLine(" ~-~-~-~-~-~-~-~-~-~-~-~-> Compile <-~-~-~-~-~-~-~-~-~-~-~-~- ");
 
                 return Ok(new { result = visitor.output });
 
