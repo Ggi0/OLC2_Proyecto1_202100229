@@ -9,10 +9,10 @@ dcl: varDcl | funcionDcl | statement | structDcl | structFunc |sliceDcl // stamt
 ;
 
 // -------- VARIABLES declaracion ---------------
-varDcl:   VAR ID ID SEMICOLON                 # varDclStruct //La producción varDclStruct manejará la declaración de variables de tipo struct
-        | VAR ID tiposD IGUAL expr SEMICOLON  # varDcl1
-        | VAR ID tiposD SEMICOLON             # varDcl2
-        | ID DCLIMPL expr SEMICOLON           # varDcl3
+varDcl:   VAR ID ID (SEMICOLON)?                 # varDclStruct //La producción varDclStruct manejará la declaración de variables de tipo struct
+        | VAR ID tiposD IGUAL expr (SEMICOLON)?  # varDcl1
+        | VAR ID tiposD (SEMICOLON)?             # varDcl2
+        | ID DCLIMPL expr (SEMICOLON)?           # varDcl3
 ;
 
 // -------- FUNCION declaracion ---------------
@@ -50,19 +50,29 @@ slcParam: parametros
 
 
 statement: expr (SEMICOLON)?                                               # ExprStmt
-         | FMT DOT PRINT LPAREN expr RPAREN (SEMICOLON)?                   # PrintStmt
+         | FMT DOT PRINT LPAREN exprList? RPAREN (SEMICOLON)?                   # PrintStmt
          | LBRACE dcl* RBRACE                                              # Bloque
          | IF (LPAREN)? expr (RPAREN)? statement (ELSE statement)?         # IfStatement
          | SWITCH expr LBRACE (caseStmt)+ RBRACE                           # SwitchStmt
          | FOR (LPAREN)? expr (RPAREN)? statement                          # WhileStmt
          | FOR (LPAREN)? forInit expr SEMICOLON expr (RPAREN)? statement   # ForStmt
+         | FOR (LPAREN)? rangeStmt (RPAREN)? statement                     # ForRangeStmt
          | STBREAK (SEMICOLON)?                                            # ST_break
          | STCONTINUE (SEMICOLON)?                                         # ST_continue
          | STRETURN expr? (SEMICOLON)?                                     # ST_return
 ;
 
+
+exprList: expr (COMMA expr)*;
+
+
+
 forInit: varDcl 
         | expr SEMICOLON
+;
+
+// Nueva regla para el for range
+rangeStmt: ID COMMA ID DCLIMPL RANGE expr
 ;
 
 // para el switch

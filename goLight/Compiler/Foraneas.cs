@@ -134,7 +134,7 @@ public class FuncionForanea : Invocable{
         7) Restaura el entorno original y retorna el resultado.
     
     */
-     public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor){
+     public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor, Antlr4.Runtime.IToken token){
         Console.WriteLine("\t -> iniciando procesado de la funcion: ");
 
         // Validar cantidad de parámetros

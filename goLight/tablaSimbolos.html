@@ -1,0 +1,4903 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Tabla de Símbolos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tabla de Símbolos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Columna</th>
+                <th>Fila</th>
+            </tr>
+        </thead>
+        <tbody id='tablaBody'>
+            <!-- Aquí se agregarán las filas dinámicamente -->
+        
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosDeclaracion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>entero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>decimal</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 3,14159 }</td>
+                <td>1</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>texto</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo! }</td>
+                <td>1</td>
+                <td>14</td>
+            </tr>
+            <tr>
+                <td>booleano</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>enteroSinValor</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>decimalSinValor</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 0 }</td>
+                <td>1</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>textoSinValor</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>1</td>
+                <td>32</td>
+            </tr>
+            <tr>
+                <td>booleanoSinValor</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>33</td>
+            </tr>
+            <tr>
+                <td>puntosAsignacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>59</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesAritmeticas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>86</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma1</td>
+                <td>int</td>
+                <td>IntValue { Value = 15 }</td>
+                <td>1</td>
+                <td>89</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 16 }</td>
+                <td>1</td>
+                <td>90</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma3</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 15,5 }</td>
+                <td>1</td>
+                <td>91</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma4</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 15,5 }</td>
+                <td>1</td>
+                <td>92</td>
+            </tr>
+            <tr>
+                <td>resultadoResta1</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>107</td>
+            </tr>
+            <tr>
+                <td>resultadoResta2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 5 }</td>
+                <td>1</td>
+                <td>108</td>
+            </tr>
+            <tr>
+                <td>resultadoResta3</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 4,5 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>resultadoResta4</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 5,5 }</td>
+                <td>1</td>
+                <td>110</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesRelacionales</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>130</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>131</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>148</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>149</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>151</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesLogicas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>168</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>172</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>173</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd5</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd6</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>resultadoOr1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>195</td>
+            </tr>
+            <tr>
+                <td>resultadoOr2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>196</td>
+            </tr>
+            <tr>
+                <td>resultadoOr3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>197</td>
+            </tr>
+            <tr>
+                <td>resultadoOr4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>198</td>
+            </tr>
+            <tr>
+                <td>resultadoOr5</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>199</td>
+            </tr>
+            <tr>
+                <td>resultadoOr6</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>resultadoOr7</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>201</td>
+            </tr>
+            <tr>
+                <td>puntosPrintln</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>223</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>247</td>
+            </tr>
+            <tr>
+                <td>puntosValorNulo</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>256</td>
+            </tr>
+            <tr>
+                <td>puntosPuntoYComa</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>266</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>271</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>int</td>
+                <td>IntValue { Value = 20 }</td>
+                <td>1</td>
+                <td>272</td>
+            </tr>
+            <tr>
+                <td>c</td>
+                <td>int</td>
+                <td>IntValue { Value = 30 }</td>
+                <td>1</td>
+                <td>273</td>
+            </tr>
+            <tr>
+                <td>saludar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludar }</td>
+                <td>0</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>obtenerNumero</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = obtenerNumero }</td>
+                <td>0</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>saludarPersona</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludarPersona }</td>
+                <td>0</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>sumar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = sumar }</td>
+                <td>0</td>
+                <td>18</td>
+            </tr>
+            <tr>
+                <td>factorial</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = factorial }</td>
+                <td>0</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>fibonacci</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = fibonacci }</td>
+                <td>0</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>hanoi</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = hanoi }</td>
+                <td>0</td>
+                <td>39</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>51</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesSimples</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>57</td>
+            </tr>
+            <tr>
+                <td>numero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesParametros</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma</td>
+                <td>int</td>
+                <td>IntValue { Value = 30 }</td>
+                <td>1</td>
+                <td>83</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesRecursivas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>95</td>
+            </tr>
+            <tr>
+                <td>resultadoFactorial</td>
+                <td>int</td>
+                <td>IntValue { Value = 120 }</td>
+                <td>1</td>
+                <td>98</td>
+            </tr>
+            <tr>
+                <td>resultadoFibonacci</td>
+                <td>int</td>
+                <td>IntValue { Value = 55 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>puntosAtoi</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>numeroEntero</td>
+                <td>int</td>
+                <td>IntValue { Value = 123 }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>puntosParseFloat</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>147</td>
+            </tr>
+            <tr>
+                <td>numeroDecimal1</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 123,45 }</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>numeroDecimal2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 123 }</td>
+                <td>1</td>
+                <td>154</td>
+            </tr>
+            <tr>
+                <td>puntosTypeOf</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>169</td>
+            </tr>
+            <tr>
+                <td>entero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>tipoEntero</td>
+                <td>string</td>
+                <td>StringValue { Value = int }</td>
+                <td>1</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>decimal</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 3,14159 }</td>
+                <td>1</td>
+                <td>179</td>
+            </tr>
+            <tr>
+                <td>tipoDecimal</td>
+                <td>string</td>
+                <td>StringValue { Value = float64 }</td>
+                <td>1</td>
+                <td>180</td>
+            </tr>
+            <tr>
+                <td>texto</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo! }</td>
+                <td>1</td>
+                <td>184</td>
+            </tr>
+            <tr>
+                <td>tipoTexto</td>
+                <td>string</td>
+                <td>StringValue { Value = string }</td>
+                <td>1</td>
+                <td>185</td>
+            </tr>
+            <tr>
+                <td>booleano</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>189</td>
+            </tr>
+            <tr>
+                <td>tipoBooleano</td>
+                <td>string</td>
+                <td>StringValue { Value = bool }</td>
+                <td>1</td>
+                <td>190</td>
+            </tr>
+            <tr>
+                <td>slice</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>194</td>
+            </tr>
+            <tr>
+                <td>tipoSlice</td>
+                <td>string</td>
+                <td>StringValue { Value = []int }</td>
+                <td>1</td>
+                <td>195</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosEntornos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>24</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>int</td>
+                <td>IntValue { Value = 20 }</td>
+                <td>2</td>
+                <td>27</td>
+            </tr>
+            <tr>
+                <td>c</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>d</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>41</td>
+            </tr>
+            <tr>
+                <td>d</td>
+                <td>int</td>
+                <td>IntValue { Value = 20 }</td>
+                <td>2</td>
+                <td>44</td>
+            </tr>
+            <tr>
+                <td>puntosIfElse</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>66</td>
+            </tr>
+            <tr>
+                <td>puntosForWhile</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>108</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>111</td>
+            </tr>
+            <tr>
+                <td>suma</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>112</td>
+            </tr>
+            <tr>
+                <td>n</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>x</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>130</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>puntosForClasico</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>157</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>5</td>
+                <td>161</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>5</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>6</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>6</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>6</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>puntosForRange</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>185</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>188</td>
+            </tr>
+            <tr>
+                <td>sumaIndices</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>190</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>192</td>
+            </tr>
+            <tr>
+                <td>valor</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>192</td>
+            </tr>
+            <tr>
+                <td>puntosSwitch</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>214</td>
+            </tr>
+            <tr>
+                <td>dia</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>217</td>
+            </tr>
+            <tr>
+                <td>numero</td>
+                <td>int</td>
+                <td>IntValue { Value = 100 }</td>
+                <td>1</td>
+                <td>240</td>
+            </tr>
+            <tr>
+                <td>numeroBreak</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>254</td>
+            </tr>
+            <tr>
+                <td>puntosBreak</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>271</td>
+            </tr>
+            <tr>
+                <td>contador</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>274</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>5</td>
+                <td>297</td>
+            </tr>
+            <tr>
+                <td>puntosContinue</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>315</td>
+            </tr>
+            <tr>
+                <td>impares</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>319</td>
+            </tr>
+            <tr>
+                <td>pares</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>341</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>5</td>
+                <td>343</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosDeclaracion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>entero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>decimal</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 3,14159 }</td>
+                <td>1</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>texto</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo! }</td>
+                <td>1</td>
+                <td>14</td>
+            </tr>
+            <tr>
+                <td>booleano</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>enteroSinValor</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>decimalSinValor</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 0 }</td>
+                <td>1</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>textoSinValor</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>1</td>
+                <td>32</td>
+            </tr>
+            <tr>
+                <td>booleanoSinValor</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>33</td>
+            </tr>
+            <tr>
+                <td>puntosAsignacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>59</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesAritmeticas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>86</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma1</td>
+                <td>int</td>
+                <td>IntValue { Value = 15 }</td>
+                <td>1</td>
+                <td>89</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 16 }</td>
+                <td>1</td>
+                <td>90</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma3</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 15,5 }</td>
+                <td>1</td>
+                <td>91</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma4</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 15,5 }</td>
+                <td>1</td>
+                <td>92</td>
+            </tr>
+            <tr>
+                <td>resultadoResta1</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>107</td>
+            </tr>
+            <tr>
+                <td>resultadoResta2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 5 }</td>
+                <td>1</td>
+                <td>108</td>
+            </tr>
+            <tr>
+                <td>resultadoResta3</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 4,5 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>resultadoResta4</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 5,5 }</td>
+                <td>1</td>
+                <td>110</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesRelacionales</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>130</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>131</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>148</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>149</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>151</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesLogicas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>168</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>172</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>173</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd5</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd6</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>resultadoOr1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>195</td>
+            </tr>
+            <tr>
+                <td>resultadoOr2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>196</td>
+            </tr>
+            <tr>
+                <td>resultadoOr3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>197</td>
+            </tr>
+            <tr>
+                <td>resultadoOr4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>198</td>
+            </tr>
+            <tr>
+                <td>resultadoOr5</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>199</td>
+            </tr>
+            <tr>
+                <td>resultadoOr6</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>resultadoOr7</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>201</td>
+            </tr>
+            <tr>
+                <td>puntosPrintln</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>223</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>247</td>
+            </tr>
+            <tr>
+                <td>puntosValorNulo</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>256</td>
+            </tr>
+            <tr>
+                <td>puntosPuntoYComa</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>266</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>271</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>int</td>
+                <td>IntValue { Value = 20 }</td>
+                <td>1</td>
+                <td>272</td>
+            </tr>
+            <tr>
+                <td>c</td>
+                <td>int</td>
+                <td>IntValue { Value = 30 }</td>
+                <td>1</td>
+                <td>273</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosDeclaracion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>entero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>decimal</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 3,14159 }</td>
+                <td>1</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>texto</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo! }</td>
+                <td>1</td>
+                <td>14</td>
+            </tr>
+            <tr>
+                <td>booleano</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>enteroSinValor</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>decimalSinValor</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 0 }</td>
+                <td>1</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>textoSinValor</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>1</td>
+                <td>32</td>
+            </tr>
+            <tr>
+                <td>booleanoSinValor</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>33</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosDeclaracion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>entero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>decimal</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 3,14159 }</td>
+                <td>1</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>texto</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo! }</td>
+                <td>1</td>
+                <td>14</td>
+            </tr>
+            <tr>
+                <td>booleano</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>enteroSinValor</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>decimalSinValor</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 0 }</td>
+                <td>1</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>textoSinValor</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>1</td>
+                <td>32</td>
+            </tr>
+            <tr>
+                <td>booleanoSinValor</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>33</td>
+            </tr>
+            <tr>
+                <td>puntosAsignacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>59</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosDeclaracion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>entero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>decimal</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 3,14159 }</td>
+                <td>1</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>texto</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo! }</td>
+                <td>1</td>
+                <td>14</td>
+            </tr>
+            <tr>
+                <td>booleano</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>enteroSinValor</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>decimalSinValor</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 0 }</td>
+                <td>1</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>textoSinValor</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>1</td>
+                <td>32</td>
+            </tr>
+            <tr>
+                <td>booleanoSinValor</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>33</td>
+            </tr>
+            <tr>
+                <td>puntosAsignacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>59</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesAritmeticas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>86</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma1</td>
+                <td>int</td>
+                <td>IntValue { Value = 15 }</td>
+                <td>1</td>
+                <td>89</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 16 }</td>
+                <td>1</td>
+                <td>90</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma3</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 15,5 }</td>
+                <td>1</td>
+                <td>91</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma4</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 15,5 }</td>
+                <td>1</td>
+                <td>92</td>
+            </tr>
+            <tr>
+                <td>resultadoResta1</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>107</td>
+            </tr>
+            <tr>
+                <td>resultadoResta2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 5 }</td>
+                <td>1</td>
+                <td>108</td>
+            </tr>
+            <tr>
+                <td>resultadoResta3</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 4,5 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>resultadoResta4</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 5,5 }</td>
+                <td>1</td>
+                <td>110</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesRelacionales</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>130</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>131</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>148</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>149</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>151</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesLogicas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>168</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>172</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>173</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd5</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd6</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>resultadoOr1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>195</td>
+            </tr>
+            <tr>
+                <td>resultadoOr2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>196</td>
+            </tr>
+            <tr>
+                <td>resultadoOr3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>197</td>
+            </tr>
+            <tr>
+                <td>resultadoOr4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>198</td>
+            </tr>
+            <tr>
+                <td>resultadoOr5</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>199</td>
+            </tr>
+            <tr>
+                <td>resultadoOr6</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>resultadoOr7</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>201</td>
+            </tr>
+            <tr>
+                <td>puntosPrintln</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>223</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>247</td>
+            </tr>
+            <tr>
+                <td>puntosValorNulo</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>256</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosDeclaracion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>entero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>decimal</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 3,14159 }</td>
+                <td>1</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>texto</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo! }</td>
+                <td>1</td>
+                <td>14</td>
+            </tr>
+            <tr>
+                <td>booleano</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>enteroSinValor</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>decimalSinValor</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 0 }</td>
+                <td>1</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>textoSinValor</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>1</td>
+                <td>32</td>
+            </tr>
+            <tr>
+                <td>booleanoSinValor</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>33</td>
+            </tr>
+            <tr>
+                <td>puntosAsignacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>59</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesAritmeticas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>86</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma1</td>
+                <td>int</td>
+                <td>IntValue { Value = 15 }</td>
+                <td>1</td>
+                <td>89</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 16 }</td>
+                <td>1</td>
+                <td>90</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma3</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 15,5 }</td>
+                <td>1</td>
+                <td>91</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma4</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 15,5 }</td>
+                <td>1</td>
+                <td>92</td>
+            </tr>
+            <tr>
+                <td>resultadoResta1</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>107</td>
+            </tr>
+            <tr>
+                <td>resultadoResta2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 5 }</td>
+                <td>1</td>
+                <td>108</td>
+            </tr>
+            <tr>
+                <td>resultadoResta3</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 4,5 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>resultadoResta4</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 5,5 }</td>
+                <td>1</td>
+                <td>110</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesRelacionales</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>130</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>131</td>
+            </tr>
+            <tr>
+                <td>resultadoIgualdad4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>148</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>149</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>resultadoDesigualdad4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>151</td>
+            </tr>
+            <tr>
+                <td>puntosOperacionesLogicas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>168</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>172</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>173</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd5</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>resultadoAnd6</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>resultadoOr1</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>195</td>
+            </tr>
+            <tr>
+                <td>resultadoOr2</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>196</td>
+            </tr>
+            <tr>
+                <td>resultadoOr3</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>197</td>
+            </tr>
+            <tr>
+                <td>resultadoOr4</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>198</td>
+            </tr>
+            <tr>
+                <td>resultadoOr5</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>199</td>
+            </tr>
+            <tr>
+                <td>resultadoOr6</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>resultadoOr7</td>
+                <td>bool</td>
+                <td>BoolValue { Value = False }</td>
+                <td>1</td>
+                <td>201</td>
+            </tr>
+            <tr>
+                <td>puntosPrintln</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>223</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>247</td>
+            </tr>
+            <tr>
+                <td>puntosValorNulo</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>256</td>
+            </tr>
+            <tr>
+                <td>puntosPuntoYComa</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>266</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>271</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>int</td>
+                <td>IntValue { Value = 20 }</td>
+                <td>1</td>
+                <td>272</td>
+            </tr>
+            <tr>
+                <td>c</td>
+                <td>int</td>
+                <td>IntValue { Value = 30 }</td>
+                <td>1</td>
+                <td>273</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosEntornos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>24</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>int</td>
+                <td>IntValue { Value = 20 }</td>
+                <td>2</td>
+                <td>27</td>
+            </tr>
+            <tr>
+                <td>c</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>d</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>41</td>
+            </tr>
+            <tr>
+                <td>d</td>
+                <td>int</td>
+                <td>IntValue { Value = 20 }</td>
+                <td>2</td>
+                <td>44</td>
+            </tr>
+            <tr>
+                <td>puntosIfElse</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>66</td>
+            </tr>
+            <tr>
+                <td>puntosForWhile</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>108</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>111</td>
+            </tr>
+            <tr>
+                <td>suma</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>112</td>
+            </tr>
+            <tr>
+                <td>n</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>x</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>130</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>puntosForClasico</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>157</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>5</td>
+                <td>161</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>5</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>6</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>6</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>6</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>puntosForRange</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>185</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>188</td>
+            </tr>
+            <tr>
+                <td>sumaIndices</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>190</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>192</td>
+            </tr>
+            <tr>
+                <td>valor</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>192</td>
+            </tr>
+            <tr>
+                <td>puntosSwitch</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>214</td>
+            </tr>
+            <tr>
+                <td>dia</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>217</td>
+            </tr>
+            <tr>
+                <td>numero</td>
+                <td>int</td>
+                <td>IntValue { Value = 100 }</td>
+                <td>1</td>
+                <td>240</td>
+            </tr>
+            <tr>
+                <td>numeroBreak</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>254</td>
+            </tr>
+            <tr>
+                <td>puntosBreak</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>271</td>
+            </tr>
+            <tr>
+                <td>contador</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>274</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>5</td>
+                <td>297</td>
+            </tr>
+            <tr>
+                <td>puntosContinue</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>315</td>
+            </tr>
+            <tr>
+                <td>impares</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>319</td>
+            </tr>
+            <tr>
+                <td>pares</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>341</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>5</td>
+                <td>343</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosEntornos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosEntornos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>24</td>
+            </tr>
+            <tr>
+                <td>b</td>
+                <td>int</td>
+                <td>IntValue { Value = 20 }</td>
+                <td>2</td>
+                <td>27</td>
+            </tr>
+            <tr>
+                <td>c</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>d</td>
+                <td>int</td>
+                <td>IntValue { Value = 10 }</td>
+                <td>1</td>
+                <td>41</td>
+            </tr>
+            <tr>
+                <td>d</td>
+                <td>int</td>
+                <td>IntValue { Value = 20 }</td>
+                <td>2</td>
+                <td>44</td>
+            </tr>
+            <tr>
+                <td>puntosIfElse</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>66</td>
+            </tr>
+            <tr>
+                <td>puntosForWhile</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>108</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>111</td>
+            </tr>
+            <tr>
+                <td>suma</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>112</td>
+            </tr>
+            <tr>
+                <td>n</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>x</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>130</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>2</td>
+                <td>132</td>
+            </tr>
+            <tr>
+                <td>fila</td>
+                <td>string</td>
+                <td>StringValue { Value =  }</td>
+                <td>2</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>puntosForClasico</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>157</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>5</td>
+                <td>161</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>5</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>6</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>6</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>j</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>6</td>
+                <td>176</td>
+            </tr>
+            <tr>
+                <td>puntosForRange</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>185</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>188</td>
+            </tr>
+            <tr>
+                <td>sumaIndices</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>190</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>192</td>
+            </tr>
+            <tr>
+                <td>valor</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>192</td>
+            </tr>
+            <tr>
+                <td>puntosSwitch</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>214</td>
+            </tr>
+            <tr>
+                <td>dia</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>217</td>
+            </tr>
+            <tr>
+                <td>numero</td>
+                <td>int</td>
+                <td>IntValue { Value = 100 }</td>
+                <td>1</td>
+                <td>240</td>
+            </tr>
+            <tr>
+                <td>numeroBreak</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>254</td>
+            </tr>
+            <tr>
+                <td>puntosBreak</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>271</td>
+            </tr>
+            <tr>
+                <td>contador</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>274</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>5</td>
+                <td>297</td>
+            </tr>
+            <tr>
+                <td>puntosContinue</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>315</td>
+            </tr>
+            <tr>
+                <td>impares</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>319</td>
+            </tr>
+            <tr>
+                <td>pares</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>341</td>
+            </tr>
+            <tr>
+                <td>i</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>5</td>
+                <td>343</td>
+            </tr>
+            <tr>
+                <td>saludar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludar }</td>
+                <td>0</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>obtenerNumero</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = obtenerNumero }</td>
+                <td>0</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>saludarPersona</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludarPersona }</td>
+                <td>0</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>sumar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = sumar }</td>
+                <td>0</td>
+                <td>18</td>
+            </tr>
+            <tr>
+                <td>factorial</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = factorial }</td>
+                <td>0</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>fibonacci</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = fibonacci }</td>
+                <td>0</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>hanoi</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = hanoi }</td>
+                <td>0</td>
+                <td>39</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>51</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesSimples</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>57</td>
+            </tr>
+            <tr>
+                <td>numero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesParametros</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma</td>
+                <td>int</td>
+                <td>IntValue { Value = 30 }</td>
+                <td>1</td>
+                <td>83</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesRecursivas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>95</td>
+            </tr>
+            <tr>
+                <td>resultadoFactorial</td>
+                <td>int</td>
+                <td>IntValue { Value = 120 }</td>
+                <td>1</td>
+                <td>98</td>
+            </tr>
+            <tr>
+                <td>resultadoFibonacci</td>
+                <td>int</td>
+                <td>IntValue { Value = 55 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>puntosAtoi</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>numeroEntero</td>
+                <td>int</td>
+                <td>IntValue { Value = 123 }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>puntosParseFloat</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>147</td>
+            </tr>
+            <tr>
+                <td>numeroDecimal1</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 123,45 }</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>numeroDecimal2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 123 }</td>
+                <td>1</td>
+                <td>154</td>
+            </tr>
+            <tr>
+                <td>puntosTypeOf</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>169</td>
+            </tr>
+            <tr>
+                <td>entero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>tipoEntero</td>
+                <td>string</td>
+                <td>StringValue { Value = int }</td>
+                <td>1</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>decimal</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 3,14159 }</td>
+                <td>1</td>
+                <td>179</td>
+            </tr>
+            <tr>
+                <td>tipoDecimal</td>
+                <td>string</td>
+                <td>StringValue { Value = float64 }</td>
+                <td>1</td>
+                <td>180</td>
+            </tr>
+            <tr>
+                <td>texto</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo! }</td>
+                <td>1</td>
+                <td>184</td>
+            </tr>
+            <tr>
+                <td>tipoTexto</td>
+                <td>string</td>
+                <td>StringValue { Value = string }</td>
+                <td>1</td>
+                <td>185</td>
+            </tr>
+            <tr>
+                <td>booleano</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>189</td>
+            </tr>
+            <tr>
+                <td>tipoBooleano</td>
+                <td>string</td>
+                <td>StringValue { Value = bool }</td>
+                <td>1</td>
+                <td>190</td>
+            </tr>
+            <tr>
+                <td>slice</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>194</td>
+            </tr>
+            <tr>
+                <td>tipoSlice</td>
+                <td>string</td>
+                <td>StringValue { Value = []int }</td>
+                <td>1</td>
+                <td>195</td>
+            </tr>
+            <tr>
+                <td>saludar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludar }</td>
+                <td>0</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>obtenerNumero</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = obtenerNumero }</td>
+                <td>0</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>saludarPersona</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludarPersona }</td>
+                <td>0</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>sumar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = sumar }</td>
+                <td>0</td>
+                <td>18</td>
+            </tr>
+            <tr>
+                <td>factorial</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = factorial }</td>
+                <td>0</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>fibonacci</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = fibonacci }</td>
+                <td>0</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>hanoi</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = hanoi }</td>
+                <td>0</td>
+                <td>39</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>51</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesSimples</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>57</td>
+            </tr>
+            <tr>
+                <td>numero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesParametros</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma</td>
+                <td>int</td>
+                <td>IntValue { Value = 30 }</td>
+                <td>1</td>
+                <td>83</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesRecursivas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>95</td>
+            </tr>
+            <tr>
+                <td>resultadoFactorial</td>
+                <td>int</td>
+                <td>IntValue { Value = 120 }</td>
+                <td>1</td>
+                <td>98</td>
+            </tr>
+            <tr>
+                <td>resultadoFibonacci</td>
+                <td>int</td>
+                <td>IntValue { Value = 55 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>puntosAtoi</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>numeroEntero</td>
+                <td>int</td>
+                <td>IntValue { Value = 123 }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>saludar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludar }</td>
+                <td>0</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>obtenerNumero</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = obtenerNumero }</td>
+                <td>0</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>saludarPersona</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludarPersona }</td>
+                <td>0</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>sumar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = sumar }</td>
+                <td>0</td>
+                <td>18</td>
+            </tr>
+            <tr>
+                <td>factorial</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = factorial }</td>
+                <td>0</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>fibonacci</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = fibonacci }</td>
+                <td>0</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>hanoi</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = hanoi }</td>
+                <td>0</td>
+                <td>39</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>51</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesSimples</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>57</td>
+            </tr>
+            <tr>
+                <td>numero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesParametros</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma</td>
+                <td>int</td>
+                <td>IntValue { Value = 30 }</td>
+                <td>1</td>
+                <td>83</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesRecursivas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>95</td>
+            </tr>
+            <tr>
+                <td>resultadoFactorial</td>
+                <td>int</td>
+                <td>IntValue { Value = 120 }</td>
+                <td>1</td>
+                <td>98</td>
+            </tr>
+            <tr>
+                <td>resultadoFibonacci</td>
+                <td>int</td>
+                <td>IntValue { Value = 55 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>puntosAtoi</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>numeroEntero</td>
+                <td>int</td>
+                <td>IntValue { Value = 123 }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>saludar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludar }</td>
+                <td>0</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>obtenerNumero</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = obtenerNumero }</td>
+                <td>0</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>saludarPersona</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludarPersona }</td>
+                <td>0</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>sumar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = sumar }</td>
+                <td>0</td>
+                <td>18</td>
+            </tr>
+            <tr>
+                <td>factorial</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = factorial }</td>
+                <td>0</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>fibonacci</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = fibonacci }</td>
+                <td>0</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>hanoi</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = hanoi }</td>
+                <td>0</td>
+                <td>39</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>51</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesSimples</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>57</td>
+            </tr>
+            <tr>
+                <td>numero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesParametros</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma</td>
+                <td>int</td>
+                <td>IntValue { Value = 30 }</td>
+                <td>1</td>
+                <td>83</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesRecursivas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>95</td>
+            </tr>
+            <tr>
+                <td>resultadoFactorial</td>
+                <td>int</td>
+                <td>IntValue { Value = 120 }</td>
+                <td>1</td>
+                <td>98</td>
+            </tr>
+            <tr>
+                <td>resultadoFibonacci</td>
+                <td>int</td>
+                <td>IntValue { Value = 55 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>puntosAtoi</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>numeroEntero</td>
+                <td>int</td>
+                <td>IntValue { Value = 123 }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>puntosParseFloat</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>147</td>
+            </tr>
+            <tr>
+                <td>numeroDecimal1</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 123,45 }</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>numeroDecimal2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 123 }</td>
+                <td>1</td>
+                <td>154</td>
+            </tr>
+            <tr>
+                <td>saludar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludar }</td>
+                <td>0</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>obtenerNumero</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = obtenerNumero }</td>
+                <td>0</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>saludarPersona</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = saludarPersona }</td>
+                <td>0</td>
+                <td>13</td>
+            </tr>
+            <tr>
+                <td>sumar</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = sumar }</td>
+                <td>0</td>
+                <td>18</td>
+            </tr>
+            <tr>
+                <td>factorial</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = factorial }</td>
+                <td>0</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>fibonacci</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = fibonacci }</td>
+                <td>0</td>
+                <td>31</td>
+            </tr>
+            <tr>
+                <td>hanoi</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = hanoi }</td>
+                <td>0</td>
+                <td>39</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>51</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesSimples</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>57</td>
+            </tr>
+            <tr>
+                <td>numero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesParametros</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>resultadoSuma</td>
+                <td>int</td>
+                <td>IntValue { Value = 30 }</td>
+                <td>1</td>
+                <td>83</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesRecursivas</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>95</td>
+            </tr>
+            <tr>
+                <td>resultadoFactorial</td>
+                <td>int</td>
+                <td>IntValue { Value = 120 }</td>
+                <td>1</td>
+                <td>98</td>
+            </tr>
+            <tr>
+                <td>resultadoFibonacci</td>
+                <td>int</td>
+                <td>IntValue { Value = 55 }</td>
+                <td>1</td>
+                <td>109</td>
+            </tr>
+            <tr>
+                <td>puntosAtoi</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>126</td>
+            </tr>
+            <tr>
+                <td>numeroEntero</td>
+                <td>int</td>
+                <td>IntValue { Value = 123 }</td>
+                <td>1</td>
+                <td>129</td>
+            </tr>
+            <tr>
+                <td>puntosParseFloat</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>147</td>
+            </tr>
+            <tr>
+                <td>numeroDecimal1</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 123,45 }</td>
+                <td>1</td>
+                <td>150</td>
+            </tr>
+            <tr>
+                <td>numeroDecimal2</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 123 }</td>
+                <td>1</td>
+                <td>154</td>
+            </tr>
+            <tr>
+                <td>puntosTypeOf</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>169</td>
+            </tr>
+            <tr>
+                <td>entero</td>
+                <td>int</td>
+                <td>IntValue { Value = 42 }</td>
+                <td>1</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>tipoEntero</td>
+                <td>string</td>
+                <td>StringValue { Value = int }</td>
+                <td>1</td>
+                <td>175</td>
+            </tr>
+            <tr>
+                <td>decimal</td>
+                <td>float64</td>
+                <td>FloatValue { Value = 3,14159 }</td>
+                <td>1</td>
+                <td>179</td>
+            </tr>
+            <tr>
+                <td>tipoDecimal</td>
+                <td>string</td>
+                <td>StringValue { Value = float64 }</td>
+                <td>1</td>
+                <td>180</td>
+            </tr>
+            <tr>
+                <td>texto</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo! }</td>
+                <td>1</td>
+                <td>184</td>
+            </tr>
+            <tr>
+                <td>tipoTexto</td>
+                <td>string</td>
+                <td>StringValue { Value = string }</td>
+                <td>1</td>
+                <td>185</td>
+            </tr>
+            <tr>
+                <td>booleano</td>
+                <td>bool</td>
+                <td>BoolValue { Value = True }</td>
+                <td>1</td>
+                <td>189</td>
+            </tr>
+            <tr>
+                <td>tipoBooleano</td>
+                <td>string</td>
+                <td>StringValue { Value = bool }</td>
+                <td>1</td>
+                <td>190</td>
+            </tr>
+            <tr>
+                <td>slice</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>194</td>
+            </tr>
+            <tr>
+                <td>tipoSlice</td>
+                <td>string</td>
+                <td>StringValue { Value = []int }</td>
+                <td>1</td>
+                <td>195</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosCreacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>puntosAcceso</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>primerElemento</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>puntosMultidimensional</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>matriz</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>53</td>
+            </tr>
+            <tr>
+                <td>matrizIrregular</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosAccesoMultidimensional</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>elemento11</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>79</td>
+            </tr>
+            <tr>
+                <td>elemento23</td>
+                <td>int</td>
+                <td>IntValue { Value = 6 }</td>
+                <td>1</td>
+                <td>80</td>
+            </tr>
+            <tr>
+                <td>elemento33</td>
+                <td>int</td>
+                <td>IntValue { Value = 9 }</td>
+                <td>1</td>
+                <td>81</td>
+            </tr>
+            <tr>
+                <td>primeraFila</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>106</td>
+            </tr>
+            <tr>
+                <td>puntosIndex</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>118</td>
+            </tr>
+            <tr>
+                <td>newNN</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>121</td>
+            </tr>
+            <tr>
+                <td>indice1</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>123</td>
+            </tr>
+            <tr>
+                <td>indice2</td>
+                <td>int</td>
+                <td>IntValue { Value = -1 }</td>
+                <td>1</td>
+                <td>124</td>
+            </tr>
+            <tr>
+                <td>puntosJoin</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>137</td>
+            </tr>
+            <tr>
+                <td>palabras</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>140</td>
+            </tr>
+            <tr>
+                <td>frase</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola mundo desde Go }</td>
+                <td>1</td>
+                <td>141</td>
+            </tr>
+            <tr>
+                <td>fraseConComas</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo, desde, Go }</td>
+                <td>1</td>
+                <td>142</td>
+            </tr>
+            <tr>
+                <td>puntosLen</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>155</td>
+            </tr>
+            <tr>
+                <td>longitud1</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>158</td>
+            </tr>
+            <tr>
+                <td>longitud2</td>
+                <td>int</td>
+                <td>IntValue { Value = 3 }</td>
+                <td>1</td>
+                <td>159</td>
+            </tr>
+            <tr>
+                <td>longitud3</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>160</td>
+            </tr>
+            <tr>
+                <td>puntosAppend</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>newNN2</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>mtx1</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>187</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosCreacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>puntosAcceso</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>primerElemento</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>puntosMultidimensional</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>matriz</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>53</td>
+            </tr>
+            <tr>
+                <td>matrizIrregular</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosAccesoMultidimensional</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>elemento11</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>79</td>
+            </tr>
+            <tr>
+                <td>elemento23</td>
+                <td>int</td>
+                <td>IntValue { Value = 6 }</td>
+                <td>1</td>
+                <td>80</td>
+            </tr>
+            <tr>
+                <td>elemento33</td>
+                <td>int</td>
+                <td>IntValue { Value = 9 }</td>
+                <td>1</td>
+                <td>81</td>
+            </tr>
+            <tr>
+                <td>primeraFila</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>106</td>
+            </tr>
+            <tr>
+                <td>puntosIndex</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>118</td>
+            </tr>
+            <tr>
+                <td>newNN</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>121</td>
+            </tr>
+            <tr>
+                <td>indice1</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>123</td>
+            </tr>
+            <tr>
+                <td>indice2</td>
+                <td>int</td>
+                <td>IntValue { Value = -1 }</td>
+                <td>1</td>
+                <td>124</td>
+            </tr>
+            <tr>
+                <td>puntosJoin</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>137</td>
+            </tr>
+            <tr>
+                <td>palabras</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>140</td>
+            </tr>
+            <tr>
+                <td>frase</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola mundo desde Go }</td>
+                <td>1</td>
+                <td>141</td>
+            </tr>
+            <tr>
+                <td>fraseConComas</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo, desde, Go }</td>
+                <td>1</td>
+                <td>142</td>
+            </tr>
+            <tr>
+                <td>puntosLen</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>155</td>
+            </tr>
+            <tr>
+                <td>longitud1</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>158</td>
+            </tr>
+            <tr>
+                <td>longitud2</td>
+                <td>int</td>
+                <td>IntValue { Value = 3 }</td>
+                <td>1</td>
+                <td>159</td>
+            </tr>
+            <tr>
+                <td>longitud3</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>160</td>
+            </tr>
+            <tr>
+                <td>puntosAppend</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>newNN2</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>mtx1</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>187</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosCreacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>puntosAcceso</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>primerElemento</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosCreacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>puntosAcceso</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>primerElemento</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>puntosMultidimensional</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>matriz</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>53</td>
+            </tr>
+            <tr>
+                <td>matrizIrregular</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosAccesoMultidimensional</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>elemento11</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>79</td>
+            </tr>
+            <tr>
+                <td>elemento23</td>
+                <td>int</td>
+                <td>IntValue { Value = 6 }</td>
+                <td>1</td>
+                <td>80</td>
+            </tr>
+            <tr>
+                <td>elemento33</td>
+                <td>int</td>
+                <td>IntValue { Value = 9 }</td>
+                <td>1</td>
+                <td>81</td>
+            </tr>
+            <tr>
+                <td>primeraFila</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>106</td>
+            </tr>
+            <tr>
+                <td>puntosIndex</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>118</td>
+            </tr>
+            <tr>
+                <td>newNN</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>121</td>
+            </tr>
+            <tr>
+                <td>indice1</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>123</td>
+            </tr>
+            <tr>
+                <td>indice2</td>
+                <td>int</td>
+                <td>IntValue { Value = -1 }</td>
+                <td>1</td>
+                <td>124</td>
+            </tr>
+            <tr>
+                <td>puntosJoin</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>137</td>
+            </tr>
+            <tr>
+                <td>palabras</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>140</td>
+            </tr>
+            <tr>
+                <td>frase</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola mundo desde Go }</td>
+                <td>1</td>
+                <td>141</td>
+            </tr>
+            <tr>
+                <td>fraseConComas</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo, desde, Go }</td>
+                <td>1</td>
+                <td>142</td>
+            </tr>
+            <tr>
+                <td>puntosLen</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>155</td>
+            </tr>
+            <tr>
+                <td>longitud1</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>158</td>
+            </tr>
+            <tr>
+                <td>longitud2</td>
+                <td>int</td>
+                <td>IntValue { Value = 3 }</td>
+                <td>1</td>
+                <td>159</td>
+            </tr>
+            <tr>
+                <td>longitud3</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>160</td>
+            </tr>
+            <tr>
+                <td>puntosAppend</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>newNN2</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>mtx1</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>187</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>puntosCreacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>puntosAcceso</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>primerElemento</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>puntosMultidimensional</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>matriz</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>53</td>
+            </tr>
+            <tr>
+                <td>matrizIrregular</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>64</td>
+            </tr>
+            <tr>
+                <td>puntosAccesoMultidimensional</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>76</td>
+            </tr>
+            <tr>
+                <td>elemento11</td>
+                <td>int</td>
+                <td>IntValue { Value = 1 }</td>
+                <td>1</td>
+                <td>79</td>
+            </tr>
+            <tr>
+                <td>elemento23</td>
+                <td>int</td>
+                <td>IntValue { Value = 6 }</td>
+                <td>1</td>
+                <td>80</td>
+            </tr>
+            <tr>
+                <td>elemento33</td>
+                <td>int</td>
+                <td>IntValue { Value = 9 }</td>
+                <td>1</td>
+                <td>81</td>
+            </tr>
+            <tr>
+                <td>primeraFila</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>106</td>
+            </tr>
+            <tr>
+                <td>puntosIndex</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>118</td>
+            </tr>
+            <tr>
+                <td>newNN</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>121</td>
+            </tr>
+            <tr>
+                <td>indice1</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>123</td>
+            </tr>
+            <tr>
+                <td>indice2</td>
+                <td>int</td>
+                <td>IntValue { Value = -1 }</td>
+                <td>1</td>
+                <td>124</td>
+            </tr>
+            <tr>
+                <td>puntosJoin</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>137</td>
+            </tr>
+            <tr>
+                <td>palabras</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>140</td>
+            </tr>
+            <tr>
+                <td>frase</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola mundo desde Go }</td>
+                <td>1</td>
+                <td>141</td>
+            </tr>
+            <tr>
+                <td>fraseConComas</td>
+                <td>string</td>
+                <td>StringValue { Value = Hola, mundo, desde, Go }</td>
+                <td>1</td>
+                <td>142</td>
+            </tr>
+            <tr>
+                <td>puntosLen</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>155</td>
+            </tr>
+            <tr>
+                <td>longitud1</td>
+                <td>int</td>
+                <td>IntValue { Value = 5 }</td>
+                <td>1</td>
+                <td>158</td>
+            </tr>
+            <tr>
+                <td>longitud2</td>
+                <td>int</td>
+                <td>IntValue { Value = 3 }</td>
+                <td>1</td>
+                <td>159</td>
+            </tr>
+            <tr>
+                <td>longitud3</td>
+                <td>int</td>
+                <td>IntValue { Value = 2 }</td>
+                <td>1</td>
+                <td>160</td>
+            </tr>
+            <tr>
+                <td>puntosAppend</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>newNN2</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>174</td>
+            </tr>
+            <tr>
+                <td>mtx1</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>187</td>
+            </tr>
+            <tr>
+                <td>Persona</td>
+                <td>StructValue</td>
+                <td>StructValue { Nombre = Persona, Atributos = System.Collections.Generic.Dictionary`2[System.String,System.ValueTuple`3[System.String,System.Boolean,System.Boolean]], Methods = System.Collections.Generic.Dictionary`2[System.String,Invocable] }</td>
+                <td>0</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Empleado</td>
+                <td>StructValue</td>
+                <td>StructValue { Nombre = Empleado, Atributos = System.Collections.Generic.Dictionary`2[System.String,System.ValueTuple`3[System.String,System.Boolean,System.Boolean]], Methods = System.Collections.Generic.Dictionary`2[System.String,Invocable] }</td>
+                <td>0</td>
+                <td>11</td>
+            </tr>
+            <tr>
+                <td>Nodo</td>
+                <td>StructValue</td>
+                <td>StructValue { Nombre = Nodo, Atributos = System.Collections.Generic.Dictionary`2[System.String,System.ValueTuple`3[System.String,System.Boolean,System.Boolean]], Methods = System.Collections.Generic.Dictionary`2[System.String,Invocable] }</td>
+                <td>0</td>
+                <td>19</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>53</td>
+            </tr>
+            <tr>
+                <td>puntos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>54</td>
+            </tr>
+            <tr>
+                <td>puntosDeclaracion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>60</td>
+            </tr>
+            <tr>
+                <td>puntosInstanciacion</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>81</td>
+            </tr>
+            <tr>
+                <td>persona1</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>84</td>
+            </tr>
+            <tr>
+                <td>puntosAsignacionPrimitivos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>96</td>
+            </tr>
+            <tr>
+                <td>puntosAccesoPrimitivos</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>113</td>
+            </tr>
+            <tr>
+                <td>nombrePersona1</td>
+                <td>string</td>
+                <td>StringValue { Value = María }</td>
+                <td>1</td>
+                <td>116</td>
+            </tr>
+            <tr>
+                <td>edadPersona1</td>
+                <td>int</td>
+                <td>IntValue { Value = 25 }</td>
+                <td>1</td>
+                <td>117</td>
+            </tr>
+            <tr>
+                <td>puntosAsignacionAnidados</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>130</td>
+            </tr>
+            <tr>
+                <td>nodo1</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>133</td>
+            </tr>
+            <tr>
+                <td>nodo2</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>139</td>
+            </tr>
+            <tr>
+                <td>nodo3</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>1</td>
+                <td>149</td>
+            </tr>
+            <tr>
+                <td>puntosAccesoAnidados</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>168</td>
+            </tr>
+            <tr>
+                <td>nombreNodo1</td>
+                <td>string</td>
+                <td>StringValue { Value = Primero }</td>
+                <td>1</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>valorNodo2</td>
+                <td>int</td>
+                <td>IntValue { Value = 25 }</td>
+                <td>1</td>
+                <td>172</td>
+            </tr>
+            <tr>
+                <td>nombreNodo3</td>
+                <td>string</td>
+                <td>StringValue { Value = Tercero Modificado }</td>
+                <td>1</td>
+                <td>173</td>
+            </tr>
+            <tr>
+                <td>puntosFuncionesStruct</td>
+                <td>int</td>
+                <td>IntValue { Value = 0 }</td>
+                <td>1</td>
+                <td>195</td>
+            </tr>
+            <tr>
+                <td>nombreObtenido</td>
+                <td>string</td>
+                <td>StringValue { Value = Primero }</td>
+                <td>1</td>
+                <td>198</td>
+            </tr>
+            <tr>
+                <td>nombreSiguiente</td>
+                <td>string</td>
+                <td>StringValue { Value = Segundo }</td>
+                <td>1</td>
+                <td>224</td>
+            </tr>
+            <tr>
+                <td>nombreSiguienteDeNodo3</td>
+                <td>string</td>
+                <td>StringValue { Value = No hay siguiente nodo }</td>
+                <td>1</td>
+                <td>227</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>main</td>
+                <td>function</td>
+                <td>FuncionValue { invocable = FuncionForanea, name = main }</td>
+                <td>0</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>numeros</td>
+                <td>InstanciaValue</td>
+                <td>InstanciaValue { instancia = Instancia }</td>
+                <td>4</td>
+                <td>2</td>
+            </tr></tbody>
+    </table>
+</body>
+</html>

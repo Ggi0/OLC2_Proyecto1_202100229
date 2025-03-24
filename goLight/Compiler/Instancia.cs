@@ -53,7 +53,7 @@ public class Instancia{
         }
 
         // Si no se encuentra como atributo ni como método, lanzar error
-        throw new SemanticError($"ERROR: El atributo o método '{name}' no existe en el struct '{typeName}'", token);
+        throw new SemanticError($"ERROR: Acceso invalido para '{name}' no existe en '{typeName}'", token);
 
         // Si no existe, lanzar un error semántico
         //throw new SemanticError($"ERROR: El atributo '{name}' no existe en el struct '{typeName}'", token);

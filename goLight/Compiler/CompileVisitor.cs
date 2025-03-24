@@ -48,10 +48,39 @@ public class CompilerVisitor : LanguageParserBaseVisitor<ValueWrapper>{ //<int> 
     */
     public override ValueWrapper VisitProgram( LanguageParser.ProgramContext context)
     {
-        //context.dcl(); --> todas las declaraciones almacenadas en ese arreglo `program: dcl*;` de la gramatica
+        /*//context.dcl(); --> todas las declaraciones almacenadas en ese arreglo `program: dcl*;` de la gramatica
         foreach (var linea in context.dcl()){
             Console.WriteLine("\n\n -------------------------------------------------------------- \n\n");
             Visit(linea);
+        }
+
+        return defaultValue; // retorna un void*/
+         // Fase 1: Procesar todas las declaraciones
+        Console.WriteLine("\n\n ------ FASE DE DECLARACIÓN ------\n\n");
+        foreach (var linea in context.dcl()){
+            Visit(linea);
+        }
+        
+        // Fase 2: Ejecutar la función main
+        Console.WriteLine("\n\n ------ EJECUCIÓN DEL PROGRAMA ------\n\n");
+        try {
+            // Obtener la función main del entorno global
+            ValueWrapper mainFunc = entornoActual.Get("main", context.Start);
+            
+            // Verificar que sea una función
+            if (mainFunc is FuncionValue funcionValue) {
+                // Llamar a la función main sin argumentos
+                List<ValueWrapper> args = new List<ValueWrapper>();
+                
+                // Usar el mismo mecanismo de invocación que ya tienes en VisitCall
+                return funcionValue.invocable.Invoke(args, this, context.Start);
+            } else {
+                throw new SemanticError("ERROR: No se encontró la función 'main' o no es una función válida.", context.Start);
+            }
+        } catch (SemanticError e) {
+            throw new SemanticError(e.Message, context.Start);
+        } catch (Exception e) {
+            Console.WriteLine($"ERROR: {e.Message}");
         }
 
         return defaultValue; // retorna un void
@@ -364,33 +393,46 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
                             var propertyName = porpertyAccess.ID().GetText();
                             intancia.Set(propertyName, value); // guardar justo la ultima interacion del recorrido de acciones
                         }
+                        else if (llamadaEmb is ModuleValue moduleValue)
+                        {
+                            // Esto indicará al usuario que el intento de hacer algo como strconv.Atoi = algovalor no está permitido
+                            // No permitir asignación a funciones de módulos embebidos
+                            throw new SemanticError($"ERROR: No es posible asignar valores a funciones de módulos embebidos como '{moduleValue.GetType().Name}'", context.Start);
+                        }
                         else
                         {
                             throw new SemanticError($"ERROR: La INSTANCIACION es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
                         }
-                    } 
-                    
+                    }
+
                     // implementar el acceso a slice
 
-                    else if (action is LanguageParser.AccesoSliceContext arraryAccess){
-                    // la llamada debe ser una instancia que es lo que retorna una instancia de arreglo:
-                    if (llamadaEmb is InstanciaValue instanciaValue)
+                    else if (action is LanguageParser.AccesoSliceContext arraryAccess)
                     {
-                        var index = Visit(arraryAccess.expr());
-                        // los indices deben ser unicamente numericos
-                        if (index is IntValue intValue){
-                            instanciaValue.instancia.Set(intValue.Value.ToString(), value);
-                        }else{
-                            throw new SemanticError("ERROR: acesso invalido al slice por el tipo", context.Start);
+                        // la llamada debe ser una instancia que es lo que retorna una instancia de arreglo:
+                        if (llamadaEmb is InstanciaValue instanciaValue)
+                        {
+                            var index = Visit(arraryAccess.expr());
+                            // los indices deben ser unicamente numericos
+                            if (index is IntValue intValue)
+                            {
+                                Console.WriteLine("ultimo valor  ", value);
+                                instanciaValue.instancia.Set(intValue.Value.ToString(), value);
+                            }
+                            else
+                            {
+                                throw new SemanticError("ERROR: acesso invalido al slice por el tipo", context.Start);
+                            }
                         }
-
-                    }else{
-                        throw new SemanticError("ERROR: accesos invalido al slice no es una instancia", context.Start);
+                        else
+                        {
+                            throw new SemanticError("ERROR: accesos invalido al slice no es una instancia", context.Start);
+                        }
                     }
-                }
-                    
-                    else{
-                        throw new SemanticError ($"ERROR: Asignacion invalida", context.Start);
+
+                    else
+                    {
+                        throw new SemanticError($"ERROR: Asignacion invalida", context.Start);
                     }
                 }
 
@@ -399,7 +441,7 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
                 {
                     if (llamadaEmb is FuncionValue funtionValue)
                     {
-                        // CAMBIO: esta parte no siempre van a ser parametros, sino tambien accesos a propiedades
+                        // esta parte no siempre van a ser parametros, sino tambien accesos a propiedades
                         llamadaEmb = VisitCall(funtionValue.invocable, funcall.parametros());
                         // Verificar que el resultado de la llamada no sea null
                         if (llamadaEmb == null)
@@ -419,6 +461,11 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
                     if (llamadaEmb is InstanciaValue instanciaValue)
                     {
                         llamadaEmb = instanciaValue.instancia.Get(porpertyAccess.ID().GetText(), porpertyAccess.Start);
+                    }
+                    else if (llamadaEmb is ModuleValue moduleValue)
+                    {
+                        // Si es un módulo, obtener la función correspondiente
+                        llamadaEmb = moduleValue.GetFunction(porpertyAccess.ID().GetText());
                     }
                     else
                     {
@@ -505,39 +552,147 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
 
 
 
-
     //       -----------> PRINTLN <-----------    
     // VisitPrint ---> publica ya que se accedera desde el controlador
-    public override ValueWrapper VisitPrintStmt( LanguageParser.PrintStmtContext context)
+    public override ValueWrapper VisitPrintStmt(LanguageParser.PrintStmtContext context)
     {
-        Console.WriteLine("\n--> Println");
-        //Console.WriteLine("Desde el print1: " + context.expr().GetText());
-        //Console.WriteLine("Desde el print1 (tipo) : " + context.expr().GetText().GetType());
-        ValueWrapper value = Visit(context.expr());
-        Console.WriteLine("Desde el println: "+ value + "\n");
-        //Console.WriteLine("Desde el print2 (tipo): "+ value.GetType());
-        // output += value + "\n";
-        
-        output += value switch
+        Console.WriteLine("\n--> Print");
+
+        string outputStr = "";
+
+        // Si hay una lista de expresiones
+        if (context.exprList() != null)
         {
-            IntValue i => i.Value.ToString(),
-            FloatValue f => f.Value.ToString(),
-            StringValue s => s.Value,
-            BoolValue b => b.Value.ToString(),
-            RuneValue r => Convert.ToByte(r.Value).ToString(),
-            VoidValue v => "void",
-            FuncionValue fn => "-> fn "+ fn.name + " <-",
-            StructValue st => st.Nombre,
-            InstanciaValue ins => ins.instancia.GetTypeName(),
-            NilValue nulo => "<nil>",
-            _ => throw new SemanticError("ERROR: tipo de valor no valido", context.Start)
-        };
-        output += "\n";
-        //Console.WriteLine("Desde el print2: "+ value.GetType());
-        //Console.WriteLine("output --> : "+ output);
+            // Recorrer cada expresión en la lista
+            foreach (var exprContext in context.exprList().expr())
+            {
+                ValueWrapper value = Visit(exprContext);
+
+                // Convertir el valor a string según su tipo
+                outputStr += value switch
+                {
+                    IntValue i => i.Value.ToString(),
+                    FloatValue f => f.Value.ToString(),
+                    StringValue s => s.Value,
+                    BoolValue b => b.Value.ToString(),
+                    RuneValue r => Convert.ToByte(r.Value).ToString(),
+                    VoidValue v => "void",
+                    FuncionValue fn => "-> fn " + fn.name + " <-",
+                    StructValue st => st.Nombre,
+                    InstanciaValue ins => FormatearInstancia(ins),
+                    NilValue nulo => "<nil>",
+                    _ => throw new SemanticError("ERROR: tipo de valor no valido", exprContext.Start)
+                };
+            }
+        }
+
+        output += outputStr + "\n";
+        Console.WriteLine("output --> : " + output);
 
         return defaultValue;
     }
+
+
+
+
+// Método auxiliar para formatear una instancia de struct como {valor1 valor2 valor3 ...}
+private string FormatearInstancia(InstanciaValue instanciaValue)
+{
+    var instancia = instanciaValue.instancia;
+    
+    // Si es un slice, usar formato especial para slices
+    if (instancia.GetTypeName().StartsWith("[]"))
+    {
+        return FormatearSlice(instanciaValue);
+    }
+    
+    // Para structs normales, obtener todos los valores de atributos
+    try
+    {
+        // Intentar obtener la definición del struct en el entorno actual
+        ValueWrapper tipoValor = entornoActual.Get(instancia.GetTypeName(), null);
+        
+        if (tipoValor is StructValue structValue)
+        {
+            // Obtener los atributos en el orden definido en el struct
+            var valores = new List<string>();
+            
+            // Para cada atributo definido en el struct
+            foreach (var atributo in structValue.Atributos)
+            {
+                string nombreAtributo = atributo.Key;
+                
+                // Obtener el valor del atributo en la instancia
+                if (instancia.values.TryGetValue(nombreAtributo, out ValueWrapper valor))
+                {
+                    // Convertir el valor a string según su tipo
+                    string valorStr = valor switch
+                    {
+                        IntValue i => i.Value.ToString(),
+                        FloatValue f => f.Value.ToString(),
+                        StringValue s => s.Value,
+                        BoolValue b => b.Value.ToString().ToLower(), // Usamos ToLower para que "True" se muestre como "true"
+                        RuneValue r => r.Value.ToString(),
+                        InstanciaValue nestedIns => FormatearInstancia(nestedIns), // Formateo recursivo para structs anidados
+                        NilValue _ => "<nil>",
+                        _ => "<valor desconocido>"
+                    };
+                    
+                    valores.Add(valorStr);
+                }
+            }
+            
+            // Formatear como {valor1 valor2 valor3 ...}
+            return "{" + string.Join(" ", valores) + "}";
+        }
+    }
+    catch (SemanticError)
+    {
+        // Si hay algún error, simplemente devolver el tipo
+    }
+    
+    // Si no podemos obtener los valores específicos, devolver solo el nombre del tipo
+    return instancia.GetTypeName();
+}
+
+// Método auxiliar para formatear slices
+private string FormatearSlice(InstanciaValue sliceInstancia)
+{
+    var instancia = sliceInstancia.instancia;
+    
+    // Obtener la longitud del slice
+    if (!instancia.values.TryGetValue("length", out ValueWrapper lengthWrapper) || 
+        !(lengthWrapper is IntValue lengthValue))
+    {
+        return instancia.GetTypeName(); // Si no podemos obtener la longitud, devolver solo el tipo
+    }
+    
+    int length = lengthValue.Value;
+    var elementos = new List<string>();
+    
+    // Recolectar todos los elementos del slice
+    for (int i = 0; i < length; i++)
+    {
+        if (instancia.values.TryGetValue(i.ToString(), out ValueWrapper elemento))
+        {
+            // Convertir el elemento a string según su tipo
+            string elementoStr = elemento switch
+            {
+                IntValue intVal => intVal.Value.ToString(),
+                FloatValue floatVal => floatVal.Value.ToString(),
+                StringValue strVal => strVal.Value,
+                BoolValue boolVal => boolVal.Value.ToString().ToLower(),
+                InstanciaValue nestedIns => FormatearInstancia(nestedIns), // Para slices anidados
+                _ => "<valor desconocido>"
+            };
+            
+            elementos.Add(elementoStr);
+        }
+    }
+    
+    // Formatear como [elemento1 elemento2 elemento3 ...]
+    return "[" + string.Join(" ", elementos) + "]";
+}
 
 
 
@@ -686,14 +841,29 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
         Entorno entornoAnterior = entornoActual;
         entornoActual = new Entorno(entornoAnterior);
 
-        // Ejecutar todas las declaraciones dentro del caso
-        foreach (var declaracion in context.dcl())
+        try
         {
-            Visit(declaracion);
+            // Ejecutar todas las declaraciones dentro del caso
+            foreach (var declaracion in context.dcl())
+            {
+                try
+                {
+                    Visit(declaracion);
+                }
+                catch (BreakException)
+                {
+                    // Si se encuentra un break dentro de una declaración,
+                    // interrumpir el bucle y salir del caso
+                    Console.WriteLine("\t-> BREAK encontrado en CASE - saliendo del caso");
+                    break;
+                }
+            }
         }
-
-        // Restaurar el entorno anterior
-        entornoActual = entornoAnterior;
+        finally
+        {
+            // Restaurar el entorno anterior
+            entornoActual = entornoAnterior;
+        }
 
         return defaultValue;
     }
@@ -707,14 +877,29 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
         entornoActual = new Entorno(entornoAnterior);
 
 
-        // Ejecutar todas las declaraciones dentro del caso default
-        foreach (var declaracion in context.dcl())
+        try
         {
-            Visit(declaracion);
+            // Ejecutar todas las declaraciones dentro del caso default
+            foreach (var declaracion in context.dcl())
+            {
+                try
+                {
+                    Visit(declaracion);
+                }
+                catch (BreakException)
+                {
+                    // Si se encuentra un break dentro de una declaración,
+                    // interrumpir el bucle y salir del caso default
+                    Console.WriteLine("\t-> BREAK encontrado en DEFAULT - saliendo del caso");
+                    break;
+                }
+            }
         }
-
-        // Restaurar el entorno anterior
-        entornoActual = entornoAnterior;
+        finally
+        {
+            // Restaurar el entorno anterior
+            entornoActual = entornoAnterior;
+        }
 
         return defaultValue;
     }
@@ -732,23 +917,72 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
 
     */
     public override ValueWrapper VisitWhileStmt(LanguageParser.WhileStmtContext context)
+{
+    Console.WriteLine("\t---> FOR (while) <---\n");
+    
+    // 1. Crear un nuevo entorno para el ciclo for while
+    Entorno entornoAnterior = entornoActual;
+    entornoActual = new Entorno(entornoAnterior);
+    
+    try
     {
-        Console.WriteLine("\t---> FOR (while) <---\n");
-        ValueWrapper condition = Visit(context.expr());
-
-        if (condition is not BoolValue)
-        {
-            throw new SemanticError($"ERROR: la condicion {condition} del For debe de ser booleana", context.Start);
-        }
-
-        while ((condition as BoolValue).Value)
-        {
-            Visit(context.statement());
-            condition = Visit(context.expr());// valuar la condicion por cada iteracion
-        }
-
-        return defaultValue;
+        // 2. Evaluar la condición inicial
+        VisitWhileBody(context);
     }
+    finally
+    {
+        // 3. Restaurar el entorno anterior al finalizar
+        entornoActual = entornoAnterior;
+    }
+    
+    return defaultValue;
+}
+
+/*
+ * VisitWhileBody - Método auxiliar para manejar la ejecución del cuerpo del while
+ * 
+ * Ejecuta el cuerpo del while y maneja las excepciones de break y continue.
+ */
+private void VisitWhileBody(LanguageParser.WhileStmtContext context)
+{
+    // 1. Evaluar la condición
+    ValueWrapper condition = Visit(context.expr());
+    
+    // 2. Verificar que la condición sea booleana
+    if (condition is not BoolValue)
+    {
+        throw new SemanticError($"ERROR: la condicion {condition} del For debe de ser booleana", context.Start);
+    }
+    
+    // 3. Guardar referencia al entorno para manejar continue/break
+    var ultimoEntorno = entornoActual;
+    
+    try
+    {
+        // 4. Ejecutar el ciclo mientras la condición sea verdadera
+        while (condition is BoolValue boolCondition && boolCondition.Value)
+        {
+            try
+            {
+                // Ejecutar el cuerpo del while
+                Visit(context.statement());
+            }
+            catch (ContinueException)
+            {
+                // Si se encuentra un continue, simplemente continuamos con la siguiente iteración
+                // No hacemos nada especial aquí, solo capturas la excepción para evitar que suba más
+            }
+            
+            // Reevaluar la condición para la siguiente iteración
+            condition = Visit(context.expr());
+        }
+    }
+    catch (BreakException)
+    {
+        // Si se encuentra un break, salir del ciclo
+        // No hacemos nada específico, solo capturamos la excepción
+    }
+}
 
 
     /*
@@ -809,6 +1043,124 @@ private InstanciaValue CrearInstanciaStruct(StructValue structValue, Antlr4.Runt
 
 
     }
+
+    /*
+  VisitForRangeStmt - Implementa la funcionalidad del ciclo "for range" para slices
+  
+  Permite recorrer un slice obteniendo el índice y el valor de cada elemento.
+  Sintaxis: for índice, valor := range slice { ... }
+ */
+public override ValueWrapper VisitForRangeStmt(LanguageParser.ForRangeStmtContext context)
+{
+    Console.WriteLine("\t---> FOR RANGE <---\n");
+    
+    // 1. Obtener los identificadores para el índice y el valor
+    string idIndice = context.rangeStmt().ID(0).GetText();
+    string idValor = context.rangeStmt().ID(1).GetText();
+    
+    // 2. Crear un nuevo entorno para el ciclo for ANTES de la evaluación
+    // Este entorno es donde vivirán las variables de índice y valor
+    Entorno entornoAnterior = entornoActual;
+    entornoActual = new Entorno(entornoAnterior);
+    
+    // 3. Evaluar la expresión después de "range" (debe ser un slice)
+    ValueWrapper sliceExpr = Visit(context.rangeStmt().expr());
+    
+    // 4. Verificar que la expresión evaluada sea un slice
+    if (!(sliceExpr is InstanciaValue instanciaValue && 
+          instanciaValue.instancia.GetTypeName().StartsWith("[]")))
+    {
+        // Restaurar el entorno si hay error
+        entornoActual = entornoAnterior;
+        throw new SemanticError(
+            $"ERROR: La expresión después de 'range' debe ser un slice, se encontró '{sliceExpr.GetType().Name}'", 
+            context.Start);
+    }
+    
+    // 5. Obtener la instancia del slice y su tamaño
+    var sliceInstancia = instanciaValue.instancia;
+    int length = 0;
+    
+    // Obtener la longitud del slice (propiedad "length")
+    if (sliceInstancia.values.ContainsKey("length"))
+    {
+        ValueWrapper lengthValue = sliceInstancia.values["length"];
+        if (lengthValue is IntValue intLength)
+        {
+            length = intLength.Value;
+        }
+    }
+    
+    // 6. Obtener el tipo de elementos del slice para crear un valor inicial del tipo correcto
+    string tipoSlice = sliceInstancia.GetTypeName();
+    string tipoElemento = tipoSlice.Substring(2); // Remover "[]" para obtener el tipo base
+    
+    // Crear un valor inicial del tipo correcto
+    ValueWrapper valorInicial;
+    switch (tipoElemento)
+    {
+        case "int":
+            valorInicial = new IntValue(0);
+            break;
+        case "float64":
+            valorInicial = new FloatValue(0.0f);
+            break;
+        case "string":
+            valorInicial = new StringValue("");
+            break;
+        case "bool":
+            valorInicial = new BoolValue(false);
+            break;
+        case "rune":
+            valorInicial = new RuneValue('\0');
+            break;
+        default:
+            // Si es un tipo estructurado o no reconocido, usamos nil
+            valorInicial = new NilValue();
+            break;
+    }
+    
+    // 7. Declarar las variables índice y valor UNA SOLA VEZ en el nuevo entorno
+    // Inicializamos con valores por defecto del tipo correcto
+    entornoActual.Declaracion(idIndice, new IntValue(0), context.Start);
+    entornoActual.Declaracion(idValor, valorInicial, context.Start);
+    
+    // 8. Ejecutar el bucle
+    try 
+    {
+        for (int i = 0; i < length; i++)
+        {
+            string posicionKey = i.ToString();
+            
+            if (sliceInstancia.values.ContainsKey(posicionKey))
+            {
+                // Actualizar los valores usando Asignacion
+                entornoActual.Asignacion(idIndice, new IntValue(i), "=", context.Start);
+                entornoActual.Asignacion(idValor, sliceInstancia.values[posicionKey], "=", context.Start);
+                
+                // Ejecutar el cuerpo del for
+                try {
+                    Visit(context.statement());
+                }
+                catch (ContinueException)
+                {
+                    // Si encontramos un continue, simplemente continuamos con la siguiente iteración
+                    continue;
+                }
+            }
+        }
+    }
+    catch (BreakException)
+    {
+        // Si encontramos un break, simplemente salimos del bucle
+        // No se hace nada específico aquí
+    }
+    
+    // 9. Restaurar el entorno anterior
+    entornoActual = entornoAnterior;
+    
+    return defaultValue;
+}
 
 
     //       -----------> SENTENCIAS DE TRANSFERENCIA <-----------
@@ -1291,7 +1643,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
             }
         }
 
-        var instancia = ((ClassValue)classValue).structsDef.Invoke(arguments, this);
+        var instancia = ((ClassValue)classValue).structsDef.Invoke(arguments, this, context.Start);
 
         return instancia;
     }
@@ -1351,16 +1703,22 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
 
             }
 
-            else if(action is LanguageParser.GetAtrContext porpertyAccess){
-                if (llamadaEmb is InstanciaValue instanciaValue){
+            else if (action is LanguageParser.GetAtrContext porpertyAccess)
+            {
+                if (llamadaEmb is InstanciaValue instanciaValue)
+                {
                     llamadaEmb = instanciaValue.instancia.Get(porpertyAccess.ID().GetText(), porpertyAccess.Start);
-                }else
+                }
+                else if (llamadaEmb is ModuleValue moduleValue)
+                {
+                    // Si es un módulo, obtener la función correspondiente
+                    llamadaEmb = moduleValue.GetFunction(porpertyAccess.ID().GetText());
+                }
+                else
                 {
                     throw new SemanticError($"ERROR: La INSTANCIACION es inválida. Se esperaba una función pero se recibió {llamadaEmb.GetType().Name}", context.Start);
                 }
-            }
-
-            // implementar el acceso a slice
+            }// implementar el acceso a slice
             else if (action is LanguageParser.AccesoSliceContext arraryAccess)
             {
                 // la llamada debe ser una instancia que es lo que retorna una instancia de arreglo:
@@ -1412,6 +1770,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
             }
         }
 
+
         // validar tipos
 
         // validar cantidad de parametros:
@@ -1422,12 +1781,13 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
 
         try
         {
-            return invocable.Invoke(argumentos, this);
+                    // Pasar el context original, que podría ser null
+            return invocable.Invoke(argumentos, this, context?.Start);
         }
         catch (Exception e) when (!(e is SemanticError))
         {
             // Capturar excepciones inesperadas y convertirlas en SemanticError
-            throw new SemanticError($"ERROR: Ocurrió un error durante la llamada a la función: {e.Message}", context.Start);
+            throw new SemanticError($"ERROR: Ocurrió un error durante la llamada a la función: {e.Message}", context?.Start);
         }
     }
 
@@ -1529,7 +1889,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
         
         // Crear el SliceDef y la instancia
         SliceDef sliceDef = new SliceDef(tipoElemento);
-        return sliceDef.Invoke(elementos, this);
+        return sliceDef.Invoke(elementos, this, context.Start);
     }
 
 
@@ -1543,7 +1903,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
         
         // Crear un slice vacío
         SliceDef sliceDef = new SliceDef(tipo);
-        ValueWrapper sliceValue = sliceDef.Invoke(new List<ValueWrapper>(), this);
+        ValueWrapper sliceValue = sliceDef.Invoke(new List<ValueWrapper>(), this, context.Start);
         
         // Declarar la variable en el entorno actual
         entornoActual.Declaracion(id, sliceValue, context.Start);
@@ -1591,7 +1951,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
                 
                 // Crear el subslice y añadirlo como un elemento del slice principal
                 SliceDef subSliceDef = new SliceDef(tipo);
-                elementos.Add(subSliceDef.Invoke(subElementos, this));
+                elementos.Add(subSliceDef.Invoke(subElementos, this, context.Start));
             }
             // Si es un parámetro directo (sin LBRACE)
             else if (param.parametros() != null && param.parametros().Length > 0)
@@ -1611,7 +1971,7 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
         
         // Crear el slice principal con todos los elementos recopilados
         SliceDef sliceDef = new SliceDef(tipo);
-        ValueWrapper sliceValue = sliceDef.Invoke(elementos, this);
+        ValueWrapper sliceValue = sliceDef.Invoke(elementos, this, context.Start);
         
         // Declarar la variable en el entorno actual
         entornoActual.Declaracion(id, sliceValue, context.Start);
@@ -1938,7 +2298,15 @@ private InstanciaValue CrearInstanciaConInicializaciones(StructValue structValue
                     case (RuneValue l, RuneValue r): // rune == rune = bool
                         Console.WriteLine($"---> valor izq: {l.Value} - {l.GetType()} == valor der: {r.Value} - {r.GetType()}");
                         return new BoolValue(l.Value == r.Value);
-
+                    case (NilValue l, NilValue r): // rune == rune = bool
+                        Console.WriteLine($"---> valor izq: {l} - {l.GetType()} == valor der: {r} - {r.GetType()}");
+                        return new BoolValue(l == r);
+                    case (InstanciaValue l, NilValue r): // rune == rune = bool
+                        Console.WriteLine($"---> valor izq: {l} - {l.GetType()} == valor der: {r} - {r.GetType()}");
+                        return new BoolValue(l == r); 
+                    case (NilValue l, InstanciaValue r): // rune == rune = bool
+                        Console.WriteLine($"---> valor izq: {l} - {l.GetType()} == valor der: {r} - {r.GetType()}");
+                        return new BoolValue(l == r);
                     default:
                         throw new SemanticError($"ERROR: Comparacion de IGUALDAD invalida entre los tipos {left.GetType()} * {right.GetType()} ", context.Start);
                 }

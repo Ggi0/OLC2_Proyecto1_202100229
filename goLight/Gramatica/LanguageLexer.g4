@@ -63,6 +63,7 @@ DEFAUL : 'default' ;
 
 // ---> ciclos
 FOR : 'for';
+RANGE : 'range';
 
 // --> Sentecncias de transferencia
 STBREAK    : 'break'    ;

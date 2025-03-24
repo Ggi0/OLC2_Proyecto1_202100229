@@ -17,5 +17,5 @@ public interface Invocable{
         CompilerVisitor visitor --> referencia al Visitor
             -->  almacenar el bloque de la funcion y cuando se requiera devolverla.
     */
-    ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor);
+    ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor, Antlr4.Runtime.IToken token);
 }

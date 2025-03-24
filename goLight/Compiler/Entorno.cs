@@ -5,9 +5,18 @@ public class Entorno{
 
     private Entorno? parent; // entorno padre, puede ser nulo
 
+    private static bool htmlInitialized = false;
+
     public Entorno(Entorno? parent){
         // al construir un nuevo entorno se le puede mandar un padre si es necesario
         this.parent = parent;
+
+        /// Initialize HTML file if not done yet
+        if (!htmlInitialized)
+        {
+            InitializeHtmlFile();
+            htmlInitialized = true;
+        }
     }
 
     // obtener una variable
@@ -29,11 +38,18 @@ public class Entorno{
     // DECLARACION --> funciones, clases  y variables
     public void Declaracion(string id, ValueWrapper value, Antlr4.Runtime.IToken? token)
     {
+        
         if (variables.ContainsKey(id)){
             if (token != null) throw new SemanticError($"ERROR: Declaracion, la variable  {id} ya existe", token);
         }else{
             Console.WriteLine($"Declaracion correcta -> id: {id}, valor: {value}");
             variables[id] = value;
+
+            // Actualizar la tabla HTML si hay un token disponible
+            if (token != null)
+            {
+                AppendToHtmlTable(id, value, token);
+            }
         }
     }
 
@@ -116,4 +132,118 @@ public class Entorno{
             || (existente is FloatValue && nuevo is IntValue); // Permitir int -> float64
     }
 
+
+
+
+
+
+
+
+
+
+
+private void InitializeHtmlFile()
+    {
+        string html = @"<!DOCTYPE html>
+<html lang='es'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Tabla de Símbolos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tabla de Símbolos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Columna</th>
+                <th>Fila</th>
+            </tr>
+        </thead>
+        <tbody id='tablaBody'>
+            <!-- Aquí se agregarán las filas dinámicamente -->
+        </tbody>
+    </table>
+</body>
+</html>";
+
+        File.WriteAllText("tablaSimbolos.html", html);
+    }
+
+    private void AppendToHtmlTable(string id, ValueWrapper value, Antlr4.Runtime.IToken token)
+    {
+        try
+        {
+            // Read the existing HTML file
+            string htmlContent = File.ReadAllText("tablaSimbolos.html");
+            
+            // Get the type name in a more user-friendly format
+            string typeName = GetFriendlyTypeName(value);
+            
+            // Create the new table row
+            string newRow = $@"
+            <tr>
+                <td>{id}</td>
+                <td>{typeName}</td>
+                <td>{value}</td>
+                <td>{token.Column}</td>
+                <td>{token.Line}</td>
+            </tr>";
+
+            // Insert the new row before the closing tbody tag
+            int insertPosition = htmlContent.IndexOf("</tbody>");
+            if (insertPosition != -1)
+            {
+                htmlContent = htmlContent.Insert(insertPosition, newRow);
+                File.WriteAllText("tablaSimbolos.html", htmlContent);
+                Console.WriteLine($"Actualizada tabla de símbolos con {id}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al actualizar la tabla de símbolos HTML: {ex.Message}");
+        }
+    }
+
+    private string GetFriendlyTypeName(ValueWrapper value)
+    {
+        if (value is IntValue) return "int";
+        if (value is FloatValue) return "float64";
+        if (value is StringValue) return "string";
+        if (value is BoolValue) return "bool";
+        if (value is SliceValue) return "array";
+        if (value is FuncionValue) return "function";
+        // Add other types as needed
+        return value.GetType().Name;
+    }
 }

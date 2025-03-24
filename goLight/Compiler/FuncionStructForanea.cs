@@ -75,7 +75,7 @@ public class FuncionStructForanea : Invocable {
         return valorRetorno;
     }
     
-    public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor) {
+    public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor, Antlr4.Runtime.IToken token) {
         Console.WriteLine($"\t (struct) --> Invocando método para struct '{tipoStruct}'");
         
         // Validar cantidad de parámetros

@@ -37,7 +37,7 @@ public class SliceDef : Invocable
     }
 
     // Método que se llama cuando se crea un slice - args son los elementos
-    public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor)
+    public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor, Antlr4.Runtime.IToken token)
     {
         Console.WriteLine($"\t (slice) -->   Creando slice de tipo '{tipoElemento}' con {args.Count} elementos");
         

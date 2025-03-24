@@ -327,6 +327,20 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitForStmt([NotNull] LanguageParser.ForStmtContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ForRangeStmt</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterForRangeStmt([NotNull] LanguageParser.ForRangeStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ForRangeStmt</c>
+	/// labeled alternative in <see cref="LanguageParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitForRangeStmt([NotNull] LanguageParser.ForRangeStmtContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>ST_break</c>
 	/// labeled alternative in <see cref="LanguageParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -369,6 +383,18 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitST_return([NotNull] LanguageParser.ST_returnContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.exprList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExprList([NotNull] LanguageParser.ExprListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.exprList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExprList([NotNull] LanguageParser.ExprListContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="LanguageParser.forInit"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -380,6 +406,18 @@ public partial class LanguageParserBaseListener : ILanguageParserListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitForInit([NotNull] LanguageParser.ForInitContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="LanguageParser.rangeStmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRangeStmt([NotNull] LanguageParser.RangeStmtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="LanguageParser.rangeStmt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRangeStmt([NotNull] LanguageParser.RangeStmtContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>caseNormal</c>
 	/// labeled alternative in <see cref="LanguageParser.caseStmt"/>.

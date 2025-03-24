@@ -88,3 +88,20 @@ public record SliceValue(string TipoElemento, List<ValueWrapper> Elementos) : Va
 // Representa el valor 'nil' (nulo/referencia vacía)
 public record NilValue : ValueWrapper;
 
+
+/*
+    Clase ModuleValue para representar módulos como 'strconv'
+    que contienen funciones embebidas como 'Atoi'
+*/
+public record ModuleValue(Dictionary<string, ValueWrapper> Functions) : ValueWrapper
+{
+    public ValueWrapper GetFunction(string name)
+    {
+        if (Functions.ContainsKey(name))
+        {
+            return Functions[name];
+        }
+        throw new SemanticError($"ERROR: La función '{name}' no existe en este módulo", null);
+    }
+}
+

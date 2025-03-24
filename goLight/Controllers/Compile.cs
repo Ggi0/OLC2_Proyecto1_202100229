@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using analyzer;
 using Antlr4.Runtime;
@@ -91,10 +93,86 @@ namespace api.Controllers
             {
                 return BadRequest(new { error = "ERROR: sentencia Continue fuera de un ciclo" });
             }
-
-
-
-
         }
+
+        [HttpPost("ast")]
+        public async Task<IActionResult> GetAst([FromBody] CompileRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { error = "Invalid Request" });
+            }
+
+            string parserGrammarPath = Path.Combine(Directory.GetCurrentDirectory(), "Gramatica/LanguageParser.g4");
+            string lexerGrammarPath = Path.Combine(Directory.GetCurrentDirectory(), "Gramatica/LanguageLexer.g4");
+
+            string parserGrammar = "";
+            string lexerGrammar = "";
+
+            try
+            {
+                if (System.IO.File.Exists(parserGrammarPath))
+                {
+                    parserGrammar = await System.IO.File.ReadAllTextAsync(parserGrammarPath);
+                }
+                else
+                {
+                    return BadRequest(new { error = "parser grammar not found" });
+                }
+
+                if (System.IO.File.Exists(lexerGrammarPath))
+                {
+                    lexerGrammar = await System.IO.File.ReadAllTextAsync(lexerGrammarPath);
+                }
+                else
+                {
+                    return BadRequest(new { error = "lexer grammar not found" });
+                }
+            }
+            catch (System.Exception)
+            {
+                return BadRequest(new { error = "error reading grammar files" });
+            }
+
+            var payload = new
+            {
+                grammar = parserGrammar,
+                lexgrammar = lexerGrammar,
+                input = request.Code,
+                start = "program"
+            };
+
+            var jsonPayload = JsonSerializer.Serialize(payload);
+            var context = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.PostAsync("http://lab.antlr.org/parse/", context);
+                    response.EnsureSuccessStatusCode();
+
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    using var doc = JsonDocument.Parse(result);
+                    var root = doc.RootElement;
+
+                    if (root.TryGetProperty("result", out JsonElement resultElement) &&
+                        resultElement.TryGetProperty("svgtree", out JsonElement svgtreeElement))
+                    {
+                        string svgtree = svgtreeElement.GetString() ?? string.Empty;
+                        return Content(svgtree, "image/svg+xml");
+                    }
+
+                    return BadRequest(new { error = "svgtree not found in response" });
+                }
+                catch (System.Exception ex)
+                {
+                    _logger.LogError(ex, "Error parsing code");
+                    return BadRequest(new { error = "Error parsing code" });
+                }
+            }
+        }
+
     }
 }

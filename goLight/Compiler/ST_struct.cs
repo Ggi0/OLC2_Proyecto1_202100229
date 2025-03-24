@@ -93,7 +93,7 @@ public class StructsDef : Invocable
 
 // Implementar el método Invoke para la instanciación
 // Método para crear una instancia del struct (implementa Invocable)
-    public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor) {
+    public ValueWrapper Invoke(List<ValueWrapper> args, CompilerVisitor visitor, Antlr4.Runtime.IToken token) {
         Console.WriteLine($"\t (struct) -->   Instanciando struct '{Name}'");
         
         // Crear un diccionario para los valores de los atributos
@@ -130,7 +130,7 @@ public class StructsDef : Invocable
             } else {
                 // Es un struct, crear una instancia recursiva
                 try {
-                    var otroTipoValor = visitor.entornoActual.Get(tipoAtributo, null);
+                    var otroTipoValor = visitor.entornoActual.Get(tipoAtributo, token);
                     if (otroTipoValor is StructValue otroStructValue) {
                         // Crear una instancia vacía del struct anidado
                         Dictionary<string, ValueWrapper> atributosAnidados = new Dictionary<string, ValueWrapper>();
